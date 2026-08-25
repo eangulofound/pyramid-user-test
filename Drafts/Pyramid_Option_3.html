@@ -1,0 +1,1317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The Pyramid · Option 3 — end to end</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@300;500;600;700&family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,300,0,0&display=block" rel="stylesheet">
+<style>
+:root{
+  --white:#FFFFFF;
+  --gray-25:#F6F1EE; --gray-50:#E8E3E0; --gray-200:#C2BEBC; --gray-300:#777675;
+  --gray-400:#484747; --gray-500:#0F0F0F;
+  --sage-25:#FAFDFC; --sage-50:#F0FAF5; --sage-100:#E6F7EE;
+  --sage-200:#B3C6BF; --sage-300:#809590; --sage-400:#4C6360; --sage-500:#193231;
+  --avocado-100:#EDFFCE;
+  /* layer colors — data/illustration per the token sheet, not chrome */
+  --amber-100:#FFEEC4; --amber-300:#FFC542; --amber-400:#916F21;
+  --lavender-100:#E1DAFF; --lavender-300:#9880FF; --lavender-400:#6252A8;
+  --sky-100:#D6E4FA; --sky-200:#9AB7F1; --sky-300:#4B79E3; --sky-400:#264E9E;
+  --text-secondary:var(--gray-400);
+  --serif:'Fraunces', Georgia, serif;      /* stands in for Quincy CF */
+  --sans:'Figtree', system-ui, sans-serif; /* stands in for Greycliff CF */
+  --sp-2xs:8px; --sp-xs:12px; --sp-sm:16px; --sp-md:20px; --sp-lg:24px;
+  --r-full:999px;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--gray-25);font-family:var(--sans);
+  display:flex;flex-direction:column;align-items:center;gap:22px;padding:44px 20px 72px;
+  -webkit-font-smoothing:antialiased}
+.msr{font-family:'Material Symbols Rounded';font-weight:normal;font-style:normal;line-height:1;
+  letter-spacing:normal;text-transform:none;display:inline-block;white-space:nowrap;direction:ltr;
+  font-variation-settings:'FILL' 0,'wght' 300,'GRAD' 0,'opsz' 24}
+
+.masthead{max-width:440px;text-align:center}
+.masthead h1{font-size:20px;font-weight:600;letter-spacing:.2px;color:var(--sage-500);margin:0 0 6px}
+.masthead p{font-size:14px;line-height:1.5;letter-spacing:.1px;color:var(--text-secondary);margin:0}
+
+/* ===================== device ===================== */
+.device{width:375px;height:812px;position:relative;overflow:hidden;border-radius:44px;
+  background:var(--white);
+  box-shadow:0 2px 4px rgba(25,50,49,.04),0 18px 48px rgba(25,50,49,.14),
+             inset 0 0 0 1px rgba(25,50,49,.07)}
+
+.amb{position:absolute;inset:0;overflow:hidden;z-index:0;
+  transition:opacity 1s ease,transform 1.2s cubic-bezier(.2,.7,.2,1)}
+.amb i{position:absolute;display:block;border-radius:50%;filter:blur(58px)}
+.amb i:nth-child(1){width:88%;aspect-ratio:1;left:-26%;top:-8%;
+  background:radial-gradient(circle,rgba(179,198,191,.6),transparent 68%);animation:d1 28s ease-in-out infinite alternate}
+.amb i:nth-child(2){width:98%;aspect-ratio:1;right:-38%;top:20%;
+  background:radial-gradient(circle,rgba(255,238,196,.6),transparent 66%);animation:d2 34s ease-in-out infinite alternate}
+.amb i:nth-child(3){width:126%;aspect-ratio:1;left:-22%;bottom:-48%;
+  background:radial-gradient(circle,rgba(128,149,144,.32),transparent 62%);animation:d3 40s ease-in-out infinite alternate}
+.amb i:nth-child(4){width:54%;aspect-ratio:1;right:-10%;bottom:4%;
+  background:radial-gradient(circle,rgba(225,218,255,.5),transparent 64%);animation:d1 32s ease-in-out infinite alternate-reverse}
+@keyframes d1{to{transform:translate(18px,30px) scale(1.1)}}
+@keyframes d2{to{transform:translate(-26px,-20px) scale(1.08)}}
+@keyframes d3{to{transform:translate(22px,-16px) scale(1.06)}}
+.device.typing .amb{opacity:.24;transform:scale(1.06)}
+.device.speaking .amb{opacity:.3}
+.device.processing .amb{opacity:0}
+
+/* ---- the listening shape ---- */
+.mass{position:absolute;inset:0;z-index:1;pointer-events:none;--amp:0;
+  opacity:0;transform:scale(calc(.93 + var(--amp) * .09));
+  transition:opacity .9s ease,transform .16s ease-out}
+.device.speaking .mass{opacity:1}
+.mass i{position:absolute;left:50%;top:50%;display:block;border-radius:var(--r-full);
+  transform:translate(-50%,-50%)}
+.mass i:nth-child(1){width:126%;height:106%;background:var(--sage-300);opacity:.36;filter:blur(40px);
+  animation:pulse 6.4s ease-in-out infinite}
+.mass i:nth-child(2){width:100%;height:88%;background:var(--sage-200);opacity:.6;filter:blur(34px);
+  animation:pulse 5.1s ease-in-out infinite reverse}
+.mass i:nth-child(3){width:72%;height:64%;background:var(--sage-50);opacity:.96;filter:blur(28px);
+  animation:pulse 4.1s ease-in-out infinite}
+@keyframes pulse{0%,100%{transform:translate(-50%,-50%) scale(.95)}50%{transform:translate(-50%,-50%) scale(1.045)}}
+
+/* ---- the processing breath: same family as the listening shape, slower ---- */
+.breath{position:absolute;inset:0;z-index:1;pointer-events:none;opacity:0;transition:opacity 1.1s ease}
+.device.processing .breath{opacity:1}
+.breath i{position:absolute;left:50%;top:58%;display:block;border-radius:var(--r-full);
+  transform:translate(-50%,-50%)}
+.breath i:nth-child(1){width:150%;height:120%;background:var(--sage-200);opacity:.32;filter:blur(46px);
+  animation:bpulse 7.5s ease-in-out infinite}
+.breath i:nth-child(2){width:110%;height:92%;background:var(--amber-100);opacity:.5;filter:blur(38px);
+  animation:bpulse 6s ease-in-out infinite reverse}
+.breath i:nth-child(3){width:76%;height:64%;background:var(--sage-50);opacity:.95;filter:blur(30px);
+  animation:bpulse 4.8s ease-in-out infinite}
+@keyframes bpulse{0%,100%{transform:translate(-50%,-50%) scale(.94)}50%{transform:translate(-50%,-50%) scale(1.05)}}
+
+.grain{position:absolute;inset:0;z-index:2;pointer-events:none;opacity:.4;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='.36'/%3E%3C/svg%3E")}
+
+.inner{position:relative;z-index:3;display:flex;flex-direction:column;height:100%;
+  padding:56px var(--sp-md) 30px;transition:opacity .6s ease}
+.device.processing .inner{opacity:0;pointer-events:none}
+
+.hdr{flex:0 0 auto;display:flex;justify-content:center;transition:opacity .6s ease}
+.wordmark{font-family:var(--serif);font-weight:300;font-size:26px;letter-spacing:.4px;
+  color:var(--sage-500);line-height:1;margin:0}
+.device.speaking .hdr{opacity:0}
+
+.mid{flex:1 1 auto;display:flex;flex-direction:column;justify-content:center;padding:8px 0;
+  transition:opacity .3s ease}
+.mid.off{opacity:0}
+.react{font-size:26px;font-weight:700;line-height:1.32;letter-spacing:.2px;color:var(--sage-500);
+  margin:0;max-width:17ch;opacity:0;transform:translateY(9px);
+  transition:opacity .5s ease,transform .5s cubic-bezier(.2,.7,.2,1)}
+.react.in{opacity:1;transform:none}
+.react::before{content:'';display:block;width:22px;height:2px;border-radius:2px;
+  background:var(--amber-300);margin-bottom:12px;transition:opacity .4s ease}
+.react.mute{display:none}
+.q{font-size:28px;font-weight:700;line-height:1.3;letter-spacing:.2px;color:var(--sage-500);
+  margin:0;max-width:15ch;opacity:0;transform:translateY(9px);
+  transition:opacity .5s ease,transform .5s cubic-bezier(.2,.7,.2,1),
+             font-size .55s cubic-bezier(.2,.7,.2,1),color .55s ease,max-width .55s ease}
+.q.in{opacity:1;transform:none}
+.sub{font-size:14px;line-height:1.5;letter-spacing:.1px;color:var(--sage-400);margin:10px 0 0;
+  opacity:0;transform:translateY(8px);
+  transition:opacity .5s ease,transform .5s cubic-bezier(.2,.7,.2,1)}
+.sub.in{opacity:1;transform:none}
+.sub.mute{display:none}
+
+.device.answering .mid{flex-grow:0}
+.device.answering .q{font-size:15px;font-weight:500;color:var(--sage-400);max-width:32ch}
+.device.answering .react,.device.answering .sub{display:none}
+.device.speaking .mid{margin-top:6px}
+.device.speaking .q{font-size:17px;font-weight:600;color:var(--sage-500);max-width:26ch}
+
+.why{width:34px;height:34px;border-radius:var(--r-full);border:0;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.74);
+  box-shadow:inset 0 0 0 1px rgba(25,50,49,.12);color:var(--sage-500);margin-top:20px;
+  opacity:0;transform:translateY(6px);
+  transition:background .2s,box-shadow .2s,opacity .45s ease,transform .45s cubic-bezier(.2,.7,.2,1)}
+.why.vis{opacity:1;transform:none}
+.why .msr{font-size:18px;color:var(--amber-400)}
+.why:hover{background:#fff;box-shadow:inset 0 0 0 1px rgba(25,50,49,.28)}
+.whytext{font-size:13px;line-height:1.5;letter-spacing:.1px;color:var(--text-secondary);
+  margin:12px 0 0;max-width:32ch;max-height:0;overflow:hidden;opacity:0;
+  transition:max-height .4s ease,opacity .3s ease}
+.whytext.open{max-height:110px;opacity:1}
+
+.slot{flex:0 0 auto}
+.said{font-size:26px;font-weight:500;line-height:1.34;letter-spacing:.1px;color:var(--sage-500);
+  margin:18px 0 0;min-height:36px}
+
+.caret{display:inline-block;width:2px;height:24px;background:var(--sage-500);vertical-align:-4px;
+  margin-left:2px;animation:blink 1.05s steps(1) infinite}
+@keyframes blink{0%,50%{opacity:1}51%,100%{opacity:0}}
+
+.ways{display:flex;justify-content:center;gap:46px;flex:0 0 auto;padding-top:var(--sp-lg);
+  transition:opacity .35s ease}
+.ways.gone{opacity:0;pointer-events:none;height:0;padding:0;overflow:hidden}
+.way{background:none;border:0;padding:0;cursor:pointer;font-family:var(--sans);text-align:center}
+.way .ring{display:flex;align-items:center;justify-content:center;width:62px;height:62px;
+  border-radius:50%;background:rgba(255,255,255,.78);color:var(--sage-500);
+  box-shadow:inset 0 0 0 1.5px rgba(25,50,49,.14),0 2px 10px rgba(25,50,49,.06);
+  margin:0 auto var(--sp-2xs);
+  transition:transform .22s cubic-bezier(.2,.7,.2,1),box-shadow .22s,background .22s}
+.way .ring .msr{font-size:26px}
+.way:hover .ring{transform:translateY(-3px);background:#fff;
+  box-shadow:inset 0 0 0 1.5px rgba(25,50,49,.32),0 6px 16px rgba(25,50,49,.1)}
+.way .lbl{font-size:13px;font-weight:600;letter-spacing:.1px;color:var(--sage-400)}
+
+.btn{width:100%;height:48px;border:0;border-radius:var(--r-full);background:var(--sage-500);
+  color:var(--white);font-family:var(--sans);font-size:16px;font-weight:700;letter-spacing:.1px;
+  cursor:pointer;margin-top:var(--sp-lg);opacity:0;transform:translateY(8px);
+  transition:opacity .4s ease,transform .4s cubic-bezier(.2,.7,.2,1)}
+.btn.in{opacity:1;transform:none}
+.btn:hover{background:var(--sage-400)}
+
+/* ---- speak mode chrome ---- */
+.skui{position:absolute;inset:0;z-index:4;opacity:0;pointer-events:none;transition:opacity .5s ease}
+.device.speaking .skui{opacity:1;pointer-events:auto}
+.sk-x{position:absolute;left:var(--sp-md);top:52px;width:38px;height:38px;border:0;cursor:pointer;
+  border-radius:var(--r-full);display:flex;align-items:center;justify-content:center;
+  background:rgba(255,255,255,.6);color:var(--sage-500);box-shadow:inset 0 0 0 1px rgba(25,50,49,.1)}
+.sk-x .msr{font-size:20px}
+.sk-x:hover{background:rgba(255,255,255,.92)}
+.live{position:absolute;left:var(--sp-md);right:var(--sp-md);bottom:172px;margin:0;
+  font-size:13px;line-height:1.5;letter-spacing:.1px;font-weight:500;text-align:center;
+  color:var(--sage-400);opacity:.78;max-height:60px;overflow:hidden;
+  -webkit-mask-image:linear-gradient(180deg,transparent 0%,#000 52%);
+  mask-image:linear-gradient(180deg,transparent 0%,#000 52%)}
+.sk-controls{position:absolute;left:0;right:0;bottom:44px;display:flex;align-items:flex-end;
+  justify-content:center;gap:34px}
+.sk-btn{background:none;border:0;padding:0;cursor:pointer;font-family:var(--sans);text-align:center}
+.sk-btn .lbl{display:block;font-size:12.5px;font-weight:600;letter-spacing:.1px;
+  color:var(--sage-400);margin-top:9px}
+.sk-done .ring{display:flex;align-items:center;justify-content:center;width:74px;height:74px;
+  border-radius:50%;background:var(--sage-500);color:#fff;margin:0 auto;
+  box-shadow:0 6px 20px rgba(25,50,49,.24);transition:transform .2s cubic-bezier(.2,.7,.2,1),background .2s}
+.sk-done .ring .msr{font-size:32px}
+.sk-done:hover .ring{transform:translateY(-3px);background:var(--sage-400)}
+.sk-done .lbl{color:var(--sage-500);font-weight:700}
+.sk-alt .ring{display:flex;align-items:center;justify-content:center;width:48px;height:48px;
+  border-radius:50%;background:rgba(255,255,255,.66);color:var(--sage-500);margin:0 auto 13px;
+  box-shadow:inset 0 0 0 1px rgba(25,50,49,.1);transition:background .2s,transform .2s}
+.sk-alt .ring .msr{font-size:22px}
+.sk-alt:hover .ring{background:rgba(255,255,255,.95);transform:translateY(-2px)}
+
+/* ---- the processing / transition moment ---- */
+.proc{position:absolute;inset:0;z-index:5;display:flex;flex-direction:column;align-items:center;
+  justify-content:center;text-align:center;padding:0 40px;opacity:0;pointer-events:none;
+  transition:opacity .8s ease}
+.device.processing .proc{opacity:1;pointer-events:auto}
+.t-lines{position:relative;width:100%;height:66px;transform:translateY(-96px)}
+.t-line{position:absolute;left:0;right:0;top:0;margin:0;font-size:21px;line-height:1.4;
+  font-weight:700;letter-spacing:.2px;color:var(--sage-500);opacity:0;transform:translateY(8px);
+  transition:opacity .55s ease,transform .55s cubic-bezier(.2,.7,.2,1)}
+.t-line.on{opacity:1;transform:none}
+/* something forming: her signals, in the three layer colors, gathering
+   toward a warm centre. */
+.form{position:absolute;inset:0;pointer-events:none}
+.form .core{position:absolute;left:50%;top:58%;width:150px;height:150px;border-radius:50%;
+  transform:translate(-50%,-50%);
+  background:radial-gradient(circle,rgba(255,250,231,.95),rgba(255,238,196,.4) 45%,rgba(230,247,238,0) 72%);
+  animation:corep 3.4s ease-in-out infinite}
+@keyframes corep{0%,100%{transform:translate(-50%,-50%) scale(.9);opacity:.8}
+  50%{transform:translate(-50%,-50%) scale(1.06);opacity:1}}
+.form i{position:absolute;left:50%;top:58%;width:7px;height:7px;border-radius:50%;
+  opacity:0;animation:gather var(--t) ease-in infinite;animation-delay:var(--dl)}
+.form i.fa{background:var(--amber-300)}
+.form i.fl{background:var(--lavender-300)}
+.form i.fs{background:var(--sky-300)}
+@keyframes gather{
+  0%{transform:translate(var(--x),var(--y)) scale(1);opacity:0}
+  14%{opacity:.9}
+  82%{opacity:.6}
+  100%{transform:translate(0,0) scale(.35);opacity:0}}
+
+
+/* ---- the scene ---- */
+.scene{position:relative;flex:0 0 auto}
+svg.stage{width:100%;display:block}
+#camera{transition:transform 1.2s cubic-bezier(.4,.1,.35,.95)}
+.terrain{fill:none;stroke:var(--sage-300);stroke-width:1.4;opacity:.5}
+.hill{fill:var(--sage-200);opacity:.22}
+.hill2{fill:var(--sage-100);opacity:.55}
+.noiseword{font-family:var(--sans);font-size:8.5px;fill:var(--sage-400);opacity:.55;font-weight:500}
+.noiseword.hot{font-size:10px;opacity:.95;font-weight:700;fill:var(--sage-500)}
+.cwa{fill:var(--amber-400) !important}.cwl{fill:var(--lavender-400) !important}.cws{fill:var(--sky-400) !important}
+.nrow{animation-name:nroll;animation-timing-function:linear;animation-iteration-count:infinite}
+@keyframes nroll{from{transform:translateX(0)}to{transform:translateX(-330px)}}
+.nrow1{animation-duration:33s}.nrow2{animation-duration:25s}.nrow3{animation-duration:39s}.nrow4{animation-duration:47s}
+/* Beat 2: the beat-1 noise flows INTO the box. Each word drifts along its own
+   vector toward one of the three intake curves, shrinking and fading as the
+   box absorbs it — sorted into the single clear line on the far side. */
+.flow text{font-family:var(--sans);font-size:8.5px;font-weight:500;fill:var(--sage-400);opacity:0;
+  animation:wflow var(--dur) linear infinite;animation-delay:var(--del)}
+.flow text.hot{font-size:9.5px;font-weight:700;fill:var(--sage-500)}
+@keyframes wflow{
+  0%{transform:translate(0,0) scale(1);opacity:0}
+  6%{opacity:.85}
+  86%{opacity:.75}
+  100%{transform:translate(var(--dx),var(--dy)) scale(.62);opacity:0}
+}
+.fline{stroke:var(--sage-300);stroke-width:1.3;fill:none;opacity:.6}
+.fline.lead{stroke:var(--sage-500);stroke-width:1.8;opacity:.9}
+.fdot{fill:var(--sage-500)}
+.fcap{font-family:var(--sans);font-size:9px;font-weight:600;letter-spacing:.08em;fill:var(--sage-400)}
+.fsil{fill:var(--sage-100);opacity:.55}
+.frim{fill:none;stroke:var(--sage-300);stroke-width:1.4;opacity:.7}
+.fmouth{fill:var(--sage-50);stroke:var(--sage-300);stroke-width:1.4;opacity:.9}
+.fmouthin{fill:var(--sage-100);stroke:none;opacity:.75}
+.fguide{fill:none;stroke:var(--sage-300);stroke-width:.9;opacity:.3}
+.fneck{fill:var(--sage-200);stroke:var(--sage-400);stroke-width:1;opacity:.9}
+.fshadow{fill:var(--sage-500);opacity:.035}
+#startpt .halo{fill:var(--amber-100);opacity:.75}
+.ahead{fill:none;stroke:var(--sage-300);stroke-width:1.4;stroke-dasharray:2 6;
+  stroke-linecap:round;opacity:0;transition:opacity .5s ease 1.05s}
+#exitline{fill:none;stroke:var(--sage-500);stroke-width:2.2;
+  stroke-dasharray:260;stroke-dashoffset:260;
+  transition:stroke-dashoffset .7s cubic-bezier(.36,.72,.28,1) .1s}
+#exitline.on{stroke-dashoffset:0}
+#exitline.on ~ .ahead{opacity:.6}
+.ribbon{fill:var(--sage-100);opacity:.6}
+.tuft path{fill:none;stroke:var(--sage-300);stroke-width:1.2;stroke-linecap:round;opacity:.65}
+#startpt{opacity:0;transition:opacity .5s ease .75s}
+#startpt.on{opacity:1}
+#startpt .pt{fill:var(--sage-500)}
+#startpt .ring{fill:none;stroke:var(--amber-300);stroke-width:1.6;animation:hsring 2.8s ease-out infinite}
+#walker{transition:transform 1.2s cubic-bezier(.4,.1,.35,.95)}
+#walker .near{fill:var(--sage-500)}
+#walker .top{fill:#2A4B48}
+#walker .far{fill:var(--sage-400)}
+#walker .hairfill{fill:#0F2422}
+#walker .accent{fill:var(--avocado-100)}
+/* the walking illusion: limbs rotate continuously on their pivots — no
+   frame swapping, nothing blinks. Idle states get their own subtle motion. */
+/* pivots measured on each limb's own box (fill-box): absolute px would be
+   read against the root viewport once the pose sits inside the scale group */
+#walker .wb,#walker .limb,#walker .parm{transform-box:fill-box}
+#walker .wb{transform-origin:50% 100%}
+#walker .lF,#walker .lN{transform-origin:50% 2%}
+#walker .aF,#walker .aN{transform-origin:50% 4%}
+#walker.walking .lF{animation:swingA .85s ease-in-out infinite}
+#walker.walking .lN{animation:swingB .85s ease-in-out infinite}
+#walker.walking .aF{animation:armB .85s ease-in-out infinite}
+#walker.walking .aN{animation:armA .85s ease-in-out infinite}
+#walker.walking .wb{animation:wbob .425s ease-in-out infinite}
+@keyframes swingA{0%,100%{transform:rotate(21deg)}50%{transform:rotate(-21deg)}}
+@keyframes swingB{0%,100%{transform:rotate(-21deg)}50%{transform:rotate(21deg)}}
+@keyframes armA{0%,100%{transform:rotate(12deg)}50%{transform:rotate(-12deg)}}
+@keyframes armB{0%,100%{transform:rotate(-12deg)}50%{transform:rotate(12deg)}}
+@keyframes wbob{0%,100%{transform:translateY(0)}50%{transform:translateY(-1.7px)}}
+/* beat 1: standing, a little unsettled */
+#walker.swaying .wb{animation:sway 3.6s ease-in-out infinite}
+@keyframes sway{0%,100%{transform:rotate(-1.1deg)}50%{transform:rotate(1.1deg)}}
+/* beat 2: still, breathing while she's heard */
+#walker.breathing .wb{animation:breathe 3.8s ease-in-out infinite}
+@keyframes breathe{0%,100%{transform:scale(1)}50%{transform:scale(1.014)}}
+/* beat 3: the pointing hand lifts, gently */
+#walker.pointing .parm{transform-origin:11% 68%;animation:pointp 2.8s ease-in-out infinite}
+@keyframes pointp{0%,100%{transform:rotate(0deg)}50%{transform:rotate(-4.5deg)}}
+
+/* expression marks live above her head */
+#mood .sq{fill:none;stroke:var(--sage-300);stroke-width:1.5;stroke-linecap:round;
+  animation:sqf 2.4s ease-in-out infinite}
+#mood .sq:nth-child(2){animation-delay:-.8s}
+#mood .sq:nth-child(3){animation-delay:-1.6s}
+@keyframes sqf{0%,100%{opacity:.35;transform:translateY(0)}50%{opacity:.85;transform:translateY(-2.5px)}}
+#mood .spark{fill:var(--amber-300);animation:sparkp 2.2s ease-in-out infinite}
+@keyframes sparkp{0%,100%{opacity:.5;transform:scale(.9)}50%{opacity:1;transform:scale(1.15)}}
+
+/* waypoint ✦ — beat 1 only */
+#hotspot{cursor:pointer}
+#hotspot .hs-bg{fill:rgba(255,255,255,.95);stroke:var(--sage-400);stroke-width:1.2}
+#hotspot .hs-ico{font-family:var(--sans);font-size:11px;font-weight:700;fill:var(--sage-500);text-anchor:middle}
+#hotspot .hs-ring{fill:none;stroke:var(--sage-400);stroke-width:1.3;animation:hsring 2.8s ease-out infinite}
+@keyframes hsring{0%{opacity:.5;r:12}70%{opacity:0;r:21}100%{opacity:0;r:21}}
+#hotspot .hs-stem{stroke:var(--sage-400);stroke-width:1;opacity:.4}
+
+.ipop{position:absolute;left:16px;right:16px;bottom:96px;z-index:40;background:#fff;
+  border-radius:var(--r-lg);box-shadow:0 10px 34px rgba(25,50,49,.16),inset 0 0 0 1px var(--gray-50);
+  padding:16px;opacity:0;transform:translateY(12px) scale(.98);pointer-events:none;
+  transition:opacity .3s ease,transform .34s cubic-bezier(.2,.7,.2,1)}
+.ipop.open{opacity:1;transform:none;pointer-events:auto}
+.ipop h5{font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--sage-400);
+  font-weight:700;margin:0 0 8px;padding-right:20px}
+.ipop .fig{font-family:var(--serif);font-size:32px;font-weight:300;color:var(--sage-500);line-height:1;margin:0 0 6px}
+.ipop p{font-size:12.5px;line-height:1.55;color:var(--gray-400);margin:0 0 9px}
+.ipop p b{color:var(--sage-500);font-weight:600}
+.ipop .src{font-size:9.5px;line-height:1.4;color:var(--gray-300);margin:0}
+.ipop .x{position:absolute;top:9px;right:11px;border:0;background:none;font-family:inherit;
+  font-size:16px;color:var(--gray-300);cursor:pointer;padding:2px 4px}
+
+/* ---- copy + nav ---- */
+.copy{padding:34px 24px 0;flex:1 1 auto}
+.copy .t{font-family:var(--serif);font-weight:500;font-size:27px;line-height:1.22;letter-spacing:.1px;
+  color:var(--sage-500);margin:0 0 9px;opacity:0;transform:translateY(9px);
+  transition:opacity .45s ease .08s,transform .45s cubic-bezier(.2,.7,.2,1) .08s}
+.copy .s{font-size:14.5px;line-height:1.55;letter-spacing:.1px;color:var(--gray-400);margin:0;
+  opacity:0;transform:translateY(9px);
+  transition:opacity .45s ease .18s,transform .45s cubic-bezier(.2,.7,.2,1) .18s}
+.copy.in .t,.copy.in .s{opacity:1;transform:none}
+.navbar{display:flex;align-items:center;justify-content:space-between;padding:0 22px;flex:0 0 auto}
+.dots{display:flex;gap:6px}
+.dots i{width:22px;height:3px;border-radius:2px;background:var(--sage-100);display:block;transition:background .35s}
+.dots i.on{background:var(--sage-500)}
+.nav{display:flex;gap:8px}
+.nav button{border:0;background:transparent;box-shadow:inset 0 0 0 1.5px var(--sage-200);
+  border-radius:var(--r-full);padding:11px 17px;font-family:inherit;font-size:13.5px;
+  font-weight:700;letter-spacing:.1px;color:var(--sage-500);cursor:pointer;transition:box-shadow .2s}
+.nav button:hover{box-shadow:inset 0 0 0 1.5px var(--sage-400)}
+.nav button:disabled{color:var(--sage-200);box-shadow:inset 0 0 0 1.5px var(--sage-100);cursor:default}
+.nav button.go{background:var(--sage-500);color:#fff;box-shadow:none}
+.nav button.go:hover{background:var(--sage-400)}
+
+
+
+.iinner{position:relative;z-index:2;display:flex;flex-direction:column;height:100%;padding:54px 0 26px}
+.ihdr{flex:0 0 auto;text-align:center;margin-bottom:8px}
+
+/* The breath from Capture, settling as the answer arrives. */
+.rbreath{position:absolute;inset:0;z-index:0;pointer-events:none;opacity:1;
+  transition:opacity 2.2s ease .5s}
+.device.settled .rbreath{opacity:0}
+.rbreath i{position:absolute;left:50%;top:34%;display:block;border-radius:var(--r-full);
+  transform:translate(-50%,-50%)}
+.rbreath i:nth-child(1){width:150%;height:100%;background:var(--sage-200);opacity:.3;filter:blur(46px)}
+.rbreath i:nth-child(2){width:104%;height:72%;background:var(--sage-100);opacity:.6;filter:blur(38px)}
+.grain{position:absolute;inset:0;z-index:1;pointer-events:none;opacity:.35;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='.36'/%3E%3C/svg%3E")}
+
+.pad{position:relative;z-index:2;padding:54px 20px 10px;flex:0 0 auto;text-align:center}
+.wordmark{font-family:var(--serif);font-weight:300;font-size:22px;letter-spacing:.4px;
+  color:var(--sage-500);margin:0}
+
+.wrap{position:relative;z-index:2;display:flex;flex-direction:column;
+  height:calc(100% - 86px)}
+.scroller{flex:1 1 auto;overflow-y:auto;padding:6px 20px 18px;scrollbar-width:none}
+.scroller::-webkit-scrollbar{width:0}
+
+.rise{opacity:0;transform:translateY(14px);
+  transition:opacity .7s ease,transform .7s cubic-bezier(.2,.7,.2,1)}
+.rise.in{opacity:1;transform:none}
+
+.eyebrow{font-size:12px;font-weight:600;letter-spacing:1px;text-transform:uppercase;
+  color:var(--amber-400);margin:8px 0 8px}
+.lead-head{font-family:var(--serif);font-weight:500;font-size:40px;line-height:1.12;
+  letter-spacing:.2px;color:var(--sage-500);margin:0 0 10px}
+.oneliner{font-size:15px;line-height:1.55;letter-spacing:.1px;color:var(--gray-400);margin:0 0 18px;max-width:32ch}
+
+/* ---- the pyramid, external labels ---- */
+.respyr{width:100%;display:block;margin:2px 0 10px}
+.respyr .rl{stroke-width:1;opacity:0;transition:opacity .8s ease}
+.respyr .rl.rla{fill:var(--amber-300);stroke:none}
+.respyr .rl.rll{fill:var(--lavender-100);stroke:#C3B5FF}
+.respyr .rl.rls{fill:var(--sky-100);stroke:var(--sky-200)}
+.device.settled .respyr .rl{opacity:1}
+.respyr .rtick{stroke:var(--sage-200);stroke-width:1}
+.respyr .rbadge{font-family:var(--sans);font-size:9px;font-weight:700;letter-spacing:.14em;fill:var(--amber-400)}
+.respyr .rn{font-family:var(--sans);font-size:12.5px;font-weight:600;fill:var(--sage-500)}
+.respyr .rg{font-family:var(--sans);font-size:10.5px;font-weight:500;fill:var(--gray-300)}
+.seq{font-size:13px;line-height:1.55;color:var(--gray-400);margin:0 0 20px}
+.seq b{color:var(--sage-500);font-weight:600}
+
+.sec{font-size:12px;font-weight:600;letter-spacing:1px;text-transform:uppercase;
+  color:var(--sage-400);margin:0 0 10px}
+
+/* ---- the three rows ---- */
+.row{background:rgba(255,255,255,.86);border-radius:var(--r-lg);margin-bottom:10px;
+  box-shadow:inset 0 0 0 1px rgba(25,50,49,.09)}
+.row.lead{box-shadow:inset 0 0 0 1.5px var(--sage-500)}
+.row-hd{display:flex;align-items:center;gap:12px;width:100%;text-align:left;border:0;
+  background:none;padding:14px;cursor:pointer;font-family:var(--sans)}
+.ord{flex:0 0 auto;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;
+  justify-content:center;font-size:13px;font-weight:700;color:var(--sage-400);
+  box-shadow:inset 0 0 0 1.5px var(--sage-200)}
+.row.lead .ord{background:var(--amber-300);color:var(--sage-500);box-shadow:none}
+.row.rl2 .ord{color:var(--lavender-400);box-shadow:inset 0 0 0 1.5px var(--lavender-300)}
+.row.rl3 .ord{color:var(--sky-400);box-shadow:inset 0 0 0 1.5px var(--sky-300)}
+.row.lead .row-when{color:var(--amber-400)}
+.row-t{flex:1 1 auto}
+.row-when{font-size:10.5px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;
+  color:var(--sage-400);margin:0 0 2px}
+.row-n{font-size:15px;font-weight:600;color:var(--sage-500);margin:0}
+.row-s{font-size:12.5px;font-weight:500;color:var(--gray-300);margin:2px 0 0}
+.car{flex:0 0 auto;color:var(--sage-300);transition:transform .3s ease}
+.car .msr{font-size:20px}
+.row.open .car{transform:rotate(180deg)}
+.row-body{max-height:0;overflow:hidden;transition:max-height .45s ease}
+.row.open .row-body{max-height:260px}
+.row-inner{padding:0 14px 14px 54px;font-size:13px;line-height:1.55;color:var(--gray-400)}
+.row-inner b{color:var(--sage-500);font-weight:600}
+
+.open-note{background:var(--sage-50);border-radius:var(--r-lg);padding:13px 14px;
+  font-size:13px;line-height:1.5;color:var(--sage-400);margin:14px 0 20px}
+.open-note b{color:var(--sage-500);font-weight:600}
+
+/* ---- how we got here ---- */
+.disc{background:rgba(255,255,255,.86);border-radius:var(--r-lg);
+  box-shadow:inset 0 0 0 1px rgba(25,50,49,.09);margin-bottom:20px}
+.disc-hd{display:flex;align-items:center;justify-content:space-between;width:100%;border:0;
+  background:none;padding:14px;cursor:pointer;font-family:var(--sans);font-size:14px;
+  font-weight:600;color:var(--sage-500)}
+.disc-hd .msr{font-size:20px;color:var(--sage-300);transition:transform .3s ease}
+.disc.open .disc-hd .msr{transform:rotate(180deg)}
+.disc-body{max-height:0;overflow:hidden;transition:max-height .55s ease}
+.disc.open .disc-body{max-height:640px}
+.disc-inner{padding:0 14px 16px}
+.rf-lbl{font-size:10.5px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;
+  color:var(--sage-400);margin:0 0 8px}
+.rf-words{font-size:13.5px;line-height:1.6;color:var(--gray-400);margin:0 0 6px}
+.rf-words u{text-decoration-color:var(--sage-200);text-decoration-thickness:2px;
+  text-underline-offset:3px;color:var(--sage-500);font-weight:500}
+.rf-turn{font-size:11px;color:var(--gray-300);margin:0 0 12px}
+.sigmap{width:100%;display:block;margin:6px 0 4px}
+.sigmap .bar.kbase{fill:var(--amber-300)}
+.sigmap .bar.kmid{fill:var(--lavender-100)}
+.sigmap .bar.ktop{fill:var(--sky-100)}
+.sigmap .bn{font-family:var(--sans);font-size:10.5px;font-weight:600;fill:var(--sage-400)}
+.sigmap .bn.on{fill:var(--sage-500)}
+.sigmap .sg{font-family:var(--sans);font-size:10.5px;font-weight:500;fill:var(--gray-400)}
+.sigmap .lk{fill:none;stroke:var(--sage-200);stroke-width:1.3}
+.sigmap .lk.hot{stroke:var(--amber-400);stroke-width:1.6}
+.sigmap .lk.steady{stroke:var(--sky-300)}
+.why-cap{font-size:12.5px;line-height:1.55;color:var(--gray-400);margin:8px 0 0}
+.why-cap b{color:var(--sage-500);font-weight:600}
+
+.next{background:rgba(255,255,255,.7);border-radius:var(--r-lg);padding:14px;font-size:13px;
+  line-height:1.55;color:var(--gray-400);box-shadow:inset 0 0 0 1px rgba(25,50,49,.07);margin-bottom:6px}
+.next b{color:var(--sage-500);font-weight:600}
+.next ol{margin:8px 0 0;padding-left:18px}
+.next li{margin-bottom:4px}
+
+.footbar{flex:0 0 auto;padding:12px 20px 26px;position:relative;z-index:3;
+  background:linear-gradient(180deg,rgba(255,255,255,0) 0%,rgba(255,255,255,.92) 34%)}
+.btn{width:100%;height:48px;border:0;border-radius:var(--r-full);background:var(--sage-500);
+  color:#fff;font-family:var(--sans);font-size:16px;font-weight:700;letter-spacing:.1px;cursor:pointer}
+.btn:hover{background:var(--sage-400)}
+.btn.ghost{background:transparent;color:var(--sage-500);box-shadow:inset 0 0 0 1.5px var(--sage-200);
+  margin-top:8px;height:44px;font-size:14px}
+.btn.ghost:hover{box-shadow:inset 0 0 0 1.5px var(--sage-400)}
+
+
+
+.screen{position:absolute;inset:0;opacity:0;pointer-events:none;transition:opacity .8s ease}
+.screen.on{opacity:1;pointer-events:auto}
+/* stitch fix: Capture's .btn enters hidden (waits for .in); the Result footbar
+   buttons never receive .in, so they must not inherit that hidden start. */
+.footbar .btn{opacity:1;transform:none}
+
+.reset{position:absolute;right:14px;top:14px;z-index:9;border:0;cursor:pointer;
+  background:rgba(255,255,255,.9);color:var(--sage-400);border-radius:var(--r-full);
+  font-family:var(--sans);font-size:11px;font-weight:600;letter-spacing:.6px;text-transform:uppercase;
+  padding:7px 12px;box-shadow:0 1px 4px rgba(25,50,49,.12)}
+
+/* ---- engine readout, outside the phone. Review aid, not product. ---- */
+.engine{display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:center;max-width:440px}
+.engine .tag{display:inline-flex;align-items:center;gap:6px;border-radius:var(--r-full);
+  padding:6px 12px;font-size:12px;font-weight:600;letter-spacing:.1px;
+  background:#fff;color:var(--gray-300);box-shadow:inset 0 0 0 1px var(--gray-50)}
+.engine .tag b{font-weight:700}
+.engine .tag.yes{background:var(--sage-50);color:var(--sage-500);box-shadow:inset 0 0 0 1.5px var(--sage-200)}
+.engine .tag.no{background:#fff;color:var(--sage-400);box-shadow:inset 0 0 0 1.5px var(--gray-100);
+  text-decoration:line-through;text-decoration-thickness:1px}
+.engine .lbl{font-size:11px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--gray-300)}
+
+.notes{max-width:440px;font-size:13.5px;line-height:1.6;letter-spacing:.1px;color:var(--text-secondary)}
+.notes b{color:var(--sage-500);font-weight:600}
+.notes p{margin:0 0 10px}
+
+/* ================= OPTION 3 · The Note-Taker ================= */
+.ntk{position:relative;z-index:3;display:flex;flex-direction:column;height:100%;
+  padding:54px 20px 30px}
+.ntk-top{display:flex;align-items:center;gap:14px;flex:0 0 auto;margin-bottom:26px}
+.ntk-back{width:38px;height:38px;border:0;cursor:pointer;border-radius:var(--r-full);
+  display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.75);
+  color:var(--sage-500);box-shadow:inset 0 0 0 1px rgba(25,50,49,.12);flex:0 0 auto;
+  transition:opacity .3s}
+.ntk-back .msr{font-size:20px}
+.ntk-back:disabled{opacity:.35;cursor:default}
+.ntk-bar{flex:1 1 auto;height:8px;border-radius:var(--r-full);background:var(--sage-100);
+  overflow:hidden}
+.ntk-bar i{display:block;height:100%;border-radius:var(--r-full);background:var(--sage-500);
+  width:0;transition:width .8s cubic-bezier(.36,.72,.28,1)}
+.ntk-buddy{display:flex;align-items:flex-start;gap:14px;flex:0 0 auto;min-height:150px}
+.ntk-fig{width:96px;flex:0 0 auto;margin-top:-8px}
+.nf-note{stroke:var(--sage-300);stroke-width:2.4;stroke-linecap:round;
+  transform-box:fill-box;transform-origin:0 50%;
+  transform:scaleX(0);transition:transform .5s cubic-bezier(.2,.7,.2,1)}
+.nf-note.on{transform:scaleX(1)}
+.ntk-pen{transform-box:fill-box;transform-origin:85% 85%}
+.ntk-pen.write{animation:penw .32s ease-in-out infinite}
+@keyframes penw{0%,100%{transform:translate(0,0) rotate(0)}50%{transform:translate(-3px,2px) rotate(-7deg)}}
+.ntk-bubble{position:relative;flex:1 1 auto;background:rgba(255,255,255,.94);
+  border-radius:var(--r-lg);box-shadow:inset 0 0 0 1.5px rgba(25,50,49,.1);
+  padding:14px 16px;font-size:16.5px;font-weight:600;line-height:1.42;letter-spacing:.1px;
+  color:var(--sage-500);transition:background .35s,color .35s,box-shadow .35s,opacity .3s}
+.ntk-bubble:before{content:'';position:absolute;left:-6px;top:20px;width:11px;height:11px;
+  background:inherit;border-left:inherit;transform:rotate(45deg);border-radius:2px;
+  box-shadow:inset 1.5px -1.5px 0 rgba(25,50,49,0)}
+.ntk-bubble.react{background:var(--sage-500);color:#fff;box-shadow:none;font-weight:500}
+.ntk-bubble.dim{opacity:0}
+.ntk-opts{flex:1 1 auto;display:flex;flex-direction:column;gap:10px;justify-content:flex-end;
+  padding-bottom:16px;transition:opacity .3s}
+.ntk-opts.lock{pointer-events:none}
+.opt{border:0;cursor:pointer;font-family:var(--sans);text-align:left;font-size:15px;
+  font-weight:500;letter-spacing:.1px;line-height:1.35;color:var(--sage-500);
+  background:rgba(255,255,255,.9);border-radius:var(--r-xs);padding:13px 15px;
+  box-shadow:inset 0 0 0 1px var(--gray-50);
+  transition:box-shadow .2s,background .2s,transform .2s,opacity .3s}
+.opt:hover{box-shadow:inset 0 0 0 1.5px var(--sage-300);transform:translateY(-1px)}
+.opt.picked{background:var(--sage-50);box-shadow:inset 0 0 0 2px var(--sage-500);font-weight:700}
+.opt.faded{opacity:.4}
+
+/* ================= OPTION 4 · The Madlib ================= */
+.mlb{position:relative;z-index:3;display:flex;flex-direction:column;height:100%;
+  padding:54px 20px 30px}
+.mlb-top{flex:0 0 auto;text-align:center;margin-bottom:22px}
+.mlb-kick{font-size:12.5px;font-weight:600;letter-spacing:.1px;color:var(--sage-400);
+  margin:10px 0 0;transition:opacity .4s ease}
+.mlb-sheet{flex:0 0 auto}
+.mlb-story{font-size:22px;line-height:2.05;letter-spacing:.1px;font-weight:500;
+  color:var(--sage-500);margin:0}
+.mlb-story .fixed{color:var(--sage-400);font-weight:500}
+.blank{display:inline-block;position:relative;cursor:pointer;font-weight:700;
+  border-bottom:2.5px solid var(--sage-200);padding:0 4px 1px;margin:0 2px;
+  min-width:74px;text-align:center;color:var(--sage-300);
+  transition:border-color .3s,color .35s,background .3s}
+.blank .lbl{display:block;font-size:9.5px;font-weight:700;letter-spacing:.09em;
+  text-transform:uppercase;color:var(--sage-300);line-height:1.6;
+  transition:opacity .3s,color .3s}
+.blank.active{border-color:var(--amber-300);color:var(--amber-400);
+  background:rgba(255,238,196,.35);border-radius:4px 4px 0 0}
+.blank.active .lbl{color:var(--amber-400)}
+.blank.filled{border-color:var(--sage-500);color:var(--sage-500);min-width:0;cursor:pointer}
+.blank.filled .lbl{opacity:0;height:0;overflow:hidden}
+.blank.landing{animation:land .5s cubic-bezier(.2,.7,.2,1)}
+@keyframes land{0%{transform:translateY(-7px) scale(1.06);opacity:.4}100%{transform:none;opacity:1}}
+.blank.locked{cursor:default}
+
+.mlb-react{flex:0 0 auto;min-height:44px;margin:20px 0 0;font-size:14.5px;line-height:1.5;
+  letter-spacing:.1px;font-weight:500;color:var(--sage-400);opacity:0;transform:translateY(6px);
+  transition:opacity .45s ease,transform .45s cubic-bezier(.2,.7,.2,1)}
+.mlb-react.in{opacity:1;transform:none}
+.mlb-react:before{content:'';display:block;width:20px;height:2px;border-radius:2px;
+  background:var(--amber-300);margin-bottom:9px}
+.mlb-react.empty:before{display:none}
+
+.mlb-tray{flex:1 1 auto;display:flex;flex-direction:column;gap:9px;justify-content:flex-end;
+  padding-bottom:14px}
+.wchip{border:0;cursor:pointer;font-family:var(--sans);text-align:left;font-size:15px;
+  font-weight:600;letter-spacing:.1px;line-height:1.35;color:var(--sage-500);
+  background:rgba(255,255,255,.92);border-radius:var(--r-xs);padding:12px 15px;
+  box-shadow:inset 0 0 0 1px var(--gray-50);opacity:0;transform:translateY(7px);
+  transition:opacity .4s ease,transform .4s cubic-bezier(.2,.7,.2,1),box-shadow .2s,background .2s}
+.wchip.in{opacity:1;transform:none}
+.wchip:hover{box-shadow:inset 0 0 0 1.5px var(--sage-300)}
+.mlb-tray.hide .wchip{opacity:0;transform:translateY(7px)}
+.mlb-done{flex:0 0 auto;opacity:0;transform:translateY(8px);pointer-events:none}
+.mlb-done.show{opacity:1;transform:none;pointer-events:auto}
+</style>
+</head>
+<body>
+
+<div class="masthead">
+  <h1>Option 3 · The Pyramid, end to end</h1>
+  <p>Same Introduction and Result as Option 1 — the Capture is <b>The Madlib</b>: one sentence about her, blanks and all, that she fills in until it reads back as her own.</p>
+</div>
+
+<div class="device" id="dev">
+  <button class="reset" id="reset">Replay</button>
+
+  <div class="screen" id="scrIntro">
+    <div class="amb"><i></i><i></i><i></i><i></i></div>
+    <div class="iinner">
+      <div class="ihdr"><p class="wordmark">found</p></div>
+      <div class="scene">
+      <svg class="stage" viewBox="0 0 375 300" aria-label="A path from many options, through Found, to one place to start">
+        <g id="camera">
+          <!-- ground: rolling terrain across three beats -->
+          <path class="hill2" d="M-20 262 C 120 246 260 270 400 254 C 560 236 700 266 860 252 C 980 242 1080 258 1140 252 L1140 300 L-20 300 Z"></path>
+          <path class="hill" d="M-20 274 C 140 262 300 282 460 270 C 620 258 780 280 940 268 C 1040 262 1100 270 1140 266 L1140 300 L-20 300 Z"></path>
+          <path class="terrain" d="M-20 262 C 120 246 260 270 400 254 C 560 236 700 266 860 252 C 980 242 1080 258 1140 252"></path>
+
+          <!-- beat 1 · the options out there, floating free. No structure yet. -->
+          <defs><clipPath id="b1clip"><rect x="-10" y="30" width="395" height="170"/></clipPath></defs>
+          <g clip-path="url(#b1clip)">
+            <g class="nrow nrow1"><text class="noiseword" x="8" y="64">semaglutide</text><text class="noiseword hot cwa" x="104" y="64">GLP-1s</text><text class="noiseword" x="186" y="64">berberine</text><text class="noiseword" x="266" y="64">creatine</text><text class="noiseword" x="338" y="64">semaglutide</text><text class="noiseword hot cwa" x="434" y="64">GLP-1s</text><text class="noiseword" x="516" y="64">berberine</text><text class="noiseword" x="596" y="64">creatine</text></g>
+            <g class="nrow nrow2"><text class="noiseword" x="16" y="100">estrogen patches</text><text class="noiseword hot cwl" x="134" y="100">HRT</text><text class="noiseword" x="188" y="100">progesterone</text><text class="noiseword" x="288" y="100">NAD+</text><text class="noiseword" x="346" y="100">estrogen patches</text><text class="noiseword hot cwl" x="464" y="100">HRT</text><text class="noiseword" x="518" y="100">progesterone</text><text class="noiseword" x="618" y="100">NAD+</text></g>
+            <g class="nrow nrow3"><text class="noiseword" x="4" y="136">BPC-157</text><text class="noiseword hot cws" x="72" y="136">peptides</text><text class="noiseword" x="152" y="136">metformin</text><text class="noiseword" x="236" y="136">bioidenticals</text><text class="noiseword" x="334" y="136">BPC-157</text><text class="noiseword hot cws" x="402" y="136">peptides</text><text class="noiseword" x="482" y="136">metformin</text><text class="noiseword" x="566" y="136">bioidenticals</text></g>
+            <g class="nrow nrow4"><text class="noiseword" x="12" y="172">compounded tirzepatide</text><text class="noiseword" x="160" y="172">supplements</text><text class="noiseword" x="248" y="172">testosterone</text><text class="noiseword" x="342" y="172">compounded tirzepatide</text><text class="noiseword" x="490" y="172">supplements</text><text class="noiseword" x="578" y="172">testosterone</text></g>
+          </g>
+
+          <!-- beat 2 · the funnel. The beat-1 words pour into its mouth;
+               one sorted line leaves the neck. -->
+          <g>
+            <ellipse class="fshadow" cx="550" cy="247" rx="72" ry="5"></ellipse>
+            <path class="fsil" d="M452 58 C 542 66 602 108 648 132 L 648 148 C 602 172 542 214 452 222 Z"></path>
+            <path class="fguide" d="M456 92 C 540 96 596 120 646 136"></path>
+            <path class="fguide" d="M456 188 C 540 184 596 160 646 144"></path>
+            <ellipse class="fmouth" cx="452" cy="140" rx="12" ry="82"></ellipse>
+            <ellipse class="fmouthin" cx="452" cy="140" rx="7" ry="72"></ellipse>
+            <ellipse class="fneck" cx="648" cy="140" rx="3.4" ry="9"></ellipse>
+            <path class="frim" d="M452 58 C 542 66 602 108 648 132"></path>
+            <path class="frim" d="M452 222 C 542 214 602 172 648 148"></path>
+            <g class="flow">
+              <text x="366" y="70"  class="hot cwa" style="--dx:274px;--dy:70px;--dur:5.2s;--del:0s">GLP-1s</text>
+              <text x="382" y="206" style="--dx:258px;--dy:-66px;--dur:6.1s;--del:-1.4s">berberine</text>
+              <text x="358" y="112" style="--dx:282px;--dy:28px;--dur:5.7s;--del:-2.6s">estrogen patches</text>
+              <text x="390" y="226" class="hot cwl" style="--dx:250px;--dy:-86px;--dur:5.4s;--del:-3.5s">HRT</text>
+              <text x="372" y="146" style="--dx:268px;--dy:-6px;--dur:6.4s;--del:-4.7s">NAD+</text>
+              <text x="354" y="52"  class="hot cws" style="--dx:286px;--dy:88px;--dur:6s;--del:-2s">peptides</text>
+              <text x="386" y="92" style="--dx:254px;--dy:48px;--dur:5s;--del:-.8s">supplements</text>
+              <text x="368" y="178" style="--dx:272px;--dy:-38px;--dur:6.7s;--del:-5.6s">creatine</text>
+            </g>
+            <path class="fline lead" d="M652 140 L 745 140"></path>
+            <circle class="fdot" cx="652" cy="140" r="3.8"></circle>
+          </g>
+
+          <!-- beat 3 · the funnel's exit: the one clear line ends at her starting point.
+               No pyramid — that belongs to the Result. -->
+          <g>
+            <ellipse class="hill" cx="962" cy="250" rx="72" ry="13"></ellipse>
+            <path class="ribbon" d="M905 249 C 950 243 1010 238 1112 229 L 1112 238 C 1012 246 952 251 907 256 Z"></path>
+            <path id="exitline" d="M745 140 C 820 140 880 190 952 240"></path>
+            <g id="startpt" transform="translate(958,244)">
+              <circle class="halo" r="20"></circle>
+              <circle class="ring" r="12"></circle>
+              <circle class="pt" r="5.2"></circle>
+            </g>
+            <path class="ahead" d="M986 242 C 1028 238 1066 234 1106 228"></path>
+            <g class="tuft" transform="translate(913,252)"><path d="M0 0 C -1 -4 -2.5 -6.5 -4 -8"/><path d="M0 0 C 0 -5 .5 -7.5 1.5 -10"/><path d="M0 0 C 1.5 -4 3 -6 5 -7.5"/></g>
+            <g class="tuft" transform="translate(1015,242)"><path d="M0 0 C -1 -3.5 -2 -5.5 -3.5 -7"/><path d="M0 0 C .5 -4.5 1 -6.5 2 -8.5"/></g>
+            <g class="tuft" transform="translate(1078,236)"><path d="M0 0 C -1 -3 -2 -5 -3 -6"/><path d="M0 0 C .5 -4 1 -6 2 -7.5"/><path d="M0 0 C 2 -3 3.5 -4.5 5 -5.5"/></g>
+          </g>
+
+          <!-- the waypoint ✦ — beat 1 only -->
+          <g id="hotspot" transform="translate(122,228)">
+            <line class="hs-stem" x1="0" y1="11" x2="0" y2="25"></line>
+            <circle class="hs-ring" r="12"></circle>
+            <circle class="hs-bg" r="11"></circle>
+            <text class="hs-ico" y="4">✦</text>
+          </g>
+
+          <!-- the walker: pose swaps per beat, path geometry from step 6 scaled 0.22 -->
+          <g id="walker" transform="translate(86,196)">
+            <g id="wbody"></g>
+            <g id="mood"></g>
+          </g>
+        </g>
+      </svg>
+      </div>
+      <div class="copy in" id="copy">
+      <p class="t" id="ct">You've been trying to work out what's going on with your body.</p>
+      <p class="s" id="cs">So has the internet. Loudly, and not about you.</p>
+    </div>
+
+    <div class="ipop" id="pop">
+      <button class="x" id="popX">×</button>
+      <h5 id="popLbl"></h5>
+      <p class="fig" id="popFig"></p>
+      <p id="popP"></p>
+      <p class="src" id="popSrc"></p>
+    </div>
+
+    
+      <div class="navbar">
+      <div class="dots" id="dots"><i class="on"></i><i></i><i></i></div>
+      <div class="nav">
+        <button id="prev" disabled>Back</button>
+        <button id="next" class="go">Next</button>
+      </div>
+    </div>
+    </div>
+  </div>
+
+  <div class="screen" id="scrCapture">
+    <div class="amb"><i></i><i></i><i></i><i></i></div>
+    <div class="mlb">
+      <div class="mlb-top">
+        <p class="wordmark">found</p>
+        <p class="mlb-kick" id="mlbKick">Fill in the blanks. In your words, not ours.</p>
+      </div>
+      <div class="mlb-sheet">
+        <p class="mlb-story" id="mlbStory"></p>
+      </div>
+      <div class="mlb-react" id="mlbReact"></div>
+      <div class="mlb-tray" id="mlbTray"></div>
+      <button class="btn mlb-done" id="mlbDone">That’s me</button>
+    </div>
+  </div>
+
+  <div class="screen" id="scrProc">
+    <div class="breath"><i></i><i></i><i></i></div>
+    <div class="proc">
+    <div class="form" aria-hidden="true">
+      <b class="core"></b>
+      <i class="fa" style="--x:-130px;--y:-160px;--t:2.6s;--dl:0s"></i>
+      <i class="fl" style="--x:120px;--y:-190px;--t:3.1s;--dl:-.6s"></i>
+      <i class="fs" style="--x:150px;--y:-60px;--t:2.8s;--dl:-1.3s"></i>
+      <i class="fa" style="--x:-155px;--y:40px;--t:3.3s;--dl:-2s"></i>
+      <i class="fl" style="--x:-70px;--y:170px;--t:2.7s;--dl:-.9s"></i>
+      <i class="fs" style="--x:95px;--y:150px;--t:3.4s;--dl:-1.7s"></i>
+      <i class="fa" style="--x:60px;--y:-230px;--t:2.9s;--dl:-2.4s"></i>
+      <i class="fl" style="--x:-165px;--y:-70px;--t:3.2s;--dl:-1.1s"></i>
+      <i class="fs" style="--x:-40px;--y:-210px;--t:2.5s;--dl:-.3s"></i>
+      <i class="fa" style="--x:140px;--y:60px;--t:3s;--dl:-2.8s"></i>
+      <i class="fl" style="--x:35px;--y:200px;--t:2.6s;--dl:-1.5s"></i>
+      <i class="fs" style="--x:-120px;--y:110px;--t:3.5s;--dl:-.7s"></i>
+    </div>
+    <div class="t-lines">
+      <p class="t-line">Everything you said.</p>
+      <p class="t-line">What matters most.</p>
+      <p class="t-line">Your starting point.</p>
+    </div>
+  </div>
+  </div>
+
+  <div class="screen" id="scrResult">
+    <div class="rbreath"><i></i><i></i></div><div class="pad"><p class="wordmark">found</p></div>
+  <div class="wrap">
+    <div class="scroller" id="scroll">
+      <p class="eyebrow rise">Your starting point</p>
+      <h2 class="lead-head rise" id="rvHead">Weight care.</h2>
+      <p class="oneliner rise" id="rvLine"></p>
+
+      <svg class="respyr rise" viewBox="0 0 340 182" aria-label="Your pyramid: weight and metabolism leading, hormones and energy above it">
+        <polygon class="rl lead rla" points="4,170 184,170 156,122 32,122"></polygon>
+        <line class="rtick" id="rvTick" x1="170" y1="148" x2="194" y2="148"></line>
+        <text class="rbadge" id="rvBadge" x="200" y="136">START HERE</text>
+        <text class="rn" x="200" y="150">Weight &amp; metabolism</text>
+        <text class="rg" x="200" y="163">food, weight and appetite</text>
+        <polygon class="rl rll" points="32,116 156,116 128,68 60,68"></polygon>
+        <line class="rtick" x1="142" y1="94" x2="194" y2="94"></line>
+        <text class="rn" x="200" y="96">Hormones</text>
+        <text class="rg" x="200" y="109">the changes in your 40s and 50s</text>
+        <polygon class="rl rls" points="60,62 128,62 94,14"></polygon>
+        <line class="rtick" x1="111" y1="40" x2="194" y2="40"></line>
+        <text class="rn" x="200" y="42">Energy &amp; longevity</text>
+        <text class="rg" x="200" y="55">energy, strength and recovery</text>
+      </svg>
+      <p class="seq rise">This is your pyramid. <b>The base has to hold before the top matters</b> — a sequence, not a ranking.</p>
+
+      <h3 class="sec rise">The order from here</h3>
+      <div id="rows" class="rise"></div>
+
+      <div class="open-note rise"><b>An order, not a limit.</b> Start somewhere else if you'd rather — all three stay open to you.</div>
+
+      <div class="disc rise" id="disc">
+        <button class="disc-hd">How we got here <span class="msr">expand_more</span></button>
+        <div class="disc-body"><div class="disc-inner">
+          <p class="rf-lbl">In your words</p>
+          <div id="rvSaid"></div>
+          <div id="why"></div>
+        </div></div>
+      </div>
+
+      <div class="next rise">
+        <b>What happens next</b>
+        <ol><li>A few safety questions</li><li>A clinician reviews what you shared</li><li>You find out whether it's right for you</li></ol>
+        <p style="margin:8px 0 0">Not a diagnosis. A clinician has the final say on what's right for you.</p>
+      </div>
+    </div>
+
+    <div class="footbar">
+      <button class="btn">See your weight-care options</button>
+      <button class="btn ghost">See all three</button>
+    </div>
+  </div>
+  </div>
+
+  <div class="grain"></div>
+</div>
+
+<div class="engine" id="engine" aria-hidden="true">
+  <span class="lbl">Engine</span>
+  <span class="tag" id="egA"><b>A</b> weight · —</span>
+  <span class="tag" id="egB"><b>B</b> hormones · —</span>
+  <span class="tag" id="egC"><b>C</b> peptides · —</span>
+  <span class="tag" id="egAge">age · —</span>
+  <span class="tag" id="egP">priority · —</span>
+</div>
+
+<div class="notes">
+  <p><b>The Madlib.</b> One sentence about her, blanks visible from the start with their labels underneath — the classic form. She taps a blank, picks a word, it lands in the sentence, and Found says one line about it before the next blank opens. Any filled blank can be tapped again to change it.</p>
+  <p><b>Every blank offers both poles.</b> A Madlib that only offers symptoms can’t record "this part of me is fine" — and the Result’s "later, and that’s good news" is only honest because we asked. The priority clause joins the sentence <b>only when weight and hormones tie</b>.</p>
+  <p><b>Deliberate deviation:</b> age opens the sentence instead of coming last, and the three blanks are visible before the Result. This option trades two locked rules for the form’s own logic — that’s the comparison it exists to make.</p>
+</div>
+
+<script>
+(function(){
+  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var dev=document.getElementById('dev'), timers=[];
+  function later(fn,ms){ timers.push(setTimeout(fn, reduce?10:ms)); }
+  function clear(){ timers.forEach(clearTimeout); timers=[]; }
+
+  var story=document.getElementById('mlbStory'), tray=document.getElementById('mlbTray'),
+      reactEl=document.getElementById('mlbReact'), done=document.getElementById('mlbDone'),
+      kick=document.getElementById('mlbKick');
+  var S, filled, order, cursor;
+  window.__o4={};
+
+  /* One sentence about her, per the prototype script: age opens it, then
+     weight, nights & cycle, and strength — every blank offers BOTH
+     poles, because a Madlib that only offers symptoms can't record
+     "this part of me is fine", and the Result's "later, and that's good
+     news" is only honest because we asked. Weight and nights share one
+     beat: the demo's "wake me at three" lands without a react of its
+     own, because "a lot to carry at once" already covered it. */
+  var SLOTS={
+    age:{lbl:'my age', opts:[
+      {w:"30s", v:'30s'},{w:"40s", v:'40s'},{w:"50s", v:'50s'},{w:"60s", v:'60s'}],
+      react:null},
+    A:{lbl:'my weight', opts:[
+      {w:"is where I want it", v:'no',  r:"Good \u2014 that\u2019s a steady base to build on."},
+      {w:"is a bit more than I\u2019d like", v:'yes', r:"That\u2019s the one most people lead with."},
+      {w:"won\u2019t shift no matter what", v:'yes', r:"That's a lot to carry at once \u2014 and it rarely arrives one at a time."}],
+      react:true},
+    B:{lbl:'my nights and cycle', opts:[
+      {w:"are steady", v:'no', r:"Noted \u2014 that part\u2019s holding."},
+      {w:"wake me at three", v:'yes', r:null},
+      {w:"have gone unpredictable", v:'yes', r:"Good instinct to name it out loud."}],
+      react:true},
+    C:{lbl:'my strength', opts:[
+      {w:"is holding up", v:'no', r:"Good \u2014 that\u2019s a solid base to work from."},
+      {w:"comes back slower now", v:'yes', r:"Recovery is worth keeping an eye on."},
+      {w:"isn\u2019t what it was", v:'yes', r:"Noted \u2014 writing that down."}],
+      react:true}
+  };
+  var PRIO={lbl:'what I\u2019d fix first', opts:[
+      {w:"my weight", v:'A', r:"Starred \u2014 that\u2019s your priority."},
+      {w:"my sleep and cycle", v:'B', r:"Starred \u2014 that\u2019s your priority."}]};
+
+  /* The sentence. The priority clause only exists when weight and hormones tie. */
+  function render(){
+    var h='<span class="fixed">I\u2019m a woman in my </span>'+blank('age')
+      +'<span class="fixed">. My weight </span>'+blank('A')
+      +'<span class="fixed">, my nights and cycle </span>'+blank('B')
+      +'<span class="fixed">, and my strength </span>'+blank('C')
+      +'<span class="fixed">.</span>';
+    if(order.indexOf('prio')>-1){
+      h+='<span class="fixed"> If one thing changed first, I\u2019d want it to be </span>'
+        +blank('prio')+'<span class="fixed">.</span>';
+    }
+    story.innerHTML=h;
+    story.querySelectorAll('.blank').forEach(function(b){
+      b.onclick=function(){
+        if(b.classList.contains('locked')) return;
+        cursor=order.indexOf(b.dataset.k);
+        if(cursor>-1) openSlot(true);
+      };
+    });
+  }
+  function blank(k){
+    var def = k==='prio'?PRIO:SLOTS[k];
+    var f=filled[k];
+    return '<span class="blank'+(f?' filled':'')+'" data-k="'+k+'">'
+      +(f?f.w:'\u2003\u2003')+'<span class="lbl">'+def.lbl+'</span></span>';
+  }
+
+  function slotDef(k){ return k==='prio'?PRIO:SLOTS[k]; }
+
+  function openSlot(reopen){
+    clear();
+    var k=order[cursor];
+    if(!k){ finish(); return; }
+    story.querySelectorAll('.blank').forEach(function(b){
+      b.classList.toggle('active', b.dataset.k===k);
+    });
+    if(!reopen){ reactEl.classList.remove('in'); }
+    tray.classList.remove('hide');
+    tray.innerHTML='';
+    slotDef(k).opts.forEach(function(o,i){
+      var b=document.createElement('button'); b.className='wchip'; b.textContent=o.w;
+      b.onclick=function(){ choose(k,o); };
+      tray.appendChild(b);
+      later(function(){ b.classList.add('in'); }, 120+i*80);
+    });
+    done.classList.remove('show');
+  }
+
+  /* the word lands in the sentence, then Found says one line about it */
+  function choose(k,o){
+    clear();
+    filled[k]=o;
+    if(k==='age') S.age=o.v; else if(k==='prio') S.prio=o.v; else S[k]=o.v;
+    paintEngine();
+    tray.classList.add('hide');
+    render();
+    story.querySelectorAll('.blank[data-k="'+k+'"]').forEach(function(b){ b.classList.add('landing'); });
+    reactEl.classList.remove('in');
+
+    later(function(){
+      if(o.r){
+        reactEl.classList.remove('empty'); reactEl.textContent=o.r;
+        reactEl.classList.add('in');
+      } else { reactEl.classList.add('empty'); reactEl.textContent=''; }
+    }, 420);
+
+    later(function(){
+      /* the tie decides whether a priority clause joins the sentence */
+      if(k==='C' && S.A==='yes' && S.B==='yes' && order.indexOf('prio')<0){
+        order.push('prio'); render();
+      }
+      cursor=order.findIndex(function(kk){ return !filled[kk]; });
+      if(cursor<0){ finish(); } else { openSlot(false); }
+    }, o.r?2000:700);
+  }
+
+  function finish(){
+    story.querySelectorAll('.blank').forEach(function(b){
+      b.classList.remove('active'); b.classList.add('locked');
+    });
+    tray.classList.add('hide'); tray.innerHTML='';
+    kick.style.opacity=0;
+    reactEl.classList.remove('empty');
+    reactEl.textContent='That\u2019s everything we need. Read it back \u2014 change anything that isn\u2019t right.';
+    reactEl.classList.add('in');
+    later(function(){ done.classList.add('show'); }, 500);
+  }
+
+  done.onclick=function(){
+    window.__o4.filled=filled; window.__o4.S=S;
+    window.__o3={answers:asAnswers(), S:S};
+    toProcessing();
+  };
+
+  /* hand the Result the same shape the shared builder expects */
+  function asAnswers(){
+    var out=[];
+    ['A','B','C'].forEach(function(k){
+      if(filled[k]) out.push({q:k, opt:{t:sentenceOf(k), fill:(function(){var f={};f[k]=filled[k].v;return f;})()}});
+    });
+    if(filled.prio) out.push({q:'prio', opt:{t:'\u2026I\u2019d want it to be '+filled.prio.w, fill:{prio:filled.prio.v}}});
+    return out;
+  }
+  var STEM={A:'My weight ',B:'My nights and cycle ',C:'My strength '};
+  function sentenceOf(k){ return STEM[k]+filled[k].w; }
+
+  function paintEngine(){
+    function set(id,base,v){
+      var el=document.getElementById(id);
+      el.className='tag'+(v==='yes'?' yes':v==='no'?' no':'');
+      el.innerHTML=base+' \u00b7 '+(v||'\u2014');
+    }
+    set('egA','<b>A</b> weight',S.A); set('egB','<b>B</b> hormones',S.B);
+    set('egC','<b>C</b> peptides',S.C); set('egAge','age',S.age);
+    set('egP','priority',S.prio==='A'?'weight':S.prio==='B'?'hormones':S.prio);
+  }
+
+  function toProcessing(){
+    window.__showScreen('scrProc');
+    dev.classList.add('processing');
+    var lines=document.querySelectorAll('.t-line');
+    lines.forEach(function(l){l.classList.remove('on');});
+    var t=600;
+    lines.forEach(function(l){
+      later(function(){l.classList.add('on');}, t);
+      later(function(){l.classList.remove('on');}, t+1500);
+      t+=1700;
+    });
+    later(function(){ dev.classList.remove('processing'); window.__toResult(); }, t+500);
+  }
+
+  window.__startCapture=function(){
+    clear();
+    S={A:null,B:null,C:null,age:null,prio:null};
+    filled={}; order=['age','A','B','C']; cursor=0;
+    kick.style.opacity=1;
+    reactEl.classList.remove('in'); reactEl.textContent='';
+    done.classList.remove('show');
+    render(); paintEngine(); openSlot(false);
+  };
+})();
+
+</script>
+<script>
+(function(){
+  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  var POSES = {
+    rig: '<g transform="scale(.34) translate(-100,-267)"><g class="wb"><g class="limb lF"><path class="far" d="M95.5 158 C 93.8 183 92.8 209 92.4 235 C 92.2 243 92.2 251 92.4 258.6 L 100 258.4 C 100.4 251.6 100.8 243.8 101.2 236 C 102.2 210.6 103 184.6 103.4 158.6 Z"/><path class="far" d="M92.2 258.4 L 99.7 258.0 C 105.7 258.2 110.0 260.2 110.7 263.2 C 111.2 265.59999999999997 109.2 267.0 106.2 267.0 L 94.2 267.0 C 92.60000000000001 267.0 91.60000000000001 265.79999999999995 91.60000000000001 264.2 Z"/></g><g class="limb lN"><path class="near" d="M101.5 159 C 102.4 184 103.6 210 104.8 235 C 105.3 243 105.8 251 106.3 258.4 L 113.9 258 C 113.4 251.2 112.9 243.4 112.4 235.6 C 111 210.4 109 184.4 106.8 158.4 Z"/><path class="near" d="M106.1 258.2 L 113.6 257.8 C 119.6 258.0 123.89999999999999 260.0 124.6 263.0 C 125.1 265.4 123.1 266.8 120.1 266.8 L 108.1 266.8 C 106.5 266.8 105.5 265.59999999999997 105.5 264.0 Z"/></g><g transform="rotate(3 100 156)"><path class="top" d="M100 95.5 C 110.5 95.5 117.6 99.4 119.4 106.5 C 121 113 119.6 121.5 117 130 C 115.4 135.4 114.6 140.8 115.2 146 C 115.8 151 114.2 154.8 109.8 156.6 C 103.5 159.2 96.5 159.2 90.2 156.6 C 85.8 154.8 84.2 151 84.8 146 C 85.4 140.8 84.6 135.4 83 130 C 80.4 121.5 79 113 80.6 106.5 C 82.4 99.4 89.5 95.5 100 95.5 Z"/></g><g class="limb aF"><path class="far" d="M86.5 104.5 C 81.5 112.5 78.2 122 76.6 132 C 75.7 138 75.4 144.4 75.8 150.8 C 76 153.8 78.4 155.9 81.4 155.5 C 84.1 155.1 86 152.8 85.9 150 C 85.6 144.2 85.9 138.4 87 132.8 C 88.4 125.6 90.8 118.8 94.2 112.6 Z"/><circle class="far" cx="81.4" cy="159.8" r="4.2"/></g><g class="limb aN"><path class="near" d="M113.5 104.5 C 118.5 112.5 121.8 122 123.4 132 C 124.3 138 124.6 144.4 124.2 150.8 C 124 153.8 121.6 155.9 118.6 155.5 C 115.9 155.1 114 152.8 114.1 150 C 114.4 144.2 114.1 138.4 113 132.8 C 111.6 125.6 109.2 118.8 105.8 112.6 Z"/><circle class="near" cx="118.6" cy="159.8" r="4.2"/></g><path class="near" d="M98.5 84.5 L 105.5 84.5 L 105 97 L 99 97 Z"/><g transform="translate(102 93) scale(.92) translate(-102 -93)"><path class="near" d="M92.5 83.5 C 89.5 78.5 88.8 70.5 92 65 C 95 59.5 101.5 57 107.5 58.6 C 112.8 60 116.2 64.4 116.8 69.6 L 119.6 73.4 C 120.2 74.2 119.7 75.3 118.7 75.4 L 116.7 75.7 C 116.6 76.9 116.3 78 115.8 79 L 117 80.2 C 117.6 80.9 117.2 81.9 116.3 82 L 114.2 82.3 C 112.9 84.4 110.8 86 108.2 86.8 C 103 88.5 96.5 87 92.5 83.5 Z"/><path class="hairfill" d="M107 57.6 C 98 54.2 88.6 56.8 84.8 64.4 C 81.4 71.2 81.6 81.6 84.6 91 C 86.6 97.2 90 102.2 94.6 104.8 C 97.4 106.4 100.4 106.6 102.6 105.4 C 99 101.4 96.6 96 95.6 90 C 94.8 84.8 95.2 79.8 96.8 75.6 C 98 72.4 99.9 69.9 102.3 68.3 C 106.8 72 112.4 72.6 115.6 69.6 C 116.4 65 113.2 59.8 107 57.6 Z"/></g><path class="accent" d="M94 99.5 C 97.8 97 104.2 97 108 99.5 C 105.6 103.8 96.4 103.8 94 99.5 Z"/></g></g>',
+    walk: '<g transform="scale(.34) translate(-100,-236)"><path class="far" d="M95 156 C 91.5 171 86.5 186 79.5 199.5 C 75.5 207.5 71 215 66.5 222 C 64.8 224.8 65.8 228 68.6 229.4 C 71.2 230.6 74.2 229.6 75.8 227 C 80.8 219.2 85.4 211 89.6 202.6 C 95.6 190.2 100.6 177.2 104 164 Z"/><g transform="rotate(-24 66 231)"><path class="far" d="M64 224.5 L 71.5 224.1 C 77.5 224.3 81.8 226.3 82.5 229.3 C 83 231.7 81 233.1 78 233.1 L 66 233.1 C 64.4 233.1 63.4 231.9 63.4 230.3 Z"/></g><path class="near" d="M104 158 C 108.5 172 114 185.5 121 198.5 C 125.5 206.8 130.5 214.6 135.8 222 C 137.6 224.6 136.8 227.8 134.2 229.4 C 131.6 230.8 128.6 230 127 227.4 C 121.2 219.6 115.8 211.2 111 202.6 C 104 190 98.4 176.6 94.8 162.8 Z"/><path class="near" d="M128.5 224 L 136.0 223.6 C 142.0 223.8 146.3 225.8 147.0 228.8 C 147.5 231.2 145.5 232.6 142.5 232.6 L 130.5 232.6 C 128.9 232.6 127.9 231.4 127.9 229.8 Z"/><g transform="rotate(3 100 156)"><path class="top" d="M100 95.5 C 110.5 95.5 117.6 99.4 119.4 106.5 C 121 113 119.6 121.5 117 130 C 115.4 135.4 114.6 140.8 115.2 146 C 115.8 151 114.2 154.8 109.8 156.6 C 103.5 159.2 96.5 159.2 90.2 156.6 C 85.8 154.8 84.2 151 84.8 146 C 85.4 140.8 84.6 135.4 83 130 C 80.4 121.5 79 113 80.6 106.5 C 82.4 99.4 89.5 95.5 100 95.5 Z"/></g><path class="far" d="M87 104.5 C 80.5 111 75.2 119.5 71.8 129 C 70.6 132.4 69.9 136 69.7 139.6 C 69.5 142.6 71.9 144.9 74.9 144.7 C 77.6 144.5 79.6 142.3 79.7 139.6 C 79.9 133.4 81.7 127.4 84.9 122 C 87.5 117.6 90.9 113.8 94.9 110.8 Z"/><circle class="far" cx="74.5" cy="148.8" r="4.2"/><path class="near" d="M113.5 103.5 C 121 108.5 127 115.5 130.8 124 C 132.2 127.2 133 130.7 133.3 134.2 C 133.5 137.2 131.2 139.6 128.2 139.5 C 125.5 139.4 123.4 137.3 123.2 134.6 C 122.8 128.4 120.8 122.5 117.4 117.3 C 114.6 113 110.9 109.4 106.7 106.6 Z"/><circle class="near" cx="128.6" cy="143.7" r="4.2"/><path class="near" d="M98.5 84.5 L 105.5 84.5 L 105 97 L 99 97 Z"/><g transform="translate(102 93) scale(.92) translate(-102 -93)"><path class="near" d="M92.5 83.5 C 89.5 78.5 88.8 70.5 92 65 C 95 59.5 101.5 57 107.5 58.6 C 112.8 60 116.2 64.4 116.8 69.6 L 119.6 73.4 C 120.2 74.2 119.7 75.3 118.7 75.4 L 116.7 75.7 C 116.6 76.9 116.3 78 115.8 79 L 117 80.2 C 117.6 80.9 117.2 81.9 116.3 82 L 114.2 82.3 C 112.9 84.4 110.8 86 108.2 86.8 C 103 88.5 96.5 87 92.5 83.5 Z"/><path class="hairfill" d="M107 57.6 C 98 54.2 88.6 56.8 84.8 64.4 C 81.4 71.2 81.6 81.6 84.6 91 C 86.6 97.2 90 102.2 94.6 104.8 C 97.4 106.4 100.4 106.6 102.6 105.4 C 99 101.4 96.6 96 95.6 90 C 94.8 84.8 95.2 79.8 96.8 75.6 C 98 72.4 99.9 69.9 102.3 68.3 C 106.8 72 112.4 72.6 115.6 69.6 C 116.4 65 113.2 59.8 107 57.6 Z"/></g><path class="accent" d="M94 99.5 C 97.8 97 104.2 97 108 99.5 C 105.6 103.8 96.4 103.8 94 99.5 Z"/></g>',
+    pass: '<g transform="scale(.34) translate(-100,-267)"><path class="far" d="M95.5 158 C 93.8 183 92.8 209 92.4 235 C 92.2 243 92.2 251 92.4 258.6 L 100 258.4 C 100.4 251.6 100.8 243.8 101.2 236 C 102.2 210.6 103 184.6 103.4 158.6 Z"/><path class="far" d="M92.2 258.4 L 99.7 258.0 C 105.7 258.2 110.0 260.2 110.7 263.2 C 111.2 265.59999999999997 109.2 267.0 106.2 267.0 L 94.2 267.0 C 92.60000000000001 267.0 91.60000000000001 265.79999999999995 91.60000000000001 264.2 Z"/><path class="near" d="M101.5 159 C 102.4 184 103.6 210 104.8 235 C 105.3 243 105.8 251 106.3 258.4 L 113.9 258 C 113.4 251.2 112.9 243.4 112.4 235.6 C 111 210.4 109 184.4 106.8 158.4 Z"/><path class="near" d="M106.1 258.2 L 113.6 257.8 C 119.6 258.0 123.89999999999999 260.0 124.6 263.0 C 125.1 265.4 123.1 266.8 120.1 266.8 L 108.1 266.8 C 106.5 266.8 105.5 265.59999999999997 105.5 264.0 Z"/><g transform="rotate(3 100 156)"><path class="top" d="M100 95.5 C 110.5 95.5 117.6 99.4 119.4 106.5 C 121 113 119.6 121.5 117 130 C 115.4 135.4 114.6 140.8 115.2 146 C 115.8 151 114.2 154.8 109.8 156.6 C 103.5 159.2 96.5 159.2 90.2 156.6 C 85.8 154.8 84.2 151 84.8 146 C 85.4 140.8 84.6 135.4 83 130 C 80.4 121.5 79 113 80.6 106.5 C 82.4 99.4 89.5 95.5 100 95.5 Z"/></g><path class="far" d="M86.5 104.5 C 81.5 112.5 78.2 122 76.6 132 C 75.7 138 75.4 144.4 75.8 150.8 C 76 153.8 78.4 155.9 81.4 155.5 C 84.1 155.1 86 152.8 85.9 150 C 85.6 144.2 85.9 138.4 87 132.8 C 88.4 125.6 90.8 118.8 94.2 112.6 Z"/><circle class="far" cx="81.4" cy="159.8" r="4.2"/><path class="near" d="M113.5 104.5 C 118.5 112.5 121.8 122 123.4 132 C 124.3 138 124.6 144.4 124.2 150.8 C 124 153.8 121.6 155.9 118.6 155.5 C 115.9 155.1 114 152.8 114.1 150 C 114.4 144.2 114.1 138.4 113 132.8 C 111.6 125.6 109.2 118.8 105.8 112.6 Z"/><circle class="near" cx="118.6" cy="159.8" r="4.2"/><path class="near" d="M98.5 84.5 L 105.5 84.5 L 105 97 L 99 97 Z"/><g transform="translate(102 93) scale(.92) translate(-102 -93)"><path class="near" d="M92.5 83.5 C 89.5 78.5 88.8 70.5 92 65 C 95 59.5 101.5 57 107.5 58.6 C 112.8 60 116.2 64.4 116.8 69.6 L 119.6 73.4 C 120.2 74.2 119.7 75.3 118.7 75.4 L 116.7 75.7 C 116.6 76.9 116.3 78 115.8 79 L 117 80.2 C 117.6 80.9 117.2 81.9 116.3 82 L 114.2 82.3 C 112.9 84.4 110.8 86 108.2 86.8 C 103 88.5 96.5 87 92.5 83.5 Z"/><path class="hairfill" d="M107 57.6 C 98 54.2 88.6 56.8 84.8 64.4 C 81.4 71.2 81.6 81.6 84.6 91 C 86.6 97.2 90 102.2 94.6 104.8 C 97.4 106.4 100.4 106.6 102.6 105.4 C 99 101.4 96.6 96 95.6 90 C 94.8 84.8 95.2 79.8 96.8 75.6 C 98 72.4 99.9 69.9 102.3 68.3 C 106.8 72 112.4 72.6 115.6 69.6 C 116.4 65 113.2 59.8 107 57.6 Z"/></g><path class="accent" d="M94 99.5 C 97.8 97 104.2 97 108 99.5 C 105.6 103.8 96.4 103.8 94 99.5 Z"/></g>',
+    listen: '<g transform="scale(.34) translate(-100,-267)"><path class="far" d="M95.5 158 C 93.8 183 92.8 209 92.4 235 C 92.2 243 92.2 251 92.4 258.6 L 100 258.4 C 100.4 251.6 100.8 243.8 101.2 236 C 102.2 210.6 103 184.6 103.4 158.6 Z"/><path class="far" d="M92.2 258.4 L 99.7 258.0 C 105.7 258.2 110.0 260.2 110.7 263.2 C 111.2 265.59999999999997 109.2 267.0 106.2 267.0 L 94.2 267.0 C 92.60000000000001 267.0 91.60000000000001 265.79999999999995 91.60000000000001 264.2 Z"/><path class="near" d="M101.5 159 C 102.2 184 103.2 210 104.2 235 C 104.6 243 105 251 105.4 258.4 L 113 258 C 112.6 251.2 112.2 243.4 111.8 235.6 C 110.6 210.4 108.8 184.4 106.8 158.4 Z"/><path class="near" d="M105.2 258.2 L 112.7 257.8 C 118.7 258.0 123.0 260.0 123.7 263.0 C 124.2 265.4 122.2 266.8 119.2 266.8 L 107.2 266.8 C 105.60000000000001 266.8 104.60000000000001 265.59999999999997 104.60000000000001 264.0 Z"/><g transform="rotate(0 100 156)"><path class="top" d="M100 95.5 C 110.5 95.5 117.6 99.4 119.4 106.5 C 121 113 119.6 121.5 117 130 C 115.4 135.4 114.6 140.8 115.2 146 C 115.8 151 114.2 154.8 109.8 156.6 C 103.5 159.2 96.5 159.2 90.2 156.6 C 85.8 154.8 84.2 151 84.8 146 C 85.4 140.8 84.6 135.4 83 130 C 80.4 121.5 79 113 80.6 106.5 C 82.4 99.4 89.5 95.5 100 95.5 Z"/></g><path class="far" d="M86.5 104.5 C 81.5 112.5 78.2 122 76.6 132 C 75.7 138 75.4 144.4 75.8 150.8 C 76 153.8 78.4 155.9 81.4 155.5 C 84.1 155.1 86 152.8 85.9 150 C 85.6 144.2 85.9 138.4 87 132.8 C 88.4 125.6 90.8 118.8 94.2 112.6 Z"/><circle class="far" cx="81.4" cy="159.8" r="4.2"/><path class="near" d="M114.5 103 C 120.5 108 124.8 115 126.6 123 C 127.6 127.8 126 131.9 121.8 134.5 C 117.6 137.1 112.6 138.7 107.6 138.9 C 105 139 103 137.1 103 134.6 C 103 132.2 104.8 130.3 107.2 130 C 110.9 129.6 114.2 128.5 117 126.6 C 115.6 119.9 112.6 113.7 108.2 108.4 Z"/><circle class="accent" cx="106" cy="135" r="5.5"/><path class="near" d="M98.5 84.5 L 105.5 84.5 L 105 97 L 99 97 Z"/><g transform="translate(102 93) scale(.92) translate(-102 -93) rotate(-7 102 74)"><path class="near" d="M92.5 83.5 C 89.5 78.5 88.8 70.5 92 65 C 95 59.5 101.5 57 107.5 58.6 C 112.8 60 116.2 64.4 116.8 69.6 L 119.6 73.4 C 120.2 74.2 119.7 75.3 118.7 75.4 L 116.7 75.7 C 116.6 76.9 116.3 78 115.8 79 L 117 80.2 C 117.6 80.9 117.2 81.9 116.3 82 L 114.2 82.3 C 112.9 84.4 110.8 86 108.2 86.8 C 103 88.5 96.5 87 92.5 83.5 Z"/><path class="hairfill" d="M107 57.6 C 98 54.2 88.6 56.8 84.8 64.4 C 81.4 71.2 81.6 81.6 84.6 91 C 86.6 97.2 90 102.2 94.6 104.8 C 97.4 106.4 100.4 106.6 102.6 105.4 C 99 101.4 96.6 96 95.6 90 C 94.8 84.8 95.2 79.8 96.8 75.6 C 98 72.4 99.9 69.9 102.3 68.3 C 106.8 72 112.4 72.6 115.6 69.6 C 116.4 65 113.2 59.8 107 57.6 Z"/></g><path class="accent" d="M94 99.5 C 97.8 97 104.2 97 108 99.5 C 105.6 103.8 96.4 103.8 94 99.5 Z"/></g>',
+    setoff: '<g transform="scale(.34) translate(-100,-267)"><path class="far" d="M95 157 C 93.4 182 92.6 208 92.4 234 C 92.3 242 92.3 250 92.5 258.6 L 100.1 258.4 C 100.5 251.6 100.9 243.8 101.2 236 C 102 211 102.8 185 103.2 158 Z"/><path class="far" d="M92.3 258.4 L 99.8 258.0 C 105.8 258.2 110.1 260.2 110.8 263.2 C 111.3 265.59999999999997 109.3 267.0 106.3 267.0 L 94.3 267.0 C 92.7 267.0 91.7 265.79999999999995 91.7 264.2 Z"/><path class="near" d="M103.5 158 C 105.6 175 108.2 192 111.6 208.6 C 113.6 218.4 115.8 228.1 118.2 237.8 C 118.9 240.7 117.3 243.6 114.4 244.3 C 111.7 244.9 109 243.3 108.2 240.6 C 105.6 230.7 103.3 220.7 101.4 210.5 C 98.6 195.4 96.5 180.2 95.2 164.9 Z"/><g transform="rotate(-4 114 250)"><path class="near" d="M110.5 246 L 118.0 245.6 C 124.0 245.8 128.3 247.8 129.0 250.8 C 129.5 253.2 127.5 254.6 124.5 254.6 L 112.5 254.6 C 110.9 254.6 109.9 253.4 109.9 251.8 Z"/></g><g transform="rotate(2 100 156)"><path class="top" d="M100 95.5 C 110.5 95.5 117.6 99.4 119.4 106.5 C 121 113 119.6 121.5 117 130 C 115.4 135.4 114.6 140.8 115.2 146 C 115.8 151 114.2 154.8 109.8 156.6 C 103.5 159.2 96.5 159.2 90.2 156.6 C 85.8 154.8 84.2 151 84.8 146 C 85.4 140.8 84.6 135.4 83 130 C 80.4 121.5 79 113 80.6 106.5 C 82.4 99.4 89.5 95.5 100 95.5 Z"/></g><path class="far" d="M86.5 104.5 C 81.5 112.5 78.2 122 76.6 132 C 75.7 138 75.4 144.4 75.8 150.8 C 76 153.8 78.4 155.9 81.4 155.5 C 84.1 155.1 86 152.8 85.9 150 C 85.6 144.2 85.9 138.4 87 132.8 C 88.4 125.6 90.8 118.8 94.2 112.6 Z"/><circle class="far" cx="81.4" cy="159.8" r="4.2"/><g class="parm"><path class="near" d="M113 103 C 120.5 103.2 128 102.2 135.2 100.2 C 143.6 97.9 151.6 94.4 158.8 89.8 C 161.2 88.3 164.2 89.1 165.6 91.5 C 167 93.9 166.2 96.9 163.8 98.3 C 155.8 103.2 147 106.9 137.8 109.3 C 129.7 111.4 121.3 112.3 112.9 112 Z"/><circle class="accent" cx="164.5" cy="93.5" r="6"/></g><path class="near" d="M98.5 84.5 L 105.5 84.5 L 105 97 L 99 97 Z"/><g transform="translate(102 93) scale(.92) translate(-102 -93) rotate(4 102 74)"><path class="near" d="M92.5 83.5 C 89.5 78.5 88.8 70.5 92 65 C 95 59.5 101.5 57 107.5 58.6 C 112.8 60 116.2 64.4 116.8 69.6 L 119.6 73.4 C 120.2 74.2 119.7 75.3 118.7 75.4 L 116.7 75.7 C 116.6 76.9 116.3 78 115.8 79 L 117 80.2 C 117.6 80.9 117.2 81.9 116.3 82 L 114.2 82.3 C 112.9 84.4 110.8 86 108.2 86.8 C 103 88.5 96.5 87 92.5 83.5 Z"/><path class="hairfill" d="M107 57.6 C 98 54.2 88.6 56.8 84.8 64.4 C 81.4 71.2 81.6 81.6 84.6 91 C 86.6 97.2 90 102.2 94.6 104.8 C 97.4 106.4 100.4 106.6 102.6 105.4 C 99 101.4 96.6 96 95.6 90 C 94.8 84.8 95.2 79.8 96.8 75.6 C 98 72.4 99.9 69.9 102.3 68.3 C 106.8 72 112.4 72.6 115.6 69.6 C 116.4 65 113.2 59.8 107 57.6 Z"/></g><path class="accent" d="M94 99.5 C 97.8 97 104.2 97 108 99.5 C 105.6 103.8 96.4 103.8 94 99.5 Z"/></g>'
+  };
+
+  var MOODS = {
+    /* beat 1: the overwhelm — small restless marks above her head */
+    overwhelm: '<g transform="translate(2,-78)">'
+      +'<path class="sq" d="M-14 0 q4 -6 8 0"/>'
+      +'<path class="sq" d="M-2 -6 q4 -6 8 0"/>'
+      +'<path class="sq" d="M10 -1 q4 -6 8 0"/></g>',
+    /* beat 3: the clarity — one warm spark */
+    calm: '<g transform="translate(12,-76)"><text class="spark" font-size="13" text-anchor="middle">\u2726</text></g>'
+  };
+
+  var BEATS=[
+    {cam:0,    walk:86,  gy:255, pose:'pass', idle:'swaying', mood:'overwhelm', hot:true,
+     t:"You've been trying to work out what's going on with your body.",
+     s:"So has the internet. Loudly, and not about you.",
+     data:{lbl:'Why this screen exists',fig:'72%',
+       p:'of women say health information is confusing to navigate. Found wins on <b>clarity and interpretation</b>, not on more data.',
+       src:'Found brand positioning · internal figure, source before external use'}},
+    {cam:-390, walk:428, gy:247, pose:'listen', idle:'breathing', mood:null, hot:false,
+     t:"Tell us what's going on.",
+     s:"A few questions, in your own words. Nothing to look up first."},
+    {cam:-770, walk:974, gy:250, pose:'setoff', idle:'pointing', mood:'calm', hot:false,
+     t:"You leave knowing where to start.",
+     s:"One place to begin, and the reason it's that one."}
+  ];
+
+  var bi=0, timers=[], facing=1, transiting=false;
+  var dev=document.getElementById('dev'), cam=document.getElementById('camera'),
+      walker=document.getElementById('walker'), wbody=document.getElementById('wbody'),
+      mood=document.getElementById('mood'), hotspot=document.getElementById('hotspot'),
+      copy=document.getElementById('copy'), ct=document.getElementById('ct'),
+      cs=document.getElementById('cs'), pop=document.getElementById('pop');
+
+  function later(fn,ms){ timers.push(setTimeout(fn, reduce?10:ms)); }
+  function clear(){ timers.forEach(clearTimeout); timers=[]; stopStride(); }
+
+  function placeWalker(x,y){
+    walker.setAttribute('transform','translate('+x+','+y+') scale('+facing+',1)');
+  }
+
+  /* walking = the rig with its limbs swinging; stopping = swapping the
+     class off, never the frame. Nothing ever blinks. */
+  function startStride(){
+    wbody.innerHTML=POSES.rig;
+    walker.classList.add('walking');
+  }
+  function stopStride(){
+    walker.classList.remove('walking');
+  }
+  function setIdle(cls){
+    ['walking','swaying','breathing','pointing'].forEach(function(c){walker.classList.remove(c);});
+    if(cls && !reduce) walker.classList.add(cls);
+  }
+
+  function arrive(b){
+    facing=1; placeWalker(b.walk,b.gy);
+    wbody.innerHTML=POSES[b.pose];
+    setIdle(b.idle);
+    mood.innerHTML = b.mood ? MOODS[b.mood] : '';
+    hotspot.style.display = b.hot ? '' : 'none';
+    later(function(){ ct.textContent=b.t; cs.textContent=b.s; copy.classList.add('in'); },80);
+    ['exitline','startpt'].forEach(function(id){
+      var n=document.getElementById(id);
+      if(bi===2){ later(function(){n.classList.add('on');},250); }
+      else n.classList.remove('on');
+    });
+    document.querySelectorAll('#dots i').forEach(function(d,i){ d.classList.toggle('on', i<=bi); });
+    document.getElementById('prev').disabled = bi===0;
+    document.getElementById('next').textContent = bi===2 ? 'Start' : 'Next';
+    transiting=false;
+  }
+
+  /* She WALKS between beats: face the direction, run the cycle, glide with
+     the camera, then settle into the destination pose. */
+  function goTo(n){
+    if(transiting || n===bi) return;
+    var from=BEATS[bi], b=BEATS[n];
+    transiting=true; bi=n;
+    copy.classList.remove('in'); pop.classList.remove('open');
+    hotspot.style.display='none'; mood.innerHTML='';
+    ['exitline','startpt'].forEach(function(id){document.getElementById(id).classList.remove('on');});
+    facing = b.walk>=from.walk ? 1 : -1;
+    setIdle(null);
+    startStride();
+    placeWalker(b.walk,b.gy);
+    cam.setAttribute('transform','translate('+b.cam+',0)');
+    later(function(){ arrive(b); }, 1250);
+  }
+
+  hotspot.addEventListener('click',function(){
+    var d=BEATS[bi].data; if(!d) return;
+    document.getElementById('popLbl').textContent=d.lbl;
+    var f=document.getElementById('popFig');
+    f.textContent=d.fig||''; f.style.display=d.fig?'block':'none';
+    document.getElementById('popP').innerHTML=d.p;
+    document.getElementById('popSrc').textContent=d.src;
+    pop.classList.toggle('open');
+  });
+  document.getElementById('popX').onclick=function(){ pop.classList.remove('open'); };
+  document.getElementById('next').onclick=function(){
+    if(transiting) return;
+    if(bi<2) goTo(bi+1); else window.__toCapture();
+  };
+  document.getElementById('prev').onclick=function(){ if(!transiting && bi>0) goTo(bi-1); };
+
+  window.__startIntro=function(){
+    clear(); transiting=false; bi=0;
+    copy.classList.remove('in');
+    cam.setAttribute('transform','translate(0,0)');
+    arrive(BEATS[0]);
+  };
+})();
+</script>
+<script>
+(function(){
+  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var dev=document.getElementById('dev');
+
+  var LAYER={
+    A:{name:'Weight care.', cta:'See your weight-care options'},
+    B:{name:'Hormone care.', cta:'See your hormone-care options'},
+    C:{name:'Fine-tuning.', cta:'See your longevity options'},
+    none:{name:'Nothing here is asking to go first.', cta:'Explore all three anyway'}
+  };
+  var BADGE_Y={A:148,B:94,C:40};
+  var ROWMETA=[
+    {k:'A', n:'Weight & metabolism', s:'Weight care, with GLP-1s'},
+    {k:'B', n:'Hormones', s:'Hormone care, with HRT'},
+    {k:'C', n:'Longevity & peptides', s:'Fine-tuning, with peptides'}
+  ];
+  var PRIO_TXT={A:'my weight',B:'sleep and cycle'};
+
+  function startKey(S){
+    if(S.A==='yes') return 'A';
+    if(S.B==='yes') return 'B';
+    if(S.C==='yes') return 'C';
+    return 'none';
+  }
+
+  function build(){
+    var D=window.__o3||{answers:[],S:{}};
+    var S=D.S, k=startKey(S), L=LAYER[k];
+
+    document.getElementById('rvHead').textContent=L.name;
+    var yesCount=['A','B','C'].filter(function(x){return S[x]==='yes';}).length;
+    var line;
+    if(k==='none') line='Everything you told us came back steady. That\u2019s not a failure to sort you \u2014 it\u2019s the honest reading, and the strongest one.';
+    else if(k==='A') line='Most of what you told us sits at the base \u2014 the layer the other two rest on.';
+    else if(k==='B') line='What you told us points to the middle layer \u2014 the shifts of your 40s and 50s.';
+    else line='Your base came back steady, so the top of the pyramid is genuinely yours to start on.';
+    if(S.prio && S.prio===k) line+=' And you named it first yourself.';
+    document.getElementById('rvLine').textContent=line;
+
+    /* badge moves to her layer */
+    var tick=document.getElementById('rvTick'), badge=document.getElementById('rvBadge');
+    if(k==='none'){ tick.style.display='none'; badge.style.display='none'; }
+    else{
+      tick.style.display=''; badge.style.display='';
+      tick.setAttribute('y1',BADGE_Y[k]); tick.setAttribute('y2',BADGE_Y[k]);
+      badge.setAttribute('y',BADGE_Y[k]-12);
+    }
+
+    /* rows: when-labels derived from the slots */
+    var host=document.getElementById('rows'); host.innerHTML='';
+    ROWMETA.forEach(function(r,i){
+      var when, why, lead=(r.k===k);
+      if(lead){
+        when='Start here';
+        why='<b>Why first:</b> it\u2019s the lowest layer you said yes to \u2014 and the pyramid works bottom-up, so moving it tends to move the rest.';
+        if(S.prio===r.k) why+=' You also named it as the thing you\u2019d fix first.';
+      } else if(S[r.k]==='yes'){
+        when='Worth watching';
+        why='You said yes here too \u2014 not enough to lead with while a lower layer is unsettled. Some of it may ease once that settles.';
+      } else {
+        when='Later, and that\u2019s good news';
+        why='This came back steady \u2014 <b>and we know that because we asked.</b> Being later isn\u2019t a rejection; it means there\u2019s something more useful to do first.';
+      }
+      if(k==='none'){ when='Open to you'; why='Nothing here is pressing. If you ever want to start somewhere, all three doors stay open.'; }
+      var d=document.createElement('div');
+      d.className='row'+(lead?' lead':i===1?' rl2':' rl3');
+      d.innerHTML='<button class="row-hd"><span class="ord">'+(i+1)+'</span>'
+        +'<span class="row-t"><p class="row-when">'+when+'</p><p class="row-n">'+r.n+'</p>'
+        +'<p class="row-s">'+r.s+'</p></span><span class="car"><span class="msr">expand_more</span></span></button>'
+        +'<div class="row-body"><div class="row-inner">'+why+'</div></div>';
+      host.appendChild(d);
+      d.querySelector('.row-hd').onclick=function(){ d.classList.toggle('open'); };
+    });
+
+    /* in her words: the blanks she filled — in this option her picks ARE
+       the signals, so all three lines are quotable */
+    var said=document.getElementById('rvSaid'); said.innerHTML='';
+    (D.answers||[]).forEach(function(a){
+      if(a.q==='age'||a.q==='prio') return;
+      var p=document.createElement('p'); p.className='rf-words';
+      p.innerHTML='\u201c<u>'+a.opt.t+'</u>\u201d';
+      said.appendChild(p);
+    });
+    var pr=(D.answers||[]).filter(function(a){return a.q==='prio';})[0];
+    if(pr){
+      var p=document.createElement('p'); p.className='rf-words';
+      p.innerHTML='\u201c<u>'+pr.opt.t+'</u>\u201d <span class="rf-turn">\u2014 what you\u2019d fix first</span>';
+      said.appendChild(p);
+    }
+
+    document.querySelector('.footbar .btn').textContent=L.cta;
+    var why=document.getElementById('why'); why.innerHTML=''; delete why.dataset.done;
+    window.__o3.startKey=k;
+  }
+
+  /* signal map from her picks — in this option her words are the routing */
+  var BARS={A:{y:158,x:206,w:92,n:'Weight'},B:{y:110,x:214,w:76,n:'Hormones'},C:{y:62,x:222,w:60,n:'Longevity'}};
+  function sigmap(){
+    var D=window.__o3, S=D.S, k=D.startKey;
+    var picks=(D.answers||[]).filter(function(a){return a.q==='A'||a.q==='B'||a.q==='C';});
+    var out='<svg class="sigmap" viewBox="0 0 300 '+(46+picks.length*30)+'">';
+    Object.keys(BARS).forEach(function(b){
+      var B=BARS[b];
+      out+='<rect class="bar k'+(b==='A'?'base':b==='B'?'mid':'top')+'" x="'+B.x+'" y="'+B.y+'" width="'+B.w+'" height="30" rx="8"></rect>'
+        +'<text class="bn'+(b===k?' on':'')+'" x="'+(B.x+B.w/2)+'" y="'+(B.y+19)+'" text-anchor="middle">'+B.n+'</text>';
+    });
+    var y=16;
+    picks.forEach(function(a){
+      var t=a.opt.t.length>26?a.opt.t.slice(0,24)+'\u2026':a.opt.t;
+      var yes=(a.opt.fill[a.q]==='yes');
+      var B=BARS[a.q], ty=B.y+15, x2=B.x-2, mx=(112+x2)/2;
+      out+='<text class="sg" x="2" y="'+(y+3)+'"'+(yes?'':' opacity=".55"')+'>'+t+'</text>'
+        +'<path class="lk'+(yes?' hot':' steady')+'"'+(yes?'':' stroke-dasharray="3 4"')
+        +' d="M112 '+y+' C'+mx+' '+y+' '+mx+' '+ty+' '+x2+' '+ty+'"></path>';
+      y+=30;
+    });
+    out+='</svg><p class="why-cap"><b>Solid lines are what you said yes to.</b> Dashed came back steady \u2014 and steady is why a layer can wait. We know, because we asked. Not a score of your body \u2014 only where your answers landed.</p>';
+    return out;
+  }
+
+  var disc=document.getElementById('disc');
+  disc.querySelector('.disc-hd').onclick=function(){
+    var open=disc.classList.toggle('open');
+    var w=document.getElementById('why');
+    if(open && !w.dataset.done){ w.innerHTML=sigmap(); w.dataset.done='1'; }
+  };
+
+  function start(){
+    build();
+    dev.classList.remove('settled');
+    document.querySelectorAll('.rise').forEach(function(r){r.classList.remove('in');});
+    document.querySelectorAll('.row.open,.disc.open').forEach(function(x){x.classList.remove('open');});
+    document.getElementById('scroll').scrollTop=0;
+    document.querySelectorAll('.rise').forEach(function(r,i){
+      setTimeout(function(){r.classList.add('in');}, reduce?10:420+i*170);
+    });
+    setTimeout(function(){dev.classList.add('settled');}, reduce?20:900);
+  }
+  window.__startResult=start;
+})();
+
+</script>
+<script>
+(function(){
+  var dev=document.getElementById('dev');
+  function show(id){
+    ['scrIntro','scrCapture','scrProc','scrResult'].forEach(function(k){
+      document.getElementById(k).classList.toggle('on', k===id);
+    });
+  }
+  window.__showScreen=show;
+  window.__toCapture=function(){ dev.className='device'; show('scrCapture'); window.__startCapture(); };
+  window.__toResult=function(){ dev.className='device'; show('scrResult'); window.__startResult(); };
+  function toIntro(){ dev.className='device'; window.__startCapture(); window.__startIntro(); show('scrIntro'); }
+  document.getElementById('reset').onclick=toIntro;
+  toIntro();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Found · A place to start</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@300;500;600;700&family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,300,0,0&display=block" rel="stylesheet">
+<link rel="stylesheet" href="shared/base.css?v=2025-08-25b">
+<style>
+/* ================= OPTION 3 · The Note-Taker ================= */
+.ntk{position:relative;z-index:3;display:flex;flex-direction:column;height:100%;
+  padding:54px 20px 30px}
+.ntk-top{display:flex;align-items:center;gap:14px;flex:0 0 auto;margin-bottom:26px}
+.ntk-back{width:38px;height:38px;border:0;cursor:pointer;border-radius:var(--r-full);
+  display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.75);
+  color:var(--sage-500);box-shadow:inset 0 0 0 1px rgba(25,50,49,.12);flex:0 0 auto;
+  transition:opacity .3s}
+.ntk-back .msr{font-size:20px}
+.ntk-back:disabled{opacity:.35;cursor:default}
+.ntk-bar{flex:1 1 auto;height:8px;border-radius:var(--r-full);background:var(--sage-100);
+  overflow:hidden}
+.ntk-bar i{display:block;height:100%;border-radius:var(--r-full);background:var(--sage-500);
+  width:0;transition:width .8s cubic-bezier(.36,.72,.28,1)}
+.ntk-buddy{display:flex;align-items:flex-start;gap:14px;flex:0 0 auto;min-height:150px}
+.ntk-fig{width:96px;flex:0 0 auto;margin-top:-8px}
+.nf-note{stroke:var(--sage-300);stroke-width:2.4;stroke-linecap:round;
+  transform-box:fill-box;transform-origin:0 50%;
+  transform:scaleX(0);transition:transform .5s cubic-bezier(.2,.7,.2,1)}
+.nf-note.on{transform:scaleX(1)}
+.ntk-pen{transform-box:fill-box;transform-origin:85% 85%}
+.ntk-pen.write{animation:penw .32s ease-in-out infinite}
+@keyframes penw{0%,100%{transform:translate(0,0) rotate(0)}50%{transform:translate(-3px,2px) rotate(-7deg)}}
+.ntk-bubble{position:relative;flex:1 1 auto;background:rgba(255,255,255,.94);
+  border-radius:var(--r-lg);box-shadow:inset 0 0 0 1.5px rgba(25,50,49,.1);
+  padding:14px 16px;font-size:16.5px;font-weight:600;line-height:1.42;letter-spacing:.1px;
+  color:var(--sage-500);transition:background .35s,color .35s,box-shadow .35s,opacity .3s}
+.ntk-bubble:before{content:'';position:absolute;left:-6px;top:20px;width:11px;height:11px;
+  background:inherit;border-left:inherit;transform:rotate(45deg);border-radius:2px;
+  box-shadow:inset 1.5px -1.5px 0 rgba(25,50,49,0)}
+.ntk-bubble.react{background:var(--sage-500);color:#fff;box-shadow:none;font-weight:500}
+.ntk-bubble.dim{opacity:0}
+.ntk-opts{flex:1 1 auto;display:flex;flex-direction:column;gap:10px;justify-content:flex-end;
+  padding-bottom:16px;transition:opacity .3s}
+.ntk-opts.lock{pointer-events:none}
+.opt{border:0;cursor:pointer;font-family:var(--sans);text-align:left;font-size:15px;
+  font-weight:500;letter-spacing:.1px;line-height:1.35;color:var(--sage-500);
+  background:rgba(255,255,255,.9);border-radius:var(--r-xs);padding:13px 15px;
+  box-shadow:inset 0 0 0 1px var(--gray-50);
+  transition:box-shadow .2s,background .2s,transform .2s,opacity .3s}
+.opt:hover{box-shadow:inset 0 0 0 1.5px var(--sage-300);transform:translateY(-1px)}
+.opt.picked{background:var(--sage-50);box-shadow:inset 0 0 0 2px var(--sage-500);font-weight:700}
+.opt.faded{opacity:.4}
+.opt.go{background:var(--sage-500);color:#fff;text-align:center;box-shadow:none}
+.opt.go:hover{background:var(--sage-400)}
+.ntk-numrow{display:flex;gap:10px;margin-bottom:2px}
+.ntk-numrow label{flex:1 1 0;display:flex;flex-direction:column;gap:6px;
+  font-family:var(--sans);font-size:10.5px;font-weight:700;letter-spacing:.7px;
+  text-transform:uppercase;color:var(--sage-400)}
+.ntk-numrow input{font-family:var(--sans);font-size:16px;font-weight:600;letter-spacing:.1px;
+  color:var(--sage-500);border:0;border-radius:var(--r-xs);padding:12px 13px;
+  background:rgba(255,255,255,.9);box-shadow:inset 0 0 0 1px var(--gray-50)}
+.ntk-numrow input:focus{outline:none;box-shadow:inset 0 0 0 1.5px var(--sage-300)}
+
+/* select variant of the number row + inline nudge (no silent defaults) */
+.ntk-numrow select{font-family:var(--sans);font-size:16px;font-weight:600;letter-spacing:.1px;
+  color:var(--sage-500);border:0;border-radius:var(--r-xs);padding:12px 13px;
+  background:rgba(255,255,255,.9);box-shadow:inset 0 0 0 1px var(--gray-50);
+  -webkit-appearance:none;appearance:none}
+.ntk-numrow select:focus{outline:none;box-shadow:inset 0 0 0 1.5px var(--sage-300)}
+.ntk-hint{font-size:12.5px;font-weight:600;letter-spacing:.1px;color:var(--amber-400);
+  margin:0;min-height:0;opacity:0;transition:opacity .3s}
+.ntk-hint.on{opacity:1;min-height:16px;margin:2px 2px 0}
+
+/* multi-select chips carry a checkbox — single-select ones never do */
+.opt.multi{display:flex;align-items:center;gap:11px}
+.opt .ck{flex:0 0 auto;width:19px;height:19px;border-radius:6px;position:relative;
+  box-shadow:inset 0 0 0 1.5px var(--sage-200);background:#fff;
+  transition:background .2s,box-shadow .2s}
+.opt .ck:after{content:'';position:absolute;left:6px;top:2.5px;width:5px;height:9px;
+  border:solid #fff;border-width:0 2px 2px 0;transform:rotate(45deg) scale(0);
+  transition:transform .18s cubic-bezier(.2,.7,.2,1)}
+.opt.picked .ck{background:var(--sage-500);box-shadow:none}
+.opt.picked .ck:after{transform:rotate(45deg) scale(1)}
+</style>
+</head>
+<body>
+
+<div class="device" id="dev">
+  <button class="reset" id="reset">Replay</button>
+
+<div class="screen" id="scrIntro">
+    <div class="amb"><i></i><i></i><i></i><i></i></div>
+    <div class="iinner">
+      <div class="ihdr"><p class="wordmark">found</p></div>
+      <div class="scene">
+      <svg class="stage" viewBox="0 0 375 300" aria-label="A path from many options, through Found, to one place to start">
+        <g id="camera">
+          <!-- ground: rolling terrain across three beats -->
+          <path class="hill2" d="M-20 262 C 120 246 260 270 400 254 C 560 236 700 266 860 252 C 980 242 1080 258 1140 252 L1140 300 L-20 300 Z"></path>
+          <path class="hill" d="M-20 274 C 140 262 300 282 460 270 C 620 258 780 280 940 268 C 1040 262 1100 270 1140 266 L1140 300 L-20 300 Z"></path>
+          <path class="terrain" d="M-20 262 C 120 246 260 270 400 254 C 560 236 700 266 860 252 C 980 242 1080 258 1140 252"></path>
+
+          <!-- beat 1 · the options out there, floating free. No structure yet. -->
+          <defs><clipPath id="b1clip"><rect x="-10" y="30" width="395" height="170"/></clipPath></defs>
+          <g clip-path="url(#b1clip)">
+            <g class="nrow nrow1"><text class="noiseword" x="8" y="64">semaglutide</text><text class="noiseword hot cwa" x="104" y="64">GLP-1s</text><text class="noiseword" x="186" y="64">berberine</text><text class="noiseword" x="266" y="64">creatine</text><text class="noiseword" x="338" y="64">semaglutide</text><text class="noiseword hot cwa" x="434" y="64">GLP-1s</text><text class="noiseword" x="516" y="64">berberine</text><text class="noiseword" x="596" y="64">creatine</text></g>
+            <g class="nrow nrow2"><text class="noiseword" x="16" y="100">estrogen patches</text><text class="noiseword hot cwl" x="134" y="100">HRT</text><text class="noiseword" x="188" y="100">progesterone</text><text class="noiseword" x="288" y="100">NAD+</text><text class="noiseword" x="346" y="100">estrogen patches</text><text class="noiseword hot cwl" x="464" y="100">HRT</text><text class="noiseword" x="518" y="100">progesterone</text><text class="noiseword" x="618" y="100">NAD+</text></g>
+            <g class="nrow nrow3"><text class="noiseword" x="4" y="136">BPC-157</text><text class="noiseword hot cws" x="72" y="136">peptides</text><text class="noiseword" x="152" y="136">metformin</text><text class="noiseword" x="236" y="136">bioidenticals</text><text class="noiseword" x="334" y="136">BPC-157</text><text class="noiseword hot cws" x="402" y="136">peptides</text><text class="noiseword" x="482" y="136">metformin</text><text class="noiseword" x="566" y="136">bioidenticals</text></g>
+            <g class="nrow nrow4"><text class="noiseword" x="12" y="172">compounded tirzepatide</text><text class="noiseword" x="160" y="172">supplements</text><text class="noiseword" x="248" y="172">testosterone</text><text class="noiseword" x="342" y="172">compounded tirzepatide</text><text class="noiseword" x="490" y="172">supplements</text><text class="noiseword" x="578" y="172">testosterone</text></g>
+          </g>
+
+          <!-- beat 2 · the funnel. The beat-1 words pour into its mouth;
+               one sorted line leaves the neck. -->
+          <g>
+            <ellipse class="fshadow" cx="550" cy="247" rx="72" ry="5"></ellipse>
+            <path class="fsil" d="M452 58 C 542 66 602 108 648 132 L 648 148 C 602 172 542 214 452 222 Z"></path>
+            <path class="fguide" d="M456 92 C 540 96 596 120 646 136"></path>
+            <path class="fguide" d="M456 188 C 540 184 596 160 646 144"></path>
+            <ellipse class="fmouth" cx="452" cy="140" rx="12" ry="82"></ellipse>
+            <ellipse class="fmouthin" cx="452" cy="140" rx="7" ry="72"></ellipse>
+            <ellipse class="fneck" cx="648" cy="140" rx="3.4" ry="9"></ellipse>
+            <path class="frim" d="M452 58 C 542 66 602 108 648 132"></path>
+            <path class="frim" d="M452 222 C 542 214 602 172 648 148"></path>
+            <g class="flow">
+              <text x="366" y="70"  class="hot cwa" style="--dx:274px;--dy:70px;--dur:5.2s;--del:0s">GLP-1s</text>
+              <text x="382" y="206" style="--dx:258px;--dy:-66px;--dur:6.1s;--del:-1.4s">berberine</text>
+              <text x="358" y="112" style="--dx:282px;--dy:28px;--dur:5.7s;--del:-2.6s">estrogen patches</text>
+              <text x="390" y="226" class="hot cwl" style="--dx:250px;--dy:-86px;--dur:5.4s;--del:-3.5s">HRT</text>
+              <text x="372" y="146" style="--dx:268px;--dy:-6px;--dur:6.4s;--del:-4.7s">NAD+</text>
+              <text x="354" y="52"  class="hot cws" style="--dx:286px;--dy:88px;--dur:6s;--del:-2s">peptides</text>
+              <text x="386" y="92" style="--dx:254px;--dy:48px;--dur:5s;--del:-.8s">supplements</text>
+              <text x="368" y="178" style="--dx:272px;--dy:-38px;--dur:6.7s;--del:-5.6s">creatine</text>
+            </g>
+            <path class="fline lead" d="M652 140 L 745 140"></path>
+            <circle class="fdot" cx="652" cy="140" r="3.8"></circle>
+          </g>
+
+          <!-- beat 3 · the funnel's exit: the one clear line ends at her starting point.
+               No pyramid — that belongs to the Result. -->
+          <g>
+            <ellipse class="hill" cx="962" cy="250" rx="72" ry="13"></ellipse>
+            <path class="ribbon" d="M905 249 C 950 243 1010 238 1112 229 L 1112 238 C 1012 246 952 251 907 256 Z"></path>
+            <path id="exitline" d="M745 140 C 820 140 880 190 952 240"></path>
+            <g id="startpt" transform="translate(958,244)">
+              <circle class="halo" r="20"></circle>
+              <circle class="ring" r="12"></circle>
+              <circle class="pt" r="5.2"></circle>
+            </g>
+            <path class="ahead" d="M986 242 C 1028 238 1066 234 1106 228"></path>
+            <g class="tuft" transform="translate(913,252)"><path d="M0 0 C -1 -4 -2.5 -6.5 -4 -8"/><path d="M0 0 C 0 -5 .5 -7.5 1.5 -10"/><path d="M0 0 C 1.5 -4 3 -6 5 -7.5"/></g>
+            <g class="tuft" transform="translate(1015,242)"><path d="M0 0 C -1 -3.5 -2 -5.5 -3.5 -7"/><path d="M0 0 C .5 -4.5 1 -6.5 2 -8.5"/></g>
+            <g class="tuft" transform="translate(1078,236)"><path d="M0 0 C -1 -3 -2 -5 -3 -6"/><path d="M0 0 C .5 -4 1 -6 2 -7.5"/><path d="M0 0 C 2 -3 3.5 -4.5 5 -5.5"/></g>
+          </g>
+
+          <!-- the waypoint ✦ — beat 1 only -->
+          <g id="hotspot" transform="translate(122,228)">
+            <line class="hs-stem" x1="0" y1="11" x2="0" y2="25"></line>
+            <circle class="hs-ring" r="12"></circle>
+            <circle class="hs-bg" r="11"></circle>
+            <text class="hs-ico" y="4">✦</text>
+          </g>
+
+          <!-- the walker: pose swaps per beat, path geometry from step 6 scaled 0.22 -->
+          <g id="walker" transform="translate(86,196)">
+            <g id="wbody"></g>
+            <g id="mood"></g>
+          </g>
+        </g>
+      </svg>
+      </div>
+      <div class="copy in" id="copy">
+      <p class="t" id="ct">You've been trying to work out what's going on with your body.</p>
+      <p class="s" id="cs">So has the internet. Loudly, and not about you.</p>
+    </div>
+
+    <div class="ipop" id="pop">
+      <button class="x" id="popX">×</button>
+      <h5 id="popLbl"></h5>
+      <p class="fig" id="popFig"></p>
+      <p id="popP"></p>
+      <p class="src" id="popSrc"></p>
+    </div>
+
+    
+      <div class="navbar">
+      <div class="dots" id="dots"><i class="on"></i><i></i><i></i></div>
+      <div class="nav">
+        <button id="prev" disabled>Back</button>
+        <button id="next" class="go">Next</button>
+      </div>
+    </div>
+    </div>
+  </div>
+
+<div class="screen" id="scrCapture">
+    <div class="amb"><i></i><i></i><i></i><i></i></div>
+    <div class="ntk">
+      <div class="ntk-top">
+        <button class="ntk-back" id="ntkBack" aria-label="Back"><span class="msr">arrow_back</span></button>
+        <div class="ntk-bar"><i id="ntkFill"></i></div>
+      </div>
+      <div class="ntk-buddy">
+        <svg class="ntk-fig" viewBox="0 0 96 88" aria-hidden="true">
+<path fill="#4C6360" d="M30 52 C 26 58 24.5 65 25 72 C 25.3 75 27.6 77 30.4 76.6 C 33 76.2 34.8 74 34.6 71.2 C 34.4 66 35.4 61 37.6 56.6 Z"/>
+
+<path fill="#2A4B48" d="M44 34 C 53.5 34 60.5 38 63 45.5 C 65.4 52.8 66 62 66 70 L 66 84 L 22 84 L 22 70 C 22 62 22.6 52.8 25 45.5 C 27.5 38 34.5 34 44 34 Z"/>
+<path fill="#EDFFCE" d="M38.5 37.5 C 42 35.2 46 35.2 49.5 37.5 C 47.2 41.6 40.8 41.6 38.5 37.5 Z"/>
+
+<path fill="#193231" d="M40.5 26 L 47.5 26 L 47 36 L 41 36 Z"/>
+<g transform="rotate(9 44 18)">
+  <path fill="#193231" d="M37.5 25.5 C 34.8 21.5 34.2 15.2 36.8 10.8 C 39.2 6.4 44.4 4.4 49.2 5.7 C 53.6 6.8 56.4 10.3 56.9 14.6 L 59 17.6 C 59.5 18.3 59.1 19.2 58.2 19.3 L 56.6 19.5 C 56.5 20.5 56.3 21.4 55.9 22.2 L 56.9 23.1 C 57.4 23.7 57 24.5 56.3 24.6 L 54.6 24.8 C 53.5 26.5 51.9 27.8 49.8 28.5 C 45.6 29.9 40.7 28.5 37.5 25.5 Z"/>
+  <path fill="#0F2422" d="M49 5 C 41.8 2.2 34.2 4.3 31.2 10.4 C 28.5 15.8 28.9 24 31.3 31.4 C 32.9 36.4 35.6 40.4 39.3 42.5 C 41.5 43.8 43.9 44 45.7 43 C 42.8 39.8 40.9 35.4 40.1 30.6 C 39.5 26.4 39.8 22.4 41.1 19 C 42 16.4 43.6 14.4 45.5 13.1 C 49.1 16.1 53.6 16.6 56.2 14.2 C 56.8 10.5 54 6.7 49 5 Z"/>
+</g>
+
+<g transform="rotate(-7 62 58)">
+  <rect fill="#FFFFFF" stroke="#4C6360" stroke-width="2" x="46" y="40" width="34" height="42" rx="4.5"/>
+  <rect fill="#FFC542" x="56" y="36.6" width="14" height="5.2" rx="2.6"/>
+  <line class="nf-note" data-n="0" x1="52" y1="50" x2="74" y2="50"/>
+  <line class="nf-note" data-n="1" x1="52" y1="57" x2="74" y2="57"/>
+  <line class="nf-note" data-n="2" x1="52" y1="64" x2="69" y2="64"/>
+  <line class="nf-note" data-n="3" x1="52" y1="71" x2="74" y2="71"/>
+  <line class="nf-note" data-n="4" x1="52" y1="78" x2="65" y2="78"/>
+</g>
+
+<g class="ntk-pen" id="ntkPen">
+  <circle fill="#193231" cx="79" cy="63" r="4.6"/>
+  <line stroke="#2A4B48" stroke-width="2.5" stroke-linecap="round" x1="76.4" y1="60.6" x2="68.5" y2="53"/>
+  <line stroke="#FFC542" stroke-width="2.5" stroke-linecap="round" x1="70" y1="54.4" x2="68.5" y2="53"/>
+</g>
+        </svg>
+        <div class="ntk-bubble" id="ntkBubble"></div>
+      </div>
+      <div class="ntk-opts" id="ntkOpts"></div>
+    </div>
+  </div>
+
+<div class="screen" id="scrProc">
+    <div class="breath"><i></i><i></i><i></i></div>
+    <div class="proc">
+    <div class="form" aria-hidden="true">
+      <b class="core"></b>
+      <i class="fa" style="--x:-130px;--y:-160px;--t:2.6s;--dl:0s"></i>
+      <i class="fl" style="--x:120px;--y:-190px;--t:3.1s;--dl:-.6s"></i>
+      <i class="fs" style="--x:150px;--y:-60px;--t:2.8s;--dl:-1.3s"></i>
+      <i class="fa" style="--x:-155px;--y:40px;--t:3.3s;--dl:-2s"></i>
+      <i class="fl" style="--x:-70px;--y:170px;--t:2.7s;--dl:-.9s"></i>
+      <i class="fs" style="--x:95px;--y:150px;--t:3.4s;--dl:-1.7s"></i>
+      <i class="fa" style="--x:60px;--y:-230px;--t:2.9s;--dl:-2.4s"></i>
+      <i class="fl" style="--x:-165px;--y:-70px;--t:3.2s;--dl:-1.1s"></i>
+      <i class="fs" style="--x:-40px;--y:-210px;--t:2.5s;--dl:-.3s"></i>
+      <i class="fa" style="--x:140px;--y:60px;--t:3s;--dl:-2.8s"></i>
+      <i class="fl" style="--x:35px;--y:200px;--t:2.6s;--dl:-1.5s"></i>
+      <i class="fs" style="--x:-120px;--y:110px;--t:3.5s;--dl:-.7s"></i>
+    </div>
+    <div class="t-lines">
+      <p class="t-line">Everything you said.</p>
+      <p class="t-line">What matters most.</p>
+      <p class="t-line">Your starting point.</p>
+    </div>
+  </div>
+  </div>
+
+<div class="screen" id="scrResult">
+    <div class="rbreath"><i></i><i></i></div><div class="pad"><p class="wordmark">found</p></div>
+  <div class="wrap">
+    <div class="scroller" id="scroll">
+      <p class="eyebrow rise">Your starting point</p>
+      <h2 class="lead-head rise" id="rvHead">Weight care.</h2>
+      <p class="oneliner rise" id="rvLine"></p>
+
+      <svg class="respyr rise" viewBox="0 0 386 182" aria-label="Your pyramid: weight and metabolism leading, hormones and energy above it">
+        <polygon class="rl lead rla" points="4,170 184,170 156,122 32,122"></polygon>
+        <line class="rtick" id="rvTick" x1="170" y1="148" x2="194" y2="148"></line>
+        <text class="rbadge" id="rvBadge" x="200" y="136">START HERE</text>
+        <text class="rn" x="200" y="150">Weight &amp; metabolism</text>
+        <text class="rg" x="200" y="163">food, weight and appetite</text>
+        <polygon class="rl rll" points="32,116 156,116 128,68 60,68"></polygon>
+        <line class="rtick" x1="142" y1="94" x2="194" y2="94"></line>
+        <text class="rn" x="200" y="96">Hormones</text>
+        <text class="rg" x="200" y="109">the changes in your 40s and 50s</text>
+        <polygon class="rl rls" points="60,62 128,62 94,14"></polygon>
+        <line class="rtick" x1="111" y1="40" x2="194" y2="40"></line>
+        <text class="rn" x="200" y="42">Energy &amp; longevity</text>
+        <text class="rg" x="200" y="55">energy, strength and recovery</text>
+      </svg>
+      <p class="seq rise">This is your pyramid. <b>The base has to hold before the top matters</b> — a sequence, not a ranking.</p>
+
+      <h3 class="sec rise">The order from here</h3>
+      <div id="rows" class="rise"></div>
+
+      <div class="open-note rise"><b>An order, not a limit.</b> Start somewhere else if you'd rather — all three stay open to you.</div>
+
+      <div class="disc rise" id="disc">
+        <button class="disc-hd">How we got here <span class="msr">expand_more</span></button>
+        <div class="disc-body"><div class="disc-inner">
+          <p class="rf-lbl">In your words</p>
+          <div id="rvSaid"></div>
+          <div id="why"></div>
+        </div></div>
+      </div>
+
+      <div class="next rise">
+        <b>What happens next</b>
+        <ol><li>A few safety questions</li><li>A clinician reviews what you shared</li><li>You find out whether it's right for you</li></ol>
+        <p style="margin:8px 0 0">Not a diagnosis. A clinician has the final say on what's right for you.</p>
+      </div>
+    </div>
+
+    <div class="footbar">
+      <button class="btn">See your weight-care options</button>
+      <button class="btn ghost">See all three</button>
+    </div>
+  </div>
+  </div>
+
+  <div class="grain"></div>
+</div>
+
+<script src="shared/engine.js?v=2025-08-25b"></script>
+<script src="shared/intro.js?v=2025-08-25b"></script>
+<script>
+(function(){
+  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var timers=[];
+  function later(fn,ms){ timers.push(setTimeout(fn, reduce?10:ms)); }
+  function clear(){ timers.forEach(clearTimeout); timers=[]; }
+
+  var session;   /* the shared engine — same questions, same fills, everywhere */
+
+  var bub=document.getElementById('ntkBubble'), opts=document.getElementById('ntkOpts'),
+      fill=document.getElementById('ntkFill'),
+      pen=document.getElementById('ntkPen'), back=document.getElementById('ntkBack');
+  var notes=[].slice.call(document.querySelectorAll('.nf-note'));
+  var noteCount=0;
+
+  function paintBar(){
+    fill.style.width=Math.round(session.progress()*100)+'%';
+  }
+  function paintNotes(){
+    notes.forEach(function(n,i){ n.classList.toggle('on', i<noteCount); });
+  }
+
+  var current=null, locked=false;
+
+  function ask(){
+    clear();
+    current=session.next(); locked=false;
+    if(!current){ finish(); return; }
+    back.disabled = !session.canBack();
+    bub.classList.remove('react'); bub.classList.add('dim');
+    later(function(){
+      bub.textContent=current.q + (current.sub ? ' '+current.sub : '');
+      bub.classList.remove('dim');
+    },200);
+    opts.innerHTML=''; opts.classList.remove('lock');
+    if(current.kind==='multi') buildMulti();
+    else if(current.kind==='height') buildHeight();
+    else if(current.kind==='weight') buildWeight();
+    else buildSingle();
+    paintBar();
+  }
+
+  function chipIn(b, delay){
+    b.style.opacity=0; b.style.transform='translateY(6px)';
+    later(function(){
+      b.style.transition='opacity .4s ease,transform .4s cubic-bezier(.2,.7,.2,1),box-shadow .2s,background .2s';
+      b.style.opacity=1; b.style.transform='none';
+    }, delay);
+  }
+
+  /* ---- single-select: the pick IS the answer (draft behavior) ---- */
+  function buildSingle(){
+    current.opts.forEach(function(o,i){
+      var b=document.createElement('button'); b.className='opt'; b.textContent=o.t;
+      b.onclick=function(){ commit(o.id, [o.t], b); };
+      opts.appendChild(b); chipIn(b, 320+i*90);
+    });
+  }
+
+  /* ---- the opener: she can pick more than one; pick order matters ---- */
+  function buildMulti(){
+    var picked=[];
+    var go=document.createElement('button'); go.className='opt go';
+    go.textContent='That’s everything'; go.style.display='none';
+    current.opts.forEach(function(o,i){
+      var b=document.createElement('button'); b.className='opt multi';
+      b.innerHTML='<span class="ck"></span><span></span>';
+      b.lastChild.textContent=o.t;
+      b.onclick=function(){
+        if(locked) return;
+        var at=picked.indexOf(o.id);
+        if(at>-1){ picked.splice(at,1); b.classList.remove('picked'); }
+        else{ picked.push(o.id); b.classList.add('picked'); }
+        go.style.display = picked.length ? '' : 'none';
+      };
+      opts.appendChild(b); chipIn(b, 320+i*90);
+    });
+    opts.appendChild(go); chipIn(go, 320+current.opts.length*90);
+    go.onclick=function(){
+      if(locked || !picked.length) return;
+      var words=picked.map(function(id){
+        return current.opts.filter(function(o){return o.id===id;})[0].t.toLowerCase();
+      });
+      [].forEach.call(opts.children,function(c){
+        if(c!==go) c.classList.add(c.classList.contains('picked')?'picked':'faded');
+      });
+      commit(picked.slice(), words, null);
+    };
+  }
+
+  /* ---- height: two selects, no free text, no silent defaults ---- */
+  function buildHeight(){
+    var wrap=document.createElement('div'); wrap.className='ntk-numrow';
+    wrap.innerHTML=
+      '<label>Feet<select id="ntkFt"><option value="" selected disabled>—</option>'
+      +[3,4,5,6,7].map(function(f){return '<option value="'+f+'">'+f+'&prime;</option>';}).join('')
+      +'</select></label>'
+      +'<label>Inches<select id="ntkIn"><option value="" selected disabled>—</option>'
+      +Array.apply(null,{length:12}).map(function(_,i){return '<option value="'+i+'">'+i+'&Prime;</option>';}).join('')
+      +'</select></label>';
+    opts.appendChild(wrap);
+    var hint=document.createElement('p'); hint.className='ntk-hint'; opts.appendChild(hint);
+    var go=document.createElement('button'); go.className='opt go'; go.textContent='Continue';
+    opts.appendChild(go); chipIn(go, 320);
+    go.onclick=function(){
+      if(locked) return;
+      var ft=document.getElementById('ntkFt').value, inch=document.getElementById('ntkIn').value;
+      if(ft==='' || inch===''){ hint.textContent='Both parts — feet and inches.'; hint.classList.add('on'); return; }
+      commit({ft:+ft, inch:+inch}, null, null);
+    };
+  }
+
+  /* ---- weight: one number, hers — never invented for her ---- */
+  function buildWeight(){
+    var wrap=document.createElement('div'); wrap.className='ntk-numrow';
+    wrap.innerHTML='<label>Weight (lbs)<input type="text" id="ntkLbs" inputmode="numeric" autocomplete="off" placeholder="e.g. 180"></label>';
+    opts.appendChild(wrap);
+    var hint=document.createElement('p'); hint.className='ntk-hint'; opts.appendChild(hint);
+    var go=document.createElement('button'); go.className='opt go'; go.textContent='Continue';
+    opts.appendChild(go); chipIn(go, 320);
+    var input=wrap.querySelector('input');
+    later(function(){ input.focus(); }, 450);
+    function submit(){
+      if(locked) return;
+      var m=input.value.trim().match(/^(\d{2,3})(\.\d+)?$/);
+      var lbs=m?parseFloat(m[1]+(m[2]||'')):NaN;
+      if(!(lbs>=60 && lbs<=700)){ hint.textContent='Just the number, in pounds — roughly is fine.'; hint.classList.add('on'); return; }
+      commit({lbs:lbs}, null, null);
+    }
+    go.onclick=submit;
+    input.addEventListener('keydown',function(e){ if(e.key==='Enter') submit(); });
+  }
+
+  /* the pick locks, the bubble reacts, the pen writes, a note lands —
+     and the next question arrives on its own (draft rhythm, untouched) */
+  function commit(value, words, btn){
+    if(locked) return;
+    locked=true;
+    opts.classList.add('lock');
+    if(btn){ [].forEach.call(opts.children,function(c){ c.classList.add(c===btn?'picked':'faded'); }); }
+    var react=session.answer(current.id, value, words);
+    bub.classList.add('dim');
+    later(function(){
+      bub.textContent=react;
+      bub.classList.add('react'); bub.classList.remove('dim');
+      pen.classList.add('write');
+      later(function(){
+        pen.classList.remove('write');
+        noteCount=Math.min(noteCount+1, notes.length); paintNotes();
+      }, 750);
+      later(function(){ paintBar(); ask(); }, 2600);
+    },250);
+  }
+
+  back.onclick=function(){
+    if(!session.canBack() || locked) return;
+    session.back();
+    noteCount=Math.max(0,noteCount-1); paintNotes();
+    ask();
+  };
+
+  function finish(){
+    fill.style.width='100%';
+    later(function(){ PyramidEngine.toProcessing(); }, 500);
+  }
+
+  window.__startCapture=function(){
+    clear();
+    session=PyramidEngine.create();
+    window.__session=session;
+    noteCount=0; paintNotes(); fill.style.width='0';
+    ask();
+  };
+})();
+</script>
+<script>PyramidEngine.boot();</script>
+</body>
+</html>
