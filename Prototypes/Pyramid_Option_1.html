@@ -398,9 +398,14 @@
         }
         return null;
       case 'signs':
-        if(/\b(sweat\w*|cycle\w*|period\w*|heat|flash\w*|flush\w*|irregular)\b/.test(t)) return {value:'yes'};
+        /* yes/no first: "no night sweats" is a no, not a symptom mention.
+           A symptom word counts as yes only with nothing negating it —
+           mixed signals fall through to the re-ask, never a guess. */
         var sv=yesNo(t);
-        return sv ? {value:sv} : null;
+        if(sv) return {value:sv};
+        if(/\b(sweat\w*|cycle\w*|period\w*|heat|flash\w*|flush\w*|irregular)\b/.test(t))
+          return NO_RE.test(t) ? null : {value:'yes'};
+        return null;
       case 'prio':
         var w=/\b(weight|pounds?|body|scale)\b/.test(t),
             s=/\b(sleep\w*|cycle\w*|nights?|hormon\w*)\b/.test(t);
