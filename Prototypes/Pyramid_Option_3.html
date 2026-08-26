@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@300;500;600;700&family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,300,0,0&display=block" rel="stylesheet">
-<link rel="stylesheet" href="shared/base.css?v=2025-08-25c">
+<link rel="stylesheet" href="shared/base.css?v=2025-08-26g">
 <style>
 /* ================= OPTION 4 · The Madlib ================= */
 .mlb{position:relative;z-index:3;display:flex;flex-direction:column;height:100%;
@@ -84,6 +84,8 @@
   transition:transform .18s cubic-bezier(.2,.7,.2,1)}
 .wchip.picked .ck{background:var(--sage-500);box-shadow:none}
 .wchip.picked .ck:after{transform:rotate(45deg) scale(1)}
+.wchip.go:disabled{opacity:.4;cursor:default}
+.wchip.go:disabled:hover{background:var(--sage-500);box-shadow:none}
 </style>
 </head>
 <body>
@@ -377,7 +379,7 @@
       </div>
       <div class="mlb-react" id="mlbReact"></div>
       <div class="mlb-tray" id="mlbTray"></div>
-      <button class="btn mlb-done" id="mlbDone">That’s me</button>
+      <button class="btn mlb-done" id="mlbDone">That’s right</button>
     </div>
   </div>
 
@@ -412,50 +414,63 @@
   <div class="wrap">
     <div class="scroller" id="scroll">
       <p class="eyebrow rise">Your starting point</p>
-      <h2 class="lead-head rise" id="rvHead">Weight care.</h2>
-      <p class="oneliner rise" id="rvLine"></p>
+      <h2 class="lead-head rise">Weight care.</h2>
+      <p class="oneliner rise">Based on what you shared, weight care is the clearest place to start.</p>
 
-      <svg class="respyr rise" viewBox="0 0 386 182" aria-label="Your pyramid: weight and metabolism leading, hormones and energy above it">
+      <svg class="respyr rise" viewBox="0 0 440 182" aria-label="Your pyramid: weight and metabolism to start, hormones and longevity in view">
         <polygon class="rl lead rla" points="4,170 184,170 156,122 32,122"></polygon>
-        <line class="rtick" id="rvTick" x1="170" y1="148" x2="194" y2="148"></line>
-        <text class="rbadge" id="rvBadge" x="200" y="136">START HERE</text>
+        <line class="rtick" x1="170" y1="148" x2="194" y2="148"></line>
+        <text class="rbadge" x="200" y="136">START HERE</text>
         <text class="rn" x="200" y="150">Weight &amp; metabolism</text>
-        <text class="rg" x="200" y="163">food, weight and appetite</text>
+        <text class="rg" x="200" y="163">Weight, appetite, and metabolic health</text>
         <polygon class="rl rll" points="32,116 156,116 128,68 60,68"></polygon>
         <line class="rtick" x1="142" y1="94" x2="194" y2="94"></line>
         <text class="rn" x="200" y="96">Hormones</text>
-        <text class="rg" x="200" y="109">the changes in your 40s and 50s</text>
+        <text class="rg" x="200" y="109">Sleep, cycles, and other midlife changes</text>
         <polygon class="rl rls" points="60,62 128,62 94,14"></polygon>
         <line class="rtick" x1="111" y1="40" x2="194" y2="40"></line>
         <text class="rn" x="200" y="42">Energy &amp; longevity</text>
-        <text class="rg" x="200" y="55">energy, strength and recovery</text>
+        <text class="rg" x="200" y="55">Energy, strength, recovery, and healthy aging</text>
       </svg>
-      <p class="seq rise">This is your pyramid. <b>The base has to hold before the top matters</b> — a sequence, not a ranking.</p>
+      <p class="seq rise">Your care can include all three. <b>Weight care is the clearest place to start</b>, while hormones and longevity stay in view.</p>
 
       <h3 class="sec rise">The order from here</h3>
-      <div id="rows" class="rise"></div>
+      <div id="rows" class="rise">
+        <div class="row lead">
+          <div class="row-hd"><span class="ord">1</span>
+            <span class="row-t"><p class="row-when">Start here</p><p class="row-n">Weight &amp; metabolism</p>
+            <p class="row-s">Weight care, including GLP-1 options</p></span></div>
+        </div>
+        <div class="row rl2">
+          <div class="row-hd"><span class="ord">2</span>
+            <span class="row-t"><p class="row-when">Keep in view</p><p class="row-n">Hormones</p>
+            <p class="row-s">Support for sleep, cycles, and midlife changes</p></span></div>
+        </div>
+        <div class="row rl3">
+          <div class="row-hd"><span class="ord">3</span>
+            <span class="row-t"><p class="row-when">Build on your foundation</p><p class="row-n">Longevity &amp; peptides</p>
+            <p class="row-s">Support for energy, strength, and recovery</p></span></div>
+        </div>
+      </div>
 
-      <div class="open-note rise"><b>An order, not a limit.</b> Start somewhere else if you'd rather — all three stay open to you.</div>
+      <div class="open-note rise"><b>This is a starting point, not a limit.</b> You can explore another area first. All three remain open to you.</div>
 
       <div class="disc rise" id="disc">
         <button class="disc-hd">How we got here <span class="msr">expand_more</span></button>
         <div class="disc-body"><div class="disc-inner">
-          <p class="rf-lbl">In your words</p>
-          <div id="rvSaid"></div>
-          <div id="why"></div>
+          <p style="margin:0 0 10px">You told us your weight has been hard to shift, even with consistent effort. Your height and weight add one useful signal, and your sleep changes add more context. Together, they point to weight care as the clearest place to start, with hormone care still in view.</p>
+          <p style="margin:0">Your energy and strength feel steady, so longevity support can stay open for later.</p>
         </div></div>
       </div>
 
       <div class="next rise">
         <b>What happens next</b>
-        <ol><li>A few safety questions</li><li>A clinician reviews what you shared</li><li>You find out whether it's right for you</li></ol>
-        <p style="margin:8px 0 0">Not a diagnosis. A clinician has the final say on what's right for you.</p>
+        <ol><li>Answer a few health and safety questions.</li><li>A licensed clinician reviews your full picture.</li><li>See the weight care options that may fit your needs.</li></ol>
       </div>
     </div>
 
     <div class="footbar">
-      <button class="btn">See your weight-care options</button>
-      <button class="btn ghost">See all three</button>
+      <button class="btn">See your weight care options</button>
     </div>
   </div>
   </div>
@@ -463,8 +478,8 @@
   <div class="grain"></div>
 </div>
 
-<script src="shared/engine.js?v=2025-08-25c"></script>
-<script src="shared/intro.js?v=2025-08-25c"></script>
+<script src="shared/engine.js?v=2025-08-26g"></script>
+<script src="shared/intro.js?v=2025-08-26g"></script>
 <script>
 (function(){
   var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -472,140 +487,117 @@
   function later(fn,ms){ timers.push(setTimeout(fn, reduce?10:ms)); }
   function clear(){ timers.forEach(clearTimeout); timers=[]; }
 
+  var R = PyramidEngine.REACTS;
+
   var story=document.getElementById('mlbStory'), tray=document.getElementById('mlbTray'),
       reactEl=document.getElementById('mlbReact'), done=document.getElementById('mlbDone'),
       kick=document.getElementById('mlbKick');
 
-  var session, filledWords, current;
+  /* One statement, built blank by blank, in the scripted order. The
+     participant picks whatever words fit — nothing branches; reacts and
+     the Result are fixed. */
+  var BLANKS=[
+    {id:'going', kind:'single', pre:'Lately, ', post:'.', lbl:'what’s been going on',
+     words:['my weight hasn’t changed in two years, no matter what I try',
+            'my sleep has changed',
+            'my energy feels low',
+            'I’m having trouble thinking clearly'],
+     react:R.opener},
+    {id:'height', kind:'height', pre:' I’m ', post:'', lbl:'height',
+     hint:'An estimate is fine.', react:null},
+    {id:'weight', kind:'weight', pre:' and about ', post:'.', lbl:'weight',
+     hint:'An estimate is fine.', react:R.numbers},
+    {id:'age', kind:'age', pre:' I’m ', post:'.', lbl:'age', react:R.age},
+    {id:'changed', kind:'single', pre:' Lately, ', post:'.', lbl:'what has changed',
+     words:['my sleep has changed — I wake up around 3 a.m. most nights',
+            'my cycle has changed',
+            'I’ve noticed night sweats or hot flashes',
+            'nothing I’ve noticed'],
+     react:R.hormone},
+    {id:'support', kind:'single', pre:' Beyond weight and sleep, ', post:'.', lbl:'support',
+     words:['my energy and strength feel steady',
+            'I’d like more support with my energy',
+            'I’d like more support with strength and recovery',
+            'I’d like more support with my joints, tendons, or skin'],
+     react:R.longevity}
+  ];
 
-  /* The same questions as everywhere else — re-presented as one sentence
-     about her that writes itself forward, clause by clause, in the order
-     her own first answer decides. The engine owns the order; this file
-     only owns the words. */
-  var CLAUSE={
-    opener:{pre:'Lately I’ve been feeling ', post:'.', lbl:'how you’ve been'},
-    age:{pre:' I’m ', post:'.', lbl:'age'},
-    signs:{pre:' Signs of a shift — cycles changing, night sweats, sudden heat — ', post:'.', lbl:'the shift'},
-    pep:{pre:' Staying ahead — energy, recovery, longevity — is ', post:'.', lbl:'staying ahead'},
-    recovery:{pre:' After a demanding week, I bounce back ', post:'.', lbl:'bounce-back'},
-    height:{pre:' I’m ', post:' tall', lbl:'height'},
-    weight:{pre:' and weigh about ', post:'.', lbl:'weight'},
-    prio:{pre:' If one thing changed first, I’d want it to be ', post:'.', lbl:'first change'}
-  };
-  /* Madlib phrasing per option id — the fills and branching stay the
-     engine's. Only the surface changes. */
-  var WORDS={
-    opener:{heavier:'heavier than I want to be', sleep:'not sleeping well',
-            foggy:'foggy', tired:'tired all the time', off:'off — I can’t pin it down'},
-    pep:{yes:'something I’m curious about', no:'not my focus — I’ll deal with things if they come'},
-    recovery:{same:'about the same as always', slower:'slower than I used to'},
-    age:{u40:'under 40', '40s':'in my 40s', '50s':'in my 50s', '60p':'60 or beyond'},
-    signs:{yes:'some of that sounds like me', no:'none of that'},
-    prio:{A:'my weight', B:'my sleep and cycle'}
-  };
+  var filled, cursor;
 
-  function joinWords(ws){
-    if(ws.length===1) return ws[0];
-    if(ws.length===2) return ws[0]+' and '+ws[1];
-    return ws.slice(0,-1).join(', ')+', and '+ws[ws.length-1];
-  }
-
-  /* ---------------- the sentence ---------------- */
-  function blankHTML(k, active){
-    var f=filledWords[k];
-    return '<span class="blank'+(f?' filled':'')+(active?' active':'')+'" data-k="'+k+'">'
-      +(f?esc(f):'  ')+'<span class="lbl">'+CLAUSE[k].lbl+'</span></span>';
-  }
+  function blankDef(k){ return BLANKS.filter(function(b){ return b.id===k; })[0]; }
   function esc(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;'); }
-
+  /* ---------------- the sentence ---------------- */
+  function blankHTML(b, active){
+    var f=filled[b.id];
+    return '<span class="blank'+(f?' filled':'')+(active?' active':'')+'" data-k="'+b.id+'">'
+      +(f?esc(f):'  ')+'<span class="lbl">'+b.lbl+'</span></span>';
+  }
   function render(){
-    var ids=session.history().map(function(h){ return h.id; });
-    if(current) ids.push(current.id);
+    /* the script is fixed, so the WHOLE statement is on the page from the
+       start — empty blanks and all. The cursor walks it in order. */
     var h='';
-    ids.forEach(function(k){
-      h+='<span class="fixed">'+CLAUSE[k].pre+'</span>'
-        +blankHTML(k, current && k===current.id)
-        +'<span class="fixed">'+CLAUSE[k].post+'</span>';
+    BLANKS.forEach(function(b,i){
+      h+='<span class="fixed">'+b.pre+'</span>'
+        +blankHTML(b, i===cursor)
+        +'<span class="fixed">'+b.post+'</span>';
     });
     story.innerHTML=h;
-    story.querySelectorAll('.blank.filled').forEach(function(b){
-      b.onclick=function(){ reopen(b.dataset.k); };
+    story.querySelectorAll('.blank.filled').forEach(function(bl){
+      bl.onclick=function(){ reopen(bl.dataset.k); };
     });
   }
 
-  /* Change a filled blank: everything after it un-writes, because the
-     order downstream can depend on it. */
+  /* Linear flow: editing a filled blank reopens just that blank — the
+     rest of the statement stays as it is. */
   function reopen(k){
     clear();
-    session.rewindTo(k);
-    var keep={};
-    session.history().forEach(function(h){ keep[h.id]=filledWords[h.id]; });
-    filledWords=keep;
+    cursor=BLANKS.findIndex(function(b){ return b.id===k; });
     reactEl.classList.remove('in');
     done.classList.remove('show');
-    ask();
+    openBlank();
   }
 
   /* ---------------- asking ---------------- */
-  function ask(){
+  function nextCursor(){
+    for(var i=0;i<BLANKS.length;i++) if(!filled[BLANKS[i].id]) return i;
+    return BLANKS.length;
+  }
+
+  function openBlank(){
     clear();
-    current=session.next();
-    if(!current){ finish(); return; }
+    if(cursor>=BLANKS.length){ finish(); return; }
+    var b=BLANKS[cursor];
     render();
     tray.classList.remove('hide');
     tray.innerHTML='';
-    if(current.kind==='multi') trayMulti();
-    else if(current.kind==='height') trayHeight();
-    else if(current.kind==='weight') trayWeight();
-    else traySingle();
+    if(b.kind==='height') trayHeight(b);
+    else if(b.kind==='weight') trayWeight(b);
+    else if(b.kind==='age') trayAge(b);
+    else traySingle(b);
     done.classList.remove('show');
   }
 
   function addChip(text, fn, i, cls){
-    var b=document.createElement('button'); b.className='wchip'+(cls?' '+cls:'');
-    b.textContent=text; b.onclick=fn;
-    tray.appendChild(b);
-    later(function(){ b.classList.add('in'); }, 120+i*80);
-    return b;
+    var c=document.createElement('button'); c.className='wchip'+(cls?' '+cls:'');
+    c.textContent=text; c.onclick=fn;
+    tray.appendChild(c);
+    later(function(){ c.classList.add('in'); }, 100+i*60);
+    return c;
+  }
+  function addHint(text){
+    var hint=document.createElement('p'); hint.className='mlb-hint on';
+    hint.textContent=text||'';
+    tray.appendChild(hint);
+    return hint;
   }
 
-  function traySingle(){
-    current.opts.forEach(function(o,i){
-      var w=WORDS[current.id][o.id]||o.t;
-      addChip(w, function(){ choose(o.id, w, [w]); }, i);
+  function traySingle(b){
+    b.words.forEach(function(w,i){
+      addChip(w, function(){ choose(b, w); }, i);
     });
   }
 
-  /* the opener blank takes more than one word — her first pick decides
-     the order of everything after */
-  function trayMulti(){
-    var picked=[];
-    var goBtn;
-    current.opts.forEach(function(o,i){
-      var w=WORDS.opener[o.id];
-      var b=addChip('', function(){
-        var at=picked.indexOf(o.id);
-        if(at>-1){ picked.splice(at,1); b.classList.remove('picked'); }
-        else{ picked.push(o.id); b.classList.add('picked'); }
-        goBtn.style.display = picked.length ? '' : 'none';
-        /* preview in the blank as she picks */
-        var bl=story.querySelector('.blank[data-k="opener"]');
-        if(bl) bl.childNodes[0].textContent = picked.length
-          ? joinWords(picked.map(function(id){ return WORDS.opener[id]; })) : '  ';
-      }, i);
-      b.classList.add('multi');
-      b.innerHTML='<span class="ck"></span><span></span>';
-      b.lastChild.textContent=w;
-    });
-    goBtn=addChip('that’s how it’s been', function(){
-      if(!picked.length) return;
-      var ws=picked.map(function(id){ return WORDS.opener[id]; });
-      choose(picked.slice(), joinWords(ws), ws);
-    }, current.opts.length, 'go');
-    goBtn.style.display='none';
-  }
-
-  function trayHeight(){
+  function trayHeight(b){
     var row=document.createElement('div'); row.className='mlb-numrow';
     row.innerHTML=
       '<label>Feet<select id="mlbFt"><option value="" selected disabled>—</option>'
@@ -615,59 +607,75 @@
       +Array.apply(null,{length:12}).map(function(_,i){return '<option value="'+i+'">'+i+'&Prime;</option>';}).join('')
       +'</select></label>';
     tray.appendChild(row);
-    var hint=document.createElement('p'); hint.className='mlb-hint'; tray.appendChild(hint);
+    var hint=addHint(b.hint);
     addChip('that’s me', function(){
       var ft=document.getElementById('mlbFt').value, inch=document.getElementById('mlbIn').value;
-      if(ft===''||inch===''){ hint.textContent='Both parts — feet and inches.'; hint.classList.add('on'); return; }
-      choose({ft:+ft,inch:+inch}, ft+'′'+inch+'″', null);
+      if(ft===''||inch===''){ hint.textContent='Both parts — feet and inches.'; return; }
+      choose(b, ft+'′'+inch+'″');
     }, 0, 'go');
   }
 
-  function trayWeight(){
+  function trayWeight(b){
     var row=document.createElement('div'); row.className='mlb-numrow';
-    row.innerHTML='<label>Weight (lbs)<input type="text" id="mlbLbs" inputmode="numeric" autocomplete="off" placeholder="e.g. 180"></label>';
+    row.innerHTML='<label>Weight (lb)<input type="text" id="mlbLbs" inputmode="numeric" autocomplete="off" placeholder="e.g. 188"></label>';
     tray.appendChild(row);
-    var hint=document.createElement('p'); hint.className='mlb-hint'; tray.appendChild(hint);
+    var hint=addHint(b.hint);
     var input=row.querySelector('input');
     function submit(){
       var m=input.value.trim().match(/^(\d{2,3})(\.\d+)?$/);
-      var lbs=m?parseFloat(m[0]):NaN;
-      if(!(lbs>=60&&lbs<=700)){ hint.textContent='Just the number, in pounds — roughly is fine.'; hint.classList.add('on'); return; }
-      choose({lbs:lbs}, Math.round(lbs)+' lbs', null);
+      if(!m){ hint.textContent='Just the number, in pounds.'; return; }
+      choose(b, m[0]+' pounds');
     }
     addChip('that’s me', submit, 0, 'go');
     input.addEventListener('keydown',function(e){ if(e.key==='Enter') submit(); });
     later(function(){ input.focus(); }, 400);
   }
 
-  /* the word lands in the sentence, then Found says one line about it —
-     react and question never share a beat */
-  function choose(value, word, words){
+  function trayAge(b){
+    var row=document.createElement('div'); row.className='mlb-numrow';
+    row.innerHTML='<label>Age<input type="text" id="mlbAge" inputmode="numeric" autocomplete="off" placeholder="e.g. 44"></label>';
+    tray.appendChild(row);
+    var hint=addHint('');
+    var input=row.querySelector('input');
+    function submit(){
+      var m=input.value.trim().match(/^\d{2}$/);
+      if(!m){ hint.textContent='Just the number of years.'; return; }
+      choose(b, m[0]);
+    }
+    addChip('that’s me', submit, 0, 'go');
+    input.addEventListener('keydown',function(e){ if(e.key==='Enter') submit(); });
+    later(function(){ input.focus(); }, 400);
+  }
+
+  /* the words land in the sentence, then Found says one line about it —
+     react and tray never share a beat */
+  function choose(b, word){
     clear();
-    var react=session.answer(current.id, value, words);
-    filledWords[current.id]=word;
-    var landedId=current.id;
-    current=null;
+    filled[b.id]=word;
     tray.classList.add('hide');
+    later(function(){ tray.innerHTML=''; }, 350);
+    cursor=nextCursor();
     render();
-    story.querySelectorAll('.blank[data-k="'+landedId+'"]').forEach(function(b){ b.classList.add('landing'); });
+    story.querySelectorAll('.blank[data-k="'+b.id+'"]').forEach(function(bl){ bl.classList.add('landing'); });
     reactEl.classList.remove('in');
     later(function(){
-      if(react){
-        reactEl.classList.remove('empty'); reactEl.textContent=react;
+      if(b.react){
+        reactEl.classList.remove('empty'); reactEl.textContent=b.react;
         reactEl.classList.add('in');
       } else { reactEl.classList.add('empty'); reactEl.textContent=''; }
     }, 420);
-    later(function(){ ask(); }, react?2000:700);
+    later(function(){
+      if(cursor>=BLANKS.length){ finish(); } else { openBlank(); }
+    }, b.react?1900:600);
   }
 
   function finish(){
-    current=null;
+    cursor=BLANKS.length;
     render();
     tray.classList.add('hide'); tray.innerHTML='';
     kick.style.opacity=0;
     reactEl.classList.remove('empty');
-    reactEl.textContent='That’s everything we need. Read it back — change anything that isn’t right.';
+    reactEl.textContent='Here’s what you shared. Change anything that doesn’t feel right.';
     reactEl.classList.add('in');
     later(function(){ done.classList.add('show'); }, 500);
   }
@@ -676,13 +684,11 @@
 
   window.__startCapture=function(){
     clear();
-    session=PyramidEngine.create();
-    window.__session=session;
-    filledWords={}; current=null;
+    filled={}; cursor=0;
     kick.style.opacity=1;
     reactEl.classList.remove('in'); reactEl.textContent='';
     done.classList.remove('show');
-    ask();
+    openBlank();
   };
 })();
 </script>

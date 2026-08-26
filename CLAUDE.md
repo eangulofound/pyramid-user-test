@@ -10,16 +10,20 @@ performs best with real users.
 
 ## The end goal
 
-Turn the 3 static HTML drafts into **fully functional, testable prototypes**:
+Three **fully scripted, linear** prototypes for a moderated user test in which
+**one participant walks through all three options in sequence**:
 
-- A real person can open each prototype and actually answer with their own input
-  (not just watch a scripted demo).
-- All 3 prototypes must run the **exact same underlying question logic** (see
-  `Quiz/Question Story.md`) and produce the **exact same kind of Result** (see
-  `Quiz/Result Content.md`) — only how the questions are asked/answered differs.
-- **Mobile-first**, but should not break on desktop. Don't over-engineer
-  responsiveness — a simple `max-width` on the device container so it doesn't
-  stretch full-bleed on wide screens is enough.
+- One fixed character (44 · 5'6" · 188 lb · weight concern + waking at 3 a.m. ·
+  energy steady), five questions in a straight line, **no branches**, and one
+  fixed Result: **Weight care**.
+- The participant still interacts for real — typing/speaking in Option 1,
+  tapping chips in Option 2, filling blanks in Option 3 — but nothing they
+  choose changes the flow, the reactions, or the Result. In Option 1 any
+  non-empty answer is accepted as-is (no parsing).
+- Reactions and the Result copy are word-for-word identical across the three
+  prototypes (guaranteed by `Prototypes/shared/engine.js`).
+- **Mobile-first**, with a `max-width` so it doesn't stretch on desktop.
+  Deployed via GitHub Pages (manual web upload to the `pyramid-user-test` repo).
 
 ## Folder structure
 
@@ -40,25 +44,16 @@ middle "Capture" scene's markup/JS differs between them.
 
 ### `Quiz/`
 
-- **`Question Story.md`** — the master script. This is the single source of truth
-  for *what gets asked, in what order, what each answer fills, and what Found says
-  back*. It's written as 4 linear paths (based on her first answer to the opener)
-  so it's easy to follow start to finish. **The underlying logic and information
-  captured must be identical across all 3 options** — same questions, same signals
-  filled (Weight/Hormone/Peptides), same branching rules. What can (and should)
-  differ is *presentation*: Option 1 phrases things as natural conversational
-  turns (text/voice), Options 2/3 phrase the same questions as tappable chips or
-  blanks. Don't reduce or simplify the underlying question logic when adapting it
-  to Option 1 or 3 — only reword/re-present it for that capture mechanic.
+- **`Question Story.md`** — the master script (source: copy-reviewed PDF,
+  Aug 2025). One shared 5-beat journey plus a per-option telling: conversation
+  turns (Option 1), chips with the scripted pick marked ✓ (Option 2), and the
+  madlib statement with its blanks (Option 3). Copy is final — use as written;
+  adapt the interaction, not the meaning.
 
-- **`Result Content.md`** — a **content guide** for the Result screen, not
-  copy-paste-ready final copy. It maps all 10 possible outcomes (combinations of
-  Weight/Hormone/Peptides yes-no + named priority) to a headline, a oneliner, and
-  a status (Start here / Worth watching / Later, and that's good news / Steady)
-  per pyramid layer, each with reusable why-text. When writing the actual
-  on-screen copy for the Result step, use this as the direction/intent, not a
-  literal script — but don't drift from the brand voice rules below while doing
-  it.
+- **`Result Content.md`** — the single scripted Result (Weight care): hero,
+  pyramid labels, the order (Start here / Keep in view / Build on your
+  foundation), reassurance callout, "How we got here", next steps, CTA. The
+  BMI (~30.3) is part of the character sheet but is never shown or spoken.
 
 ## Brand voice — applies to any copy you write or touch
 
@@ -88,10 +83,16 @@ simply, patients, quick fix.
 
 ## Known state / decisions already made
 
-- The 3 HTML drafts' `<title>` tags were already fixed to match their `<h1>`
-  (Option 1 / 2 / 3, in that order — no more "Option 3"/"Option 4" mislabeling).
-- `Question Story.md` already resolved a few content bugs worth knowing about if
-  you touch it further: the "peptides/prevention" question can't use
-  "get ahead of it" framing right after she's already named an active complaint
-  (contradiction — fixed by branching the wording by context); "as they come" was
-  changed to "if they come" (don't presuppose problems are coming).
+- The branching engine (4 paths, 10 endings) was retired in Aug 2025 when the
+  test pivoted to the scripted plan above. `Prototypes/shared/engine.js` now
+  only holds the shared reacts, the screen router, processing, and the Result
+  reveal; the Result markup is static in each HTML.
+- `Prototypes/shared/` is loaded with a `?v=...` cache-bust query in each HTML;
+  bump it on every shared-file change so GitHub Pages visitors get the update.
+- The intro is the illustrated meadow scene (ported from
+  `illustration example/`), shared verbatim across the three files via
+  `shared/intro.js` + per-file markup; its keyframes are namespaced with an
+  `n` prefix in `base.css` to avoid collisions.
+- Voice in Option 1 uses the Web Speech API: works on HTTPS/localhost in
+  Chrome/Safari/Edge; the mic button hides itself when unsupported and degrades
+  with a friendly line when blocked (Firefox, Dia, Brave).

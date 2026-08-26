@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@300;500;600;700&family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,300,0,0&display=block" rel="stylesheet">
-<link rel="stylesheet" href="shared/base.css?v=2025-08-25c">
+<link rel="stylesheet" href="shared/base.css?v=2025-08-26g">
 <style>
 /* ============ Option 1 · conversation — input layer ============ */
 /* the typing field: her words as the hero line, now actually hers */
@@ -390,50 +390,63 @@
   <div class="wrap">
     <div class="scroller" id="scroll">
       <p class="eyebrow rise">Your starting point</p>
-      <h2 class="lead-head rise" id="rvHead">Weight care.</h2>
-      <p class="oneliner rise" id="rvLine"></p>
+      <h2 class="lead-head rise">Weight care.</h2>
+      <p class="oneliner rise">Based on what you shared, weight care is the clearest place to start.</p>
 
-      <svg class="respyr rise" viewBox="0 0 386 182" aria-label="Your pyramid: weight and metabolism leading, hormones and energy above it">
+      <svg class="respyr rise" viewBox="0 0 440 182" aria-label="Your pyramid: weight and metabolism to start, hormones and longevity in view">
         <polygon class="rl lead rla" points="4,170 184,170 156,122 32,122"></polygon>
-        <line class="rtick" id="rvTick" x1="170" y1="148" x2="194" y2="148"></line>
-        <text class="rbadge" id="rvBadge" x="200" y="136">START HERE</text>
+        <line class="rtick" x1="170" y1="148" x2="194" y2="148"></line>
+        <text class="rbadge" x="200" y="136">START HERE</text>
         <text class="rn" x="200" y="150">Weight &amp; metabolism</text>
-        <text class="rg" x="200" y="163">food, weight and appetite</text>
+        <text class="rg" x="200" y="163">Weight, appetite, and metabolic health</text>
         <polygon class="rl rll" points="32,116 156,116 128,68 60,68"></polygon>
         <line class="rtick" x1="142" y1="94" x2="194" y2="94"></line>
         <text class="rn" x="200" y="96">Hormones</text>
-        <text class="rg" x="200" y="109">the changes in your 40s and 50s</text>
+        <text class="rg" x="200" y="109">Sleep, cycles, and other midlife changes</text>
         <polygon class="rl rls" points="60,62 128,62 94,14"></polygon>
         <line class="rtick" x1="111" y1="40" x2="194" y2="40"></line>
         <text class="rn" x="200" y="42">Energy &amp; longevity</text>
-        <text class="rg" x="200" y="55">energy, strength and recovery</text>
+        <text class="rg" x="200" y="55">Energy, strength, recovery, and healthy aging</text>
       </svg>
-      <p class="seq rise">This is your pyramid. <b>The base has to hold before the top matters</b> — a sequence, not a ranking.</p>
+      <p class="seq rise">Your care can include all three. <b>Weight care is the clearest place to start</b>, while hormones and longevity stay in view.</p>
 
       <h3 class="sec rise">The order from here</h3>
-      <div id="rows" class="rise"></div>
+      <div id="rows" class="rise">
+        <div class="row lead">
+          <div class="row-hd"><span class="ord">1</span>
+            <span class="row-t"><p class="row-when">Start here</p><p class="row-n">Weight &amp; metabolism</p>
+            <p class="row-s">Weight care, including GLP-1 options</p></span></div>
+        </div>
+        <div class="row rl2">
+          <div class="row-hd"><span class="ord">2</span>
+            <span class="row-t"><p class="row-when">Keep in view</p><p class="row-n">Hormones</p>
+            <p class="row-s">Support for sleep, cycles, and midlife changes</p></span></div>
+        </div>
+        <div class="row rl3">
+          <div class="row-hd"><span class="ord">3</span>
+            <span class="row-t"><p class="row-when">Build on your foundation</p><p class="row-n">Longevity &amp; peptides</p>
+            <p class="row-s">Support for energy, strength, and recovery</p></span></div>
+        </div>
+      </div>
 
-      <div class="open-note rise"><b>An order, not a limit.</b> Start somewhere else if you'd rather — all three stay open to you.</div>
+      <div class="open-note rise"><b>This is a starting point, not a limit.</b> You can explore another area first. All three remain open to you.</div>
 
       <div class="disc rise" id="disc">
         <button class="disc-hd">How we got here <span class="msr">expand_more</span></button>
         <div class="disc-body"><div class="disc-inner">
-          <p class="rf-lbl">In your words</p>
-          <div id="rvSaid"></div>
-          <div id="why"></div>
+          <p style="margin:0 0 10px">You told us your weight has been hard to shift, even with consistent effort. Your height and weight add one useful signal, and your sleep changes add more context. Together, they point to weight care as the clearest place to start, with hormone care still in view.</p>
+          <p style="margin:0">Your energy and strength feel steady, so longevity support can stay open for later.</p>
         </div></div>
       </div>
 
       <div class="next rise">
         <b>What happens next</b>
-        <ol><li>A few safety questions</li><li>A clinician reviews what you shared</li><li>You find out whether it's right for you</li></ol>
-        <p style="margin:8px 0 0">Not a diagnosis. A clinician has the final say on what's right for you.</p>
+        <ol><li>Answer a few health and safety questions.</li><li>A licensed clinician reviews your full picture.</li><li>See the weight care options that may fit your needs.</li></ol>
       </div>
     </div>
 
     <div class="footbar">
-      <button class="btn">See your weight-care options</button>
-      <button class="btn ghost">See all three</button>
+      <button class="btn">See your weight care options</button>
     </div>
   </div>
   </div>
@@ -441,146 +454,43 @@
   <div class="grain"></div>
 </div>
 
-<script src="shared/engine.js?v=2025-08-25c"></script>
-<script src="shared/intro.js?v=2025-08-25c"></script>
+<script src="shared/engine.js?v=2025-08-26g"></script>
+<script src="shared/intro.js?v=2025-08-26g"></script>
 <script>
 (function(){
   var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   var dev=document.getElementById('dev'), react=document.getElementById('react'),
       q=document.getElementById('q'), sub=document.getElementById('sub'),
-      whybtn=document.getElementById('whybtn'), whytext=document.getElementById('whytext'),
+      whybtn=document.getElementById('whybtn'),
       slot=document.getElementById('slot'), ways=document.getElementById('ways'),
       mass=document.getElementById('mass'), live=document.getElementById('live'),
       timers=[];
   function later(fn,ms){ timers.push(setTimeout(fn, reduce?10:ms)); }
   function clearT(){ timers.forEach(clearTimeout); timers=[]; stopVoice(); }
 
-  var session, current, pendingReact, attempts;
+  var R = PyramidEngine.REACTS;
 
-  /* Conversation re-presentation of the shared questions: same fills,
-     same order, same branching — only phrased as turns she answers in
-     her own words. */
-  var SUBS={
-    opener:'In your own words — whatever’s been going on.',
-    height:'In feet and inches — roughly is fine.',
-    weight:'In pounds — roughly is fine.',
-    age:'However many years — just the number.'
-  };
-  var WHY={
-    opener:'Because your own words give every question after this its context.',
-    height:'Because paired with your weight, this is one piece of hard fact in the mix — everything else is how you’re feeling.',
-    weight:'Because paired with your height, it’s the one hard fact in the mix — and it stays between us.',
-    pep:'Because this isn’t about a problem you have — it’s about staying ahead of one.',
-    recovery:'Because how you recover says more about staying ahead than any single number.',
-    age:'Because hormone shifts cluster in a specific window, so this tells us if that window applies to you now.',
-    signs:'Because your age alone doesn’t decide this — what you’re noticing does.',
-    prio:'Because we name one starting point, not two things at once.'
-  };
-  /* One honest re-ask before falling back to something tappable.
-     Never guess silently — a wrong guess would decide her result. */
-  var CLARIFY={
-    opener:'Say it however it comes — is it closest to your weight, your sleep, your focus, your energy, or something you can’t pin down?',
-    height:'However you’d say it out loud — like “5 foot 6”.',
-    weight:'Just the number, in pounds — roughly is fine.',
-    pep:'Either way is a fine answer — would you want to stay ahead of things, or deal with them if they come?',
-    recovery:'Compared to before — about the same, or does it take longer now?',
-    age:'A number is all we need.',
-    signs:'Anything like that going on? Yes or no is plenty.',
-    prio:'One word is enough — your weight, or your sleep and cycle?'
-  };
-
-  /* ---------------- parsing (rules only, all local) ---------------- */
-
-  var NUMWORDS=[['one','1'],['two','2'],['three','3'],['four','4'],['five','5'],
-    ['six','6'],['seven','7'],['eight','8'],['nine','9'],['ten','10'],['eleven','11'],
-    ['twenty','20'],['thirty','30'],['forty','40'],['fifty','50'],
-    ['sixty','60'],['seventy','70'],['eighty','80'],['ninety','90'],
-    ['twenties','25'],['thirties','35'],['forties','45'],['fifties','55'],['sixties','65']];
-  function norm(t){
-    t=' '+t.toLowerCase().replace(/[’]/g,"'").replace(/[^a-z0-9.'"′″ ]+/g,' ')+' ';
-    NUMWORDS.forEach(function(p){ t=t.replace(new RegExp('\\b'+p[0]+'\\b','g'), p[1]); });
-    return t.replace(/\s+/g,' ');
-  }
-
-  var OPENER_PATTERNS=[
-    {id:'heavier', re:/\b(weight|heavy|heavier|pounds?|lbs|scale|gain(ed|ing)?)\b/},
-    {id:'sleep',   re:/\b(sleep\w*|insomnia|awake|restless|toss\w*|3 ?a ?m|nights?)\b/},
-    {id:'foggy',   re:/\b(fog\w*|fuzzy|focus\w*|concentrat\w*|brain|memory|forget\w*)\b/},
-    {id:'tired',   re:/\b(tired|exhaust\w*|fatigue\w*|energy|drained|worn|run down)\b/},
-    {id:'off',     re:/\b(off|pin (it )?down|not (quite )?myself|blah|can'?t explain)\b/}
+  /* Five scripted turns, one straight line. She types or speaks in her
+     OWN words — whatever she says is accepted as-is; only the reaction
+     (and everything after it) is scripted. */
+  var TURNS=[
+    {q:'How have you been feeling lately?',
+     sub:'Share what’s been on your mind, in your own words.',
+     ph:'Start wherever feels natural…', react:R.opener},
+    {q:'First, two basics: what’s your height and current weight?',
+     sub:'An estimate is fine.',
+     ph:'Start wherever feels natural…', react:R.numbers},
+    {q:'And how old are you?',
+     sub:'Enter your age.',
+     ph:'Start wherever feels natural…', react:R.age},
+    {q:'Have you noticed any recent changes in your cycle or sleep — like waking at night, night sweats, or hot flashes?',
+     ph:'Start wherever feels natural…', react:R.hormone},
+    {q:'Is there anything else you’d like support with?',
+     sub:'This can include energy, strength, recovery, joint or tendon health, or skin.',
+     ph:'Start wherever feels natural…', react:R.longevity}
   ];
-  var NO_RE=/\b(no|nope|nah|not really|not (my|for me)|don'?t|wouldn'?t|rather not|deal with|if they come|pass|meh)\b/;
-  var YES_RE=/\b(yes|yeah|yep|sure|absolutely|definitely|curious|proactive|of course|totally|i'?d (like|love|want)|i (do|am|would)|sounds good|i think so)\b/;
 
-  function yesNo(t){
-    var n=NO_RE.test(t), y=YES_RE.test(t);
-    if(n && !y) return 'no';
-    if(y && !n) return 'yes';
-    return null;
-  }
-
-  function parseAnswer(step, raw){
-    var t=norm(raw), m;
-    switch(step.id){
-      case 'opener':
-        var hits=[];
-        OPENER_PATTERNS.forEach(function(p){
-          var mm=t.match(p.re);
-          if(mm) hits.push({id:p.id, at:t.indexOf(mm[0])});
-        });
-        if(!hits.length) return null;
-        hits.sort(function(a,b){ return a.at-b.at; });
-        /* "off" only counts alone — if she named anything concrete, that leads */
-        var ids=hits.map(function(h){ return h.id; });
-        if(ids.length>1) ids=ids.filter(function(id){ return id!=='off'; });
-        return {value:ids, words:[raw.trim()]};
-      case 'height':
-        m=t.match(/\b([3-7])\s*(?:'|′|ft|feet|foot)\s*(\d{1,2})?/);
-        if(!m) m=t.match(/\b([3-7])\s+(\d{1,2})\b/);
-        if(m){
-          var ft=+m[1], inch=m[2]!==undefined?+m[2]:0;
-          if(inch<=11) return {value:{ft:ft,inch:inch}};
-        }
-        m=t.match(/\b(\d{2})\s*(?:in|inch(es)?)?\b/);
-        if(m && +m[1]>=36 && +m[1]<=95){
-          var tot=+m[1];
-          return {value:{ft:Math.floor(tot/12), inch:tot%12}};
-        }
-        return null;
-      case 'weight':
-        m=t.match(/\b(\d{2,3}(?:\.\d+)?)\s*(?:lbs?|pounds?)?\b/);
-        if(m && +m[1]>=60 && +m[1]<=700) return {value:{lbs:+m[1]}};
-        return null;
-      case 'pep':
-        var v=yesNo(t);
-        return v ? {value:v} : null;
-      case 'recovery':
-        if(/\b(longer|slower|slow|more time|takes (me )?(a )?(lot |bit )?(longer|more)|not (as|like) (fast|quick|before)|struggle|days)\b/.test(t)) return {value:'slower'};
-        if(/\b(same|fine|quick\w*|fast|normal|no different|as always|right back|no problem)\b/.test(t)) return {value:'same'};
-        return null;
-      case 'age':
-        m=t.match(/\b(\d{2})\b/);
-        if(m){
-          var a=+m[1];
-          if(a>=18 && a<=105){
-            return {value: a<40?'u40' : a<50?'40s' : a<60?'50s' : '60p'};
-          }
-        }
-        return null;
-      case 'signs':
-        if(/\b(sweat\w*|cycle\w*|period\w*|heat|flash\w*|flush\w*|irregular)\b/.test(t)) return {value:'yes'};
-        var sv=yesNo(t);
-        return sv ? {value:sv} : null;
-      case 'prio':
-        var w=/\b(weight|pounds?|body|scale)\b/.test(t),
-            s=/\b(sleep\w*|cycle\w*|nights?|hormon\w*)\b/.test(t);
-        if(w && !s) return {value:'A', words:[raw.trim()]};
-        if(s && !w) return {value:'B', words:[raw.trim()]};
-        return null;
-    }
-    return null;
-  }
-  window.__parse=parseAnswer;   /* exposed for QA — no UI depends on it */
+  var ti=0, pendingReact=null, current=null;
 
   /* ---------------- voice amplitude (visual only) ---------------- */
   var voiceTimer=null, amp=0, target=0;
@@ -627,27 +537,27 @@
     if(rec){ try{ rec.stop(); }catch(_){} rec=null; }
   }
 
-  /* ---------------- turns (draft rhythm, kept) ---------------- */
+  /* ---------------- turns ---------------- */
   var mid=document.querySelector('#scrCapture .mid');
 
   function present(){
     dev.className='device';
     slot.innerHTML=''; live.textContent='';
     ways.classList.add('gone');
-    whybtn.style.display='flex'; whytext.classList.remove('open');
-    [react,q,sub,whybtn].forEach(function(el){ el.style.transition='none'; });
+    whybtn.style.display='none';
+    [react,q,sub].forEach(function(el){ el.style.transition='none'; });
     react.classList.remove('in'); q.classList.remove('in'); sub.classList.remove('in');
-    whybtn.classList.remove('vis');
     void q.offsetWidth;
-    [react,q,sub,whybtn].forEach(function(el){ el.style.transition=''; });
+    [react,q,sub].forEach(function(el){ el.style.transition=''; });
 
-    current=session.next();
+    current = ti<TURNS.length ? TURNS[ti] : null;
     if(!current){
+      /* the last react lands alone, breathes, then the processing takes over */
       if(pendingReact){
         react.classList.remove('mute'); react.textContent=pendingReact;
         later(function(){ react.classList.add('in'); }, 240);
-        later(function(){ react.classList.remove('in'); }, 2350);
-        later(function(){ PyramidEngine.toProcessing(); }, 2900);
+        later(function(){ react.classList.remove('in'); }, 1800);
+        later(function(){ PyramidEngine.toProcessing(); }, 2250);
       } else PyramidEngine.toProcessing();
       return;
     }
@@ -655,21 +565,18 @@
     function showQuestion(){
       react.classList.add('mute');
       q.textContent=current.q;
-      var s=SUBS[current.id];
-      if(s){ sub.classList.remove('mute'); sub.textContent=s; }
+      if(current.sub){ sub.classList.remove('mute'); sub.textContent=current.sub; }
       else sub.classList.add('mute');
-      whytext.textContent=WHY[current.id]||'';
       later(function(){
         ways.classList.remove('gone');
-        q.classList.add('in'); if(s) sub.classList.add('in');
+        q.classList.add('in'); if(current.sub) sub.classList.add('in');
       }, 80);
-      later(function(){ whybtn.classList.add('vis'); }, 400);
     }
     if(pendingReact){
       react.classList.remove('mute'); react.textContent=pendingReact;
       later(function(){ react.classList.add('in'); }, 240);
-      later(function(){ react.classList.remove('in'); }, 2350);
-      later(showQuestion, 2900);
+      later(function(){ react.classList.remove('in'); }, 1800);
+      later(showQuestion, 2250);
     } else showQuestion();
     pendingReact=null;
   }
@@ -687,147 +594,27 @@
 
   function stepBack(){
     ways.classList.add('gone');
-    whybtn.style.display='none'; whytext.classList.remove('open');
     dev.classList.add('answering');
   }
 
-  /* ---------------- her text arrives ---------------- */
+  /* Her words are accepted as they come — no parsing, no judging.
+     The reaction is the scripted one for this turn. */
   function handleText(raw){
     if(!raw || !raw.trim()){ backToQuestion(); return; }
-    var parsed=parseAnswer(current, raw);
-    if(parsed){
-      attempts[current.id]=0;
-      pendingReact=session.answer(current.id, parsed.value, parsed.words||null);
-      fadeThenPresent();
-      return;
-    }
-    attempts[current.id]=(attempts[current.id]||0)+1;
-    if(attempts[current.id]===1) clarify();
-    else structuredFallback();
+    pendingReact=current.react;
+    ti++;
+    fadeThenPresent();
   }
-
-  /* first miss: Found narrows the question, conversationally */
-  function clarify(){
-    dev.className='device';
-    slot.innerHTML=''; live.textContent='';
-    ways.classList.add('gone');
-    [react,q,sub].forEach(function(el){ el.style.transition='none'; });
-    react.classList.remove('in'); q.classList.remove('in'); sub.classList.remove('in');
-    void q.offsetWidth;
-    [react,q,sub].forEach(function(el){ el.style.transition=''; });
-    react.classList.add('mute');
-    q.textContent=CLARIFY[current.id];
-    sub.classList.add('mute');
-    later(function(){
-      ways.classList.remove('gone');
-      q.classList.add('in');
-    }, 120);
-  }
-
-  /* second miss: something tappable — the conversation offers a hand
-     instead of looping. Chips for choices, a card for numbers. */
-  function structuredFallback(){
-    dev.className='device';
-    slot.innerHTML=''; live.textContent='';
-    ways.classList.add('gone');
-    [react,q,sub].forEach(function(el){ el.style.transition='none'; });
-    react.classList.remove('in'); q.classList.remove('in'); sub.classList.remove('in');
-    void q.offsetWidth;
-    [react,q,sub].forEach(function(el){ el.style.transition=''; });
-    react.classList.add('mute'); sub.classList.add('mute');
-    q.textContent = (current.kind==='height'||current.kind==='weight')
-      ? 'Here’s an easier way to give it.'
-      : 'Tap whichever is closest.';
-    later(function(){ q.classList.add('in'); }, 120);
-
-    var box=document.createElement('div'); box.className='chips';
-    slot.appendChild(box);
-
-    if(current.kind==='height'){
-      var row=document.createElement('div'); row.className='numrow';
-      row.innerHTML=
-        '<label>Feet<select id="cvFt"><option value="" selected disabled>—</option>'
-        +[3,4,5,6,7].map(function(f){return '<option value="'+f+'">'+f+'&prime;</option>';}).join('')
-        +'</select></label>'
-        +'<label>Inches<select id="cvIn"><option value="" selected disabled>—</option>'
-        +Array.apply(null,{length:12}).map(function(_,i){return '<option value="'+i+'">'+i+'&Prime;</option>';}).join('')
-        +'</select></label>';
-      box.appendChild(row);
-      var go=document.createElement('button'); go.className='chip go'; go.textContent='Continue';
-      box.appendChild(go);
-      go.onclick=function(){
-        var ft=document.getElementById('cvFt').value, inch=document.getElementById('cvIn').value;
-        if(ft===''||inch==='') return;
-        attempts[current.id]=0;
-        pendingReact=session.answer('height',{ft:+ft,inch:+inch},null);
-        fadeThenPresent();
-      };
-      return;
-    }
-    if(current.kind==='weight'){
-      var row2=document.createElement('div'); row2.className='numrow';
-      row2.innerHTML='<label>Weight (lbs)<input type="text" id="cvLbs" inputmode="numeric" autocomplete="off" placeholder="e.g. 180"></label>';
-      box.appendChild(row2);
-      var go2=document.createElement('button'); go2.className='chip go'; go2.textContent='Continue';
-      box.appendChild(go2);
-      go2.onclick=function(){
-        var m=document.getElementById('cvLbs').value.trim().match(/^(\d{2,3})(\.\d+)?$/);
-        var lbs=m?parseFloat(m[0]):NaN;
-        if(!(lbs>=60&&lbs<=700)) return;
-        attempts[current.id]=0;
-        pendingReact=session.answer('weight',{lbs:lbs},null);
-        fadeThenPresent();
-      };
-      return;
-    }
-    if(current.kind==='multi'){
-      var picked=[];
-      var goM=document.createElement('button'); goM.className='chip go'; goM.textContent='That’s everything'; goM.style.display='none';
-      current.opts.forEach(function(o){
-        var b=document.createElement('button'); b.className='chip multi';
-        b.innerHTML='<span class="ck"></span><span></span>';
-        b.lastChild.textContent=o.t;
-        b.onclick=function(){
-          var at=picked.indexOf(o.id);
-          if(at>-1){ picked.splice(at,1); b.classList.remove('picked'); }
-          else{ picked.push(o.id); b.classList.add('picked'); }
-          goM.style.display=picked.length?'':'none';
-        };
-        box.appendChild(b);
-      });
-      box.appendChild(goM);
-      goM.onclick=function(){
-        if(!picked.length) return;
-        var words=picked.map(function(id){
-          return current.opts.filter(function(o){return o.id===id;})[0].t.toLowerCase();
-        });
-        attempts[current.id]=0;
-        pendingReact=session.answer('opener', picked.slice(), words);
-        fadeThenPresent();
-      };
-      return;
-    }
-    current.opts.forEach(function(o){
-      var b=document.createElement('button'); b.className='chip'; b.textContent=o.t;
-      b.onclick=function(){
-        attempts[current.id]=0;
-        pendingReact=session.answer(current.id, o.id, [o.t.toLowerCase()]);
-        fadeThenPresent();
-      };
-      box.appendChild(b);
-    });
-  }
-
   function backToQuestion(){ clearT(); present(); }
 
-  /* ---- typing: a real field. Her words, sent when she says so. ---- */
+  /* ---- typing: a real field ---- */
   function goType(){
     clearT(); stepBack();
     dev.classList.remove('speaking'); dev.classList.add('typing');
     slot.innerHTML=''; live.textContent='';
     var ta=document.createElement('textarea');
     ta.className='tin'; ta.rows=3; ta.autocomplete='off';
-    ta.placeholder='Say it however it comes…';
+    ta.placeholder=current.ph || 'Start wherever feels natural…';
     var btn=document.createElement('button'); btn.className='btn tsend'; btn.textContent='Send';
     var esc=document.createElement('button'); esc.className='sk-x t-x';
     esc.setAttribute('aria-label','Back');
@@ -868,7 +655,6 @@
       if(b.getAttribute('data-mode')==='speak') goSpeak(); else goType();
     };
   });
-  whybtn.onclick=function(){ whytext.classList.toggle('open'); };
 
   /* no speech engine in this browser → the mic way simply isn't offered */
   if(!SR){
@@ -878,9 +664,7 @@
 
   window.__startCapture=function(){
     clearT();
-    session=PyramidEngine.create();
-    window.__session=session;
-    pendingReact=null; attempts={};
+    ti=0; pendingReact=null;
     present();
   };
 })();
