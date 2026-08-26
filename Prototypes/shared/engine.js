@@ -17,10 +17,10 @@ window.PyramidEngine = (function(){
      After each answer the react shows ON ITS OWN, then the next
      question arrives. */
   var REACTS = {
-    opener:   'Thanks for sharing that.',
+    opener:   'Thanks for sharing.',
     weight:   'Got it.',
-    age:      'That helps us get to know you better.',
-    hormone:  'That’s helpful to know. Changes like these can have more than one cause.',
+    age:      'Thanks for letting us get to know you better.',
+    hormone:  'That’s helpful to know. Changes like these could have more than one cause.',
     longevity:'We have what we need to show you a starting point.'
   };
   /* Beat order — the one straight line every option walks.

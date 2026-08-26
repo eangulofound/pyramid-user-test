@@ -33,11 +33,11 @@ These lines are identical across the three prototypes (they live in
 
 | Signal | Reaction |
 |---|---|
-| What matters now | Thanks for sharing that. |
+| What matters now | Thanks for sharing. |
 | Height | *(no reaction — flows straight into weight)* |
 | Weight | Got it. |
-| Age | That helps us get to know you better. |
-| Hormone | That's helpful to know. Changes like these can have more than one cause. |
+| Age | Thanks for letting us get to know you better. |
+| Hormone | That's helpful to know. Changes like these could have more than one cause. |
 | Longevity | We have what we need to show you a starting point. |
 
 → **Go to Result** (always Weight care — see `Result Content.md`).
@@ -52,7 +52,7 @@ The participant types or speaks each scripted response in their own words.
 - Question: *How have you been feeling lately?*
 - Typing placeholder: *Start wherever feels natural…*
 - Scripted response: "My weight hasn't changed in two years, no matter what I try."
-- Reaction: *Thanks for sharing that.*
+- Reaction: *Thanks for sharing.*
 
 **Turn 2 · Weight signal**
 - Question: *Could you share your height and current weight?*
@@ -62,13 +62,13 @@ The participant types or speaks each scripted response in their own words.
 **Turn 3 · Age signal**
 - Question: *And how old are you?*
 - Scripted response: "I'm 44."
-- Reaction: *That helps us get to know you better.*
+- Reaction: *Thanks for letting us get to know you better.*
 
 **Turn 4 · Hormone signal**
 - Question: *Have you noticed any changes in your cycle or sleep lately? This
   could include waking at night, night sweats, or hot flashes.*
 - Scripted response: "My sleep has changed. I wake up around 3 a.m. most nights."
-- Reaction: *That's helpful to know. Changes like these can have more than one
+- Reaction: *That's helpful to know. Changes like these could have more than one
   cause.*
 
 **Turn 5 · Longevity signal**
@@ -94,7 +94,7 @@ into weight with no reaction in between.
 - *My energy feels low*
 - *I'm having trouble thinking clearly*
 - *Something else*
-- Reaction: *Thanks for sharing that.*
+- Reaction: *Thanks for sharing.*
 
 **Q2 · Height signal**
 - Question: *How tall are you?*
@@ -112,15 +112,15 @@ into weight with no reaction in between.
 - Question: *And how old are you?*
 - Helper text: *Enter your age.*
 - Age field: ✓ **44** · CTA: **Continue**
-- Reaction: *That helps us get to know you better.*
+- Reaction: *Thanks for letting us get to know you better.*
 
 **Q5 · Hormone signal** *(single-select)*
 - Question: *Have you noticed any changes in your cycle or sleep lately?*
-- ✓ *My sleep has changed — I wake up around 3 a.m. most nights*
+- ✓ *My sleep has changed, I wake up around 3 a.m. most nights*
 - *My cycle has changed*
 - *I've noticed night sweats or hot flashes*
 - *I haven't noticed any changes*
-- Reaction: *That's helpful to know. Changes like these can have more than one
+- Reaction: *That's helpful to know. Changes like these could have more than one
   cause.*
 
 **Q6 · Longevity signal** *(multi-select with an exclusive "steady" chip)*
@@ -143,14 +143,14 @@ each scripted selection. Reactions play between blanks, tray hidden.
 
 > Lately, **my weight hasn't changed in two years, no matter what I try**. I'm
 > **5'6"** and about **188 pounds**. I'm **44**. I've also noticed **my sleep
-> has changed — I wake up around 3 a.m. most nights**. Beyond that, **my energy
+> has changed, I wake up around 3 a.m. most nights**. Beyond that, **my energy
 > and strength feel steady**.
 
 **Blank 1 · What's been going on** *(single-select — the tap fills the blank)*
 - ✓ *my weight hasn't changed in two years, no matter what I try*
 - *my energy feels low*
 - *I'm having trouble thinking clearly*
-- Reaction: *Thanks for sharing that.*
+- Reaction: *Thanks for sharing.*
 
 **Blanks 2 & 3 · Height and weight**
 - Helper text: *An estimate is fine.*
@@ -159,14 +159,14 @@ each scripted selection. Reactions play between blanks, tray hidden.
 
 **Blank 4 · Age**
 - Age picker: ✓ **44**
-- Reaction: *That helps us get to know you better.*
+- Reaction: *Thanks for letting us get to know you better.*
 
 **Blank 5 · What has changed** *(words phrased to complete "I've also noticed ___")*
-- ✓ *my sleep has changed — I wake up around 3 a.m. most nights*
+- ✓ *my sleep has changed, I wake up around 3 a.m. most nights*
 - *my cycle has changed*
 - *night sweats or hot flashes*
 - *no real changes*
-- Reaction: *That's helpful to know. Changes like these can have more than one
+- Reaction: *That's helpful to know. Changes like these could have more than one
   cause.*
 
 **Blank 6 · Other areas of support**
