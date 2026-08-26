@@ -475,18 +475,16 @@
      (and everything after it) is scripted. */
   var TURNS=[
     {q:'How have you been feeling lately?',
-     sub:'Share what’s been on your mind, in your own words.',
      ph:'Start wherever feels natural…', react:R.opener},
-    {q:'First, two basics: what’s your height and current weight?',
-     sub:'An estimate is fine.',
-     ph:'Start wherever feels natural…', react:R.numbers},
+    {q:'Could you share your height and current weight?',
+     ph:'Start wherever feels natural…', react:R.weight},
     {q:'And how old are you?',
-     sub:'Enter your age.',
      ph:'Start wherever feels natural…', react:R.age},
-    {q:'Have you noticed any recent changes in your cycle or sleep — like waking at night, night sweats, or hot flashes?',
+    {q:'Have you noticed any changes in your cycle or sleep lately?',
+     sub:'This could include waking at night, night sweats, or hot flashes.',
      ph:'Start wherever feels natural…', react:R.hormone},
     {q:'Is there anything else you’d like support with?',
-     sub:'This can include energy, strength, recovery, joint or tendon health, or skin.',
+     sub:'This could include energy, strength, recovery, joint or tendon health, or skin.',
      ph:'Start wherever feels natural…', react:R.longevity}
   ];
 

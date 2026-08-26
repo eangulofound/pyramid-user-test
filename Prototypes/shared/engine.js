@@ -17,14 +17,15 @@ window.PyramidEngine = (function(){
      After each answer the react shows ON ITS OWN, then the next
      question arrives. */
   var REACTS = {
-    opener:   'You’ve been putting in the work. Let’s look at the full picture.',
-    numbers:  'Got it. Those numbers add useful context.',
-    age:      'Thanks. That helps us know what to ask about next.',
-    hormone:  'Sleep changes can be worth a closer look in your 40s. We’ll keep that in view.',
-    longevity:'That’s a solid foundation. We’ll keep the focus on what matters now.'
+    opener:   'Thanks for sharing that.',
+    weight:   'Got it.',
+    age:      'That helps us get to know you better.',
+    hormone:  'That’s helpful to know. Changes like these can have more than one cause.',
+    longevity:'We have what we need to show you a starting point.'
   };
-  /* Beat order — the one straight line every option walks. */
-  var BEATS = ['opener','numbers','age','hormone','longevity'];
+  /* Beat order — the one straight line every option walks.
+     Height carries no reaction of its own; it flows into weight. */
+  var BEATS = ['opener','height','weight','age','hormone','longevity'];
 
   /* ---------------- screens, processing, result ---------------- */
 

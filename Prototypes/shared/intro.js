@@ -9,12 +9,12 @@
   var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   var BEATS = [
-    {t:"You've been trying to work out what's going on with your body.",
-     s:"So has the internet. Loudly, and not about you."},
-    {t:"Tell us what's going on.",
-     s:"A few questions, in your own words. Nothing to look up first."},
-    {t:"You leave knowing where to start.",
-     s:"One place to begin, and the reason it's that one."}
+    {t:"There\u2019s a lot out there right now.",
+     s:"Weight care, hormones, energy \u2014 it\u2019s all connected, and the options can feel endless. That\u2019s not on you."},
+    {t:"Let\u2019s get to know you.",
+     s:"A few quick questions, so we can cut through the noise and guide you."},
+    {t:"You\u2019ll leave with a starting point.",
+     s:"One clear place to begin \u2014 and enough context to make a decision about your health."}
   ];
   var CAM  = [0, -375, -755];
   var GIRL = [166, 465, 906];

@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@300;500;600;700&family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,300,0,0&display=block" rel="stylesheet">
-<link rel="stylesheet" href="shared/base.css?v=2025-08-26h">
+<link rel="stylesheet" href="shared/base.css?v=2025-08-26n">
 <style>
 /* ================= OPTION 3 · The Note-Taker ================= */
 .ntk{position:relative;z-index:3;display:flex;flex-direction:column;height:100%;
@@ -620,8 +620,8 @@
   <div class="grain"></div>
 </div>
 
-<script src="shared/engine.js?v=2025-08-26h"></script>
-<script src="shared/intro.js?v=2025-08-26h"></script>
+<script src="shared/engine.js?v=2025-08-26n"></script>
+<script src="shared/intro.js?v=2025-08-26n"></script>
 <script>
 (function(){
   var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -637,16 +637,17 @@
     {id:'opener', kind:'single', react:R.opener,
      q:'How have you been feeling lately?', helper:'Choose what fits best right now.',
      chips:['My weight hasn’t changed, no matter what I try',
-            'I wake up around 3 a.m. most nights',
             'My energy feels low',
             'I’m having trouble thinking clearly',
             'Something else']},
-    {id:'numbers', kind:'numbers', react:R.numbers,
-     q:'First, two basics: what’s your height and current weight?', helper:'An estimate is fine.'},
+    {id:'height', kind:'height', react:null,
+     q:'How tall are you?', helper:'An estimate is fine.'},
+    {id:'weight', kind:'weight', react:R.weight,
+     q:'And what’s your current weight?', helper:'An estimate is fine.'},
     {id:'age', kind:'age', react:R.age,
      q:'And how old are you?', helper:'Enter your age.'},
     {id:'hormone', kind:'single', react:R.hormone,
-     q:'Have you noticed any recent changes in your cycle or sleep — like waking at night, night sweats, or hot flashes?',
+     q:'Have you noticed any changes in your cycle or sleep lately?',
      chips:['My sleep has changed — I wake up around 3 a.m. most nights',
             'My cycle has changed',
             'I’ve noticed night sweats or hot flashes',
@@ -695,7 +696,8 @@
       bub.classList.remove('dim');
     },200);
     opts.innerHTML=''; opts.classList.remove('lock'); opts.style.opacity='';
-    if(step.kind==='numbers') buildNumbers(step);
+    if(step.kind==='height') buildHeight(step);
+    else if(step.kind==='weight') buildWeight(step);
     else if(step.kind==='age') buildAge(step);
     else if(step.kind==='areas') buildAreas(step);
     else buildSingle(step);
@@ -755,7 +757,7 @@
     };
   }
 
-  function buildNumbers(step){
+  function buildHeight(step){
     var wrap=document.createElement('div'); wrap.className='ntk-numrow';
     wrap.innerHTML=
       '<label>Feet<select id="ntkFt"><option value="" selected disabled>—</option>'
@@ -763,8 +765,7 @@
       +'</select></label>'
       +'<label>Inches<select id="ntkIn"><option value="" selected disabled>—</option>'
       +Array.apply(null,{length:12}).map(function(_,i){return '<option value="'+i+'">'+i+'&Prime;</option>';}).join('')
-      +'</select></label>'
-      +'<label>Weight (lb)<input type="text" id="ntkLbs" inputmode="numeric" autocomplete="off" placeholder="e.g. 188"></label>';
+      +'</select></label>';
     opts.appendChild(wrap);
     var hint=addHint('');
     var go=document.createElement('button'); go.className='opt go'; go.textContent='Continue';
@@ -772,10 +773,28 @@
     go.onclick=function(){
       if(locked) return;
       var ft=document.getElementById('ntkFt').value, inch=document.getElementById('ntkIn').value;
-      var m=document.getElementById('ntkLbs').value.trim().match(/^(\d{2,3})(\.\d+)?$/);
-      if(ft===''||inch===''||!m){ hint.textContent='Height and weight — an estimate is fine.'; hint.classList.add('on'); return; }
+      if(ft===''||inch===''){ hint.textContent='Both parts — feet and inches.'; hint.classList.add('on'); return; }
       commit(step);
     };
+  }
+
+  function buildWeight(step){
+    var wrap=document.createElement('div'); wrap.className='ntk-numrow';
+    wrap.innerHTML='<label>Weight (lb)<input type="text" id="ntkLbs" inputmode="numeric" autocomplete="off" placeholder="e.g. 188"></label>';
+    opts.appendChild(wrap);
+    var hint=addHint('');
+    var go=document.createElement('button'); go.className='opt go'; go.textContent='Continue';
+    opts.appendChild(go); chipIn(go, 220);
+    var input=wrap.querySelector('input');
+    later(function(){ input.focus(); }, 450);
+    function submit(){
+      if(locked) return;
+      var m=input.value.trim().match(/^(\d{2,3})(\.\d+)?$/);
+      if(!m){ hint.textContent='Just the number, in pounds.'; hint.classList.add('on'); return; }
+      commit(step);
+    }
+    go.onclick=submit;
+    input.addEventListener('keydown',function(e){ if(e.key==='Enter') submit(); });
   }
 
   function buildAge(step){
@@ -808,6 +827,11 @@
        stays on stage, then the next question brings its own controls */
     later(function(){ opts.style.opacity=0; }, 250);
     later(function(){ opts.innerHTML=''; }, 600);
+    if(!step.react){
+      /* no reaction on this beat — the next question arrives directly */
+      later(function(){ si++; paintBar(); ask(); }, 650);
+      return;
+    }
     later(function(){
       bub.textContent=step.react;
       bub.classList.add('react'); bub.classList.remove('dim');
