@@ -502,3 +502,25 @@ svg.stage{width:100%;display:block}
   font-family:var(--sans);font-size:10.5px;font-weight:600;letter-spacing:.6px;
   text-transform:uppercase;padding:7px 10px;opacity:.5;transition:opacity .3s,color .3s}
 .reset:hover,.reset:focus-visible{opacity:1;color:var(--sage-400)}
+
+/* ===== intro v2 · meadow scene keyframes (namespaced) ===== */
+@keyframes nbreathe{0%,100%{transform:scale(1)}50%{transform:scale(1.016)}}
+@keyframes nswy{0%,100%{transform:rotate(-1.3deg)}50%{transform:rotate(1.3deg)}}
+@keyframes nfloaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+@keyframes npulse{0%,100%{transform:scale(.9);opacity:.7}50%{transform:scale(1.1);opacity:1}}
+@keyframes nsparkle{0%,100%{opacity:.3;transform:scale(.8)}50%{opacity:1;transform:scale(1.2)}}
+@keyframes npetal{0%{transform:translate(0,-24px) rotate(0deg);opacity:0}8%{opacity:.9}80%{opacity:.75}100%{transform:translate(-30px,320px) rotate(310deg);opacity:0}}
+@keyframes nflutter{0%,100%{transform:scaleX(1)}50%{transform:scaleX(.35)}}
+@keyframes nbfly{0%,100%{transform:translate(0,0)}25%{transform:translate(16px,-9px)}50%{transform:translate(30px,3px)}75%{transform:translate(13px,10px)}}
+@keyframes nringx{0%{transform:scale(.55);opacity:.75}75%{transform:scale(1.6);opacity:0}100%{transform:scale(1.6);opacity:0}}
+@keyframes nrays{to{transform:rotate(360deg)}}
+@keyframes nbird{0%,100%{transform:translate(0,0)}50%{transform:translate(-10px,-4px)}}
+@keyframes nhairflow{0%,100%{transform:skewX(0deg)}50%{transform:skewX(-3deg)}}
+@keyframes nstepA{0%,100%{transform:rotate(16deg)}50%{transform:rotate(-16deg)}}
+@keyframes nstepB{0%,100%{transform:rotate(-16deg)}50%{transform:rotate(16deg)}}
+@keyframes nbob{0%,100%{transform:translateY(0)}50%{transform:translateY(-2.5px)}}
+@keyframes narmswing{0%,100%{transform:rotate(10deg)}50%{transform:rotate(-10deg)}}
+@keyframes nwfloat{0%,100%{transform:translate(0,0)}50%{transform:translate(5px,-6px)}}
+@keyframes nwfloat2{0%,100%{transform:translate(0,0)}50%{transform:translate(-6px,5px)}}
+@keyframes nvortex{to{stroke-dashoffset:-90}}
+@keyframes nwflow{0%{transform:translate(0,0);opacity:0}8%{opacity:.95}90%{opacity:.9}100%{transform:translate(var(--dx),var(--dy));opacity:0}}
