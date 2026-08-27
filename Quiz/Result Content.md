@@ -1,11 +1,12 @@
-# Result screen content — one scripted outcome
+# Result screen content — one predetermined outcome
 
-The Result is **identical across all three prototypes**: Weight care, for the
-scripted character (44 · 5'6" · 188 lb · BMI ≈ 30.3, used by the prototype but
-never shown · weight first, sleep changes kept in view, energy steady).
+The Result is **identical across all three prototypes**: Weight Care,
+predetermined regardless of what the participant answers (participants answer
+as themselves; the path and outcome are fixed).
 
-Source: *The Pyramid — Scripted Question Story & Result Copy* (copy-reviewed
-version, Aug 2025). Copy below is final — use as written.
+Source: *The Pyramid — Result Screen Copy* (v2, Aug 2025). Copy below is
+final — use as written. The copy is deliberately general so it works with any
+participant response — it never claims to interpret what they shared.
 
 ---
 
@@ -13,8 +14,8 @@ version, Aug 2025). Copy below is final — use as written.
 
 - **Eyebrow:** YOUR STARTING POINT
 - **Headline:** Weight care.
-- **Supporting copy:** Based on what you shared, weight care is the clearest
-  place to start.
+- **Supporting copy:** Weight care is your starting point, with hormone and
+  longevity support still in view.
 
 ## Pyramid labels
 
@@ -25,8 +26,8 @@ version, Aug 2025). Copy below is final — use as written.
 | Base · **Start here** | Weight & metabolism | Weight, appetite, and metabolic health |
 
 **Pyramid explanation (below the pyramid):**
-Your care can include all three. Weight care is the clearest place to start,
-while hormones and longevity stay in view.
+Your care can include all three. Hormone and longevity support stay open as
+your needs evolve.
 
 ## The order from here
 
@@ -34,28 +35,23 @@ while hormones and longevity stay in view.
 |---|---|---|---|
 | 1 | **START HERE** | Weight & metabolism | Weight care, including GLP-1 options |
 | 2 | **KEEP IN VIEW** | Hormones | Support for sleep, cycles, and midlife changes |
-| 3 | **BUILD ON YOUR FOUNDATION** | Longevity & peptides | Support for energy, strength, and recovery |
+| 3 | **OPEN WHEN YOU'RE READY** | Longevity & peptides | Support for energy, strength, and recovery |
 
 ## Reassurance callout
 
-This is a starting point, not a limit. You can explore another area first. All
-three remain open to you.
+This is a starting point, not a limit. If another area feels more important,
+you can explore it first.
 
 ## How we got here
 
-You told us your weight has been hard to shift, even with consistent effort.
-Your height and weight add one useful signal, and your sleep changes add more
-context. Together, they point to weight care as the clearest place to start,
-with hormone care still in view.
-
-Your energy and strength feel steady, so longevity support can stay open for
-later.
+This is one way to organize the areas you explored. Weight care comes first
+here, while hormone care and longevity support remain open to you.
 
 ## What happens next
 
 1. Answer a few health and safety questions.
 2. A licensed clinician reviews your full picture.
-3. See the weight care options that may fit your needs.
+3. Review the weight care options available to you.
 
 ## CTA
 
@@ -63,11 +59,10 @@ later.
 
 ---
 
-## Notes
+## Copy guardrails
 
-- This is the only Result: no statuses to compute, no endings table — the flow
-  is linear and the character fixed.
-- The BMI is used by the prototype but **never shown or spoken** — "How we got
-  here" describes the signals in plain words instead.
-- Guardrails from `Question Story.md` apply, especially: do not imply a
-  diagnosis, clinical assessment, or promised outcome.
+- Present Weight Care as a starting point, not a limit.
+- Keep Hormone Care and Longevity / Peptides visible as available areas of
+  support.
+- Keep the explanation general enough to work with any participant response.
+- Do not imply a diagnosis, completed clinical assessment, or promised outcome.

@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@300;500;600;700&family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,300,0,0&display=block" rel="stylesheet">
-<link rel="stylesheet" href="shared/base.css?v=2025-08-26o">
+<link rel="stylesheet" href="shared/base.css?v=2025-08-27c">
 <style>
 /* ================= OPTION 3 · The Note-Taker ================= */
 .ntk{position:relative;z-index:3;display:flex;flex-direction:column;height:100%;
@@ -557,7 +557,7 @@
     <div class="scroller" id="scroll">
       <p class="eyebrow rise">Your starting point</p>
       <h2 class="lead-head rise">Weight care.</h2>
-      <p class="oneliner rise">Based on what you shared, weight care is the clearest place to start.</p>
+      <p class="oneliner rise">Weight care is your starting point, with hormone and longevity support still in view.</p>
 
       <svg class="respyr rise" viewBox="0 0 440 182" aria-label="Your pyramid: weight and metabolism to start, hormones and longevity in view">
         <polygon class="rl lead rla" points="4,170 184,170 156,122 32,122"></polygon>
@@ -574,7 +574,7 @@
         <text class="rn" x="200" y="42">Energy &amp; longevity</text>
         <text class="rg" x="200" y="55">Energy, strength, recovery, and healthy aging</text>
       </svg>
-      <p class="seq rise">Your care can include all three. <b>Weight care is the clearest place to start</b>, while hormones and longevity stay in view.</p>
+      <p class="seq rise"><b>Your care can include all three.</b> Hormone and longevity support stay open as your needs evolve.</p>
 
       <h3 class="sec rise">The order from here</h3>
       <div id="rows" class="rise">
@@ -590,24 +590,23 @@
         </div>
         <div class="row rl3">
           <div class="row-hd"><span class="ord">3</span>
-            <span class="row-t"><p class="row-when">Build on your foundation</p><p class="row-n">Longevity &amp; peptides</p>
+            <span class="row-t"><p class="row-when">Open when you’re ready</p><p class="row-n">Longevity &amp; peptides</p>
             <p class="row-s">Support for energy, strength, and recovery</p></span></div>
         </div>
       </div>
 
-      <div class="open-note rise"><b>This is a starting point, not a limit.</b> You can explore another area first. All three remain open to you.</div>
+      <div class="open-note rise"><b>This is a starting point, not a limit.</b> If another area feels more important, you can explore it first.</div>
 
       <div class="disc rise" id="disc">
         <button class="disc-hd">How we got here <span class="msr">expand_more</span></button>
         <div class="disc-body"><div class="disc-inner">
-          <p style="margin:0 0 10px">You told us your weight has been hard to shift, even with consistent effort. Your height and weight add one useful signal, and your sleep changes add more context. Together, they point to weight care as the clearest place to start, with hormone care still in view.</p>
-          <p style="margin:0">Your energy and strength feel steady, so longevity support can stay open for later.</p>
+          <p style="margin:0">This is one way to organize the areas you explored. Weight care comes first here, while hormone care and longevity support remain open to you.</p>
         </div></div>
       </div>
 
       <div class="next rise">
         <b>What happens next</b>
-        <ol><li>Answer a few health and safety questions.</li><li>A licensed clinician reviews your full picture.</li><li>See the weight care options that may fit your needs.</li></ol>
+        <ol><li>Answer a few health and safety questions.</li><li>A licensed clinician reviews your full picture.</li><li>Review the weight care options available to you.</li></ol>
       </div>
     </div>
 
@@ -620,8 +619,8 @@
   <div class="grain"></div>
 </div>
 
-<script src="shared/engine.js?v=2025-08-26o"></script>
-<script src="shared/intro.js?v=2025-08-26o"></script>
+<script src="shared/engine.js?v=2025-08-27c"></script>
+<script src="shared/intro.js?v=2025-08-27c"></script>
 <script>
 (function(){
   var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -634,29 +633,34 @@
   /* The five beats as chips — scripted, one straight line. Picks never
      branch anything; the reacts and the Result are fixed. */
   var STEPS=[
-    {id:'opener', kind:'single', react:R.opener,
-     q:'How have you been feeling lately?', helper:'Choose what fits best right now.',
-     chips:['My weight hasn’t changed, no matter what I try',
-            'My energy feels low',
-            'I’m having trouble thinking clearly',
-            'Something else']},
+    {id:'opener', kind:'areas', react:R.opener,
+     q:'How have you been feeling lately?',
+     chips:['I’ve been trying to lose weight, but it hasn’t changed',
+            'I’ve noticed hormone or midlife changes',
+            'My energy, strength, or recovery feels different',
+            'I’ve been thinking more about my overall health',
+            'I’m not sure how to describe it',
+            'Something else'],
+     confirm:'Continue'},
     {id:'height', kind:'height', react:null,
      q:'How tall are you?', helper:'An estimate is fine.'},
     {id:'weight', kind:'weight', react:R.weight,
      q:'And what’s your current weight?', helper:'An estimate is fine.'},
     {id:'age', kind:'age', react:R.age,
-     q:'And how old are you?', helper:'Enter your age.'},
+     q:'And how old are you?'},
     {id:'hormone', kind:'single', react:R.hormone,
-     q:'Have you noticed any changes in your cycle or sleep lately?',
-     chips:['My sleep has changed, I wake up around 3 a.m. most nights',
-            'My cycle has changed',
-            'I’ve noticed night sweats or hot flashes',
-            'I haven’t noticed any changes']},
-    {id:'longevity', kind:'areas', react:R.longevity,
-     q:'Is there anything else you’d like support with?', helper:'Choose any areas where support would feel useful.',
-     chips:['Energy','Strength','Recovery','Joints and tendons','Skin'],
-     exclusive:'I feel good in these areas',
-     confirm:'Continue'}
+     q:'Have you noticed any changes in your cycle, sleep, or other midlife symptoms lately?',
+     chips:['Changes in my cycle',
+            'Changes in my sleep or waking up during the night',
+            'Night sweats or hot flashes',
+            'Changes in mood or focus',
+            'Changes in sexual health',
+            'I haven’t noticed any changes',
+            'I prefer not to answer']},
+    {id:'longevity', kind:'single', react:R.longevity,
+     q:'Are there any other areas you’d like support with?',
+     chips:['Energy','Strength','Recovery','Joint or tendon health','Skin',
+            'Healthy aging','Nothing else right now']}
   ];
 
   var bub=document.getElementById('ntkBubble'), opts=document.getElementById('ntkOpts'),
@@ -746,7 +750,7 @@
       opts.appendChild(b); chipIn(b, 220+i*60);
     }
     step.chips.forEach(function(t,i){ make(t,false,i); });
-    make(step.exclusive, true, step.chips.length);
+    if(step.exclusive) make(step.exclusive, true, step.chips.length);
     opts.appendChild(go); chipIn(go, 220+(step.chips.length+1)*60);
     go.onclick=function(){
       if(locked || !picked.length) return;

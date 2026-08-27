@@ -1,80 +1,73 @@
-# The Pyramid — Scripted Question Story (one path, three tellings)
+# The Pyramid — Question Story (participants as themselves)
 
-One fixed character. Five signals. One Weight Care result. The facts and
-outcome stay consistent across all three prototypes; **only the interaction
-changes**.
+Participants answer **as themselves** — there is no fixed character and no
+scripted responses. What stays fixed across all three prototypes: the topic
+sequence, the reactions, and the predetermined **Weight Care** result. Only
+the interaction changes.
 
-Source: *The Pyramid — Prototype Question & Response Copy* (copy-reviewed v2,
-Aug 2025). Copy below is final — use as written.
-
----
-
-## The character (identical in all three)
-
-| Fact | Scripted value |
-|---|---|
-| Age | 44 |
-| Height | 5'6" |
-| Weight | 188 lb |
-| BMI | Approximately 30.3 — **used by the prototype, not shown to the participant** |
-| Primary concern | Weight has not changed despite two years of effort |
-| Additional concern | Waking around 3 a.m. most nights |
-| Energy and strength | Feel steady |
-| Starting point | **Weight care** |
-| Kept in view | Hormone care · Longevity / peptides |
+Source: *The Pyramid — Prototype Question & Response Copy* (v3, Aug 2025).
+Copy below is final — use as written.
 
 ---
+
+## Shared experience logic
+
+- Participants use their own health experiences; there are no scripted user
+  responses.
+- The shared story moves from overall health concerns to height and weight,
+  age, hormone-related changes, and longevity-related areas.
+- If an earlier response already covers a later topic, skip or prefill that
+  question instead of asking for the same information again. *(Design
+  guideline — the prototypes keep the fixed sequence, since honoring this
+  would require interpreting free-text answers.)*
+- The result remains **Weight Care**, with Hormone Care and Longevity /
+  Peptides kept in view.
 
 ## The shared reactions
 
 After each answer, the reaction shows **on its own** before the next question.
-These lines are identical across the three prototypes (they live in
-`Prototypes/shared/engine.js`):
+Identical across the three prototypes (they live in
+`Prototypes/shared/engine.js`). Reactions are neutral by design — they must
+work with any participant response.
 
-| Signal | Reaction |
+| Topic | Reaction |
 |---|---|
-| What matters now | Thanks for sharing. |
+| Overall health | Thanks for sharing. |
 | Height | *(no reaction — flows straight into weight)* |
 | Weight | Got it. |
-| Age | Thanks for letting us get to know you better. |
-| Hormone | That's helpful to know. Changes like these could have more than one cause. |
-| Longevity | We have what we need to show you a starting point. |
+| Age | Thank you for letting us get to know you better. |
+| Hormone-related changes | Thanks for sharing. |
+| Longevity-related areas | We have what we need to show you a starting point. |
 
-→ **Go to Result** (always Weight care — see `Result Content.md`).
+→ **Go to Result** (always Weight Care — see `Result Content.md`).
 
 ---
 
 ## Option 1 · Conversation (type / voice)
 
-The participant types or speaks each scripted response in their own words.
+The participant types or speaks in their own words.
 
-**Turn 1 · What matters now**
+**Turn 1 · Overall health**
 - Question: *How have you been feeling lately?*
 - Typing placeholder: *Start wherever feels natural…*
-- Scripted response: "My weight hasn't changed in two years, no matter what I try."
 - Reaction: *Thanks for sharing.*
 
-**Turn 2 · Weight signal**
+**Turn 2 · Height and weight**
 - Question: *Could you share your height and current weight?*
-- Scripted response: "I'm 5'6" and about 188 pounds."
 - Reaction: *Got it.*
 
-**Turn 3 · Age signal**
+**Turn 3 · Age**
 - Question: *And how old are you?*
-- Scripted response: "I'm 44."
-- Reaction: *Thanks for letting us get to know you better.*
+- Reaction: *Thank you for letting us get to know you better.*
 
-**Turn 4 · Hormone signal**
-- Question: *Have you noticed any changes in your cycle or sleep lately? This
-  could include waking at night, night sweats, or hot flashes.*
-- Scripted response: "My sleep has changed. I wake up around 3 a.m. most nights."
-- Reaction: *That's helpful to know. Changes like these could have more than one
-  cause.*
+**Turn 4 · Hormone-related changes**
+- Question: *Have you noticed any changes in your cycle, sleep, mood, or other
+  midlife symptoms like hot flashes or night sweats?*
+- Reaction: *Thanks for sharing.*
 
-**Turn 5 · Longevity signal**
-- Question: *Is there anything else you'd like support with? This could include
-  energy, strength, recovery, joint or tendon health, or skin.*
-- Scripted response: "I feel good there. My energy and strength are steady."
+**Turn 5 · Longevity-related areas**
+- Question: *Is there anything else you'd like support with, such as energy,
+  strength, recovery, joint or tendon health, skin, or healthy aging?*
 - Reaction: *We have what we need to show you a starting point.*
 
 **Voice controls:** Type · Speak · Done · Type instead
@@ -83,97 +76,111 @@ The participant types or speaks each scripted response in their own words.
 
 ## Option 2 · Quiz (chips — "The Note-Taker")
 
-The same facts become selectable responses. The ✓ marks the scripted selection.
-Height and weight are **two separate questions** here; height flows straight
-into weight with no reaction in between.
+The participant selects the responses that fit their own experience.
 
-**Q1 · What matters now** *(single-select — the tap is the answer)*
+**Q1 · Overall health** *(multi-select — more than one can be true)*
 - Question: *How have you been feeling lately?*
-- Helper text: *Choose what fits best right now.*
-- ✓ *My weight hasn't changed, no matter what I try*
-- *My energy feels low*
-- *I'm having trouble thinking clearly*
+- *I've been trying to lose weight, but it hasn't changed*
+- *I've noticed hormone or midlife changes*
+- *My energy, strength, or recovery feels different*
+- *I've been thinking more about my overall health*
+- *I'm not sure how to describe it*
 - *Something else*
+- Confirmation: **Continue**
 - Reaction: *Thanks for sharing.*
 
-**Q2 · Height signal**
+**Q2 · Height**
 - Question: *How tall are you?*
 - Helper text: *An estimate is fine.*
-- Height field: ✓ **5' 6"** · CTA: **Continue**
+- Height field · CTA: **Continue**
 - *(no reaction — Q3 arrives directly)*
 
-**Q3 · Weight signal**
+**Q3 · Weight**
 - Question: *And what's your current weight?*
 - Helper text: *An estimate is fine.*
-- Weight field: ✓ **188 lb** · CTA: **Continue**
+- Weight field · CTA: **Continue**
 - Reaction: *Got it.*
 
-**Q4 · Age signal**
+**Q4 · Age**
 - Question: *And how old are you?*
-- Helper text: *Enter your age.*
-- Age field: ✓ **44** · CTA: **Continue**
-- Reaction: *Thanks for letting us get to know you better.*
+- Age field · CTA: **Continue**
+- Reaction: *Thank you for letting us get to know you better.*
 
-**Q5 · Hormone signal** *(single-select)*
-- Question: *Have you noticed any changes in your cycle or sleep lately?*
-- ✓ *My sleep has changed, I wake up around 3 a.m. most nights*
-- *My cycle has changed*
-- *I've noticed night sweats or hot flashes*
+**Q5 · Hormone-related changes** *(single-select — the tap is the answer)*
+- Question: *Have you noticed any changes in your cycle, sleep, or other
+  midlife symptoms lately?*
+- *Changes in my cycle*
+- *Changes in my sleep or waking up during the night*
+- *Night sweats or hot flashes*
+- *Changes in mood or focus*
+- *Changes in sexual health*
 - *I haven't noticed any changes*
-- Reaction: *That's helpful to know. Changes like these could have more than one
-  cause.*
+- *I prefer not to answer*
+- Reaction: *Thanks for sharing.*
 
-**Q6 · Longevity signal** *(multi-select with an exclusive "steady" chip)*
-- Question: *Is there anything else you'd like support with?*
-- Helper text: *Choose any areas where support would feel useful.*
-- *Energy* · *Strength* · *Recovery* · *Joints and tendons* · *Skin*
-- ✓ *I feel good in these areas*
-- CTA: **Continue**
+**Q6 · Longevity-related areas** *(single-select — the tap is the answer)*
+- Question: *Are there any other areas you'd like support with?*
+- *Energy*
+- *Strength*
+- *Recovery*
+- *Joint or tendon health*
+- *Skin*
+- *Healthy aging*
+- *Nothing else right now*
 - Reaction: *We have what we need to show you a starting point.*
 
 ---
 
 ## Option 3 · Madlib (fill-in-the-blanks)
 
-The participant builds one statement, one blank at a time. The whole statement
-skeleton is visible from the start; the cursor walks it in order. The ✓ marks
-each scripted selection. Reactions play between blanks, tray hidden.
+The participant builds a statement using their own selections. The whole
+statement skeleton is visible from the start; the cursor walks it in order.
+Reactions play between blanks, tray hidden.
 
-**Completed statement:**
+**Statement template:**
 
-> Lately, **my weight hasn't changed in two years, no matter what I try**. I'm
-> **5'6"** and about **188 pounds**. I'm **44**. I've also noticed **my sleep
-> has changed, I wake up around 3 a.m. most nights**. Beyond that, **my energy
-> and strength feel steady**.
+> Lately, **[what's been going on]**. I'm **[height]** and about **[weight]**.
+> I'm **[age]**. Also, I've noticed **[what I've noticed]**. Beyond that,
+> **[support]**.
 
-**Blank 1 · What's been going on** *(single-select — the tap fills the blank)*
-- ✓ *my weight hasn't changed in two years, no matter what I try*
-- *my energy feels low*
-- *I'm having trouble thinking clearly*
+**Blank 1 · What's been going on**
+- *I've been trying to lose weight, but it hasn't changed*
+- *I've noticed hormone or midlife changes*
+- *my energy, strength, or recovery feels different*
+- *I've been thinking more about my overall health*
+- *I'm not sure how to describe how I've been feeling*
+- *I have something else on my mind*
 - Reaction: *Thanks for sharing.*
 
 **Blanks 2 & 3 · Height and weight**
 - Helper text: *An estimate is fine.*
-- Height pickers: ✓ **5'6"** · Weight picker: ✓ **188 lb**
+- Height pickers · Weight picker
 - Reaction (after weight lands): *Got it.*
 
 **Blank 4 · Age**
-- Age picker: ✓ **44**
-- Reaction: *Thanks for letting us get to know you better.*
+- Age picker
+- Reaction: *Thank you for letting us get to know you better.*
 
-**Blank 5 · What has changed** *(words phrased to complete "I've also noticed ___")*
-- ✓ *my sleep has changed, I wake up around 3 a.m. most nights*
-- *my cycle has changed*
+**Blank 5 · What I've noticed**
+- *changes in my cycle*
+- *difficulty sleeping*
+- *waking up during the night*
 - *night sweats or hot flashes*
-- *no real changes*
-- Reaction: *That's helpful to know. Changes like these could have more than one
-  cause.*
+- *changes in my mood or focus*
+- *changes in my sexual health*
+- *nothing in particular*
+- *I prefer not to answer*
+- **Behavior:** if "I prefer not to answer" is selected, this sentence is
+  omitted from the final statement.
+- Reaction: *Thanks for sharing.*
 
-**Blank 6 · Other areas of support**
-- ✓ *my energy and strength feel steady*
+**Blank 6 · Support**
 - *I'd like more support with my energy*
-- *I'd like more support with strength and recovery*
-- *I'd like more support with my joints, tendons, or skin*
+- *I'd like more support with strength or recovery*
+- *I'd like support for my joints or tendons*
+- *I'd like support for my skin*
+- *I'd like support with healthy aging*
+- *I don't need support with anything else right now*
 - Reaction: *We have what we need to show you a starting point.*
 
 **Review**
@@ -183,19 +190,30 @@ each scripted selection. Reactions play between blanks, tray hidden.
 
 ---
 
-## Interaction decisions (agreed during build — they override the PDF where they differ)
+## Interaction decisions (agreed during build)
 
-- Q1 (quiz) and Blank 1 (madlib) are **single-select with no confirmation
-  button** — the tap is the answer. Confirmation CTAs appear only where
-  something must be completed: number fields and the multi-select Q6.
+- Q1 (quiz) is multi-select with **Continue** per the source doc; Q5 and Q6
+  list no confirmation, so the tap is the answer. Blank 1 (madlib) is a
+  single word per blank — the tap fills it.
 - Confirm buttons are always visible, disabled until there's a selection.
+- The source doc's age reaction ("Thank you for let us getting…") was
+  grammatically broken; the prototypes use *"Thank you for letting us get to
+  know you better."*
 
 ## Copy guardrails
 
 - Keep questions and reactions warm, clear, and brief.
-- Acknowledge what the participant shared without making the concern sound worse.
-- Treat steady signals as useful information.
-- Explain why sensitive questions matter when space allows.
-- Keep the character facts and reactions consistent across all three prototypes.
-- **Adapt the interaction, not the meaning.**
+- Use helper text only when it reduces uncertainty or pressure.
+- Keep reactions neutral enough to work with any participant response.
+- Do not infer, summarize, or interpret what the participant shared in a
+  reaction.
+- Skip or prefill later questions when the participant already provided that
+  information.
+- Keep hormone-related topics focused on cycle, sleep, and other midlife
+  symptoms.
+- Keep longevity-related topics focused on energy, strength, recovery, joints
+  or tendons, skin, and healthy aging.
+- Keep the topic sequence and predetermined Weight Care result consistent
+  across all three prototypes.
+- Adapt the interaction, not the meaning.
 - Do not imply a diagnosis, clinical assessment, or promised outcome.

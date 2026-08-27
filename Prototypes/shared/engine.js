@@ -3,7 +3,7 @@
    Source of truth: Quiz/Question Story.md + Quiz/Result Content.md
    (copy-reviewed, Aug 2025).
 
-   One fixed character, five beats in a straight line, one Result
+   Participants answer as themselves; the topic sequence, reactions and Result are fixed
    (Weight care). Nothing branches and nothing is computed — what
    the engine guarantees now is that the REACTS and the Result are
    word-for-word identical across the three prototypes. Each option
@@ -19,8 +19,8 @@ window.PyramidEngine = (function(){
   var REACTS = {
     opener:   'Thanks for sharing.',
     weight:   'Got it.',
-    age:      'Thanks for letting us get to know you better.',
-    hormone:  'That’s helpful to know. Changes like these could have more than one cause.',
+    age:      'Thank you for letting us get to know you better.',
+    hormone:  'Thanks for sharing.',
     longevity:'We have what we need to show you a starting point.'
   };
   /* Beat order — the one straight line every option walks.

@@ -415,7 +415,7 @@
     <div class="scroller" id="scroll">
       <p class="eyebrow rise">Your starting point</p>
       <h2 class="lead-head rise">Weight care.</h2>
-      <p class="oneliner rise">Based on what you shared, weight care is the clearest place to start.</p>
+      <p class="oneliner rise">Weight care is your starting point, with hormone and longevity support still in view.</p>
 
       <svg class="respyr rise" viewBox="0 0 440 182" aria-label="Your pyramid: weight and metabolism to start, hormones and longevity in view">
         <polygon class="rl lead rla" points="4,170 184,170 156,122 32,122"></polygon>
@@ -432,7 +432,7 @@
         <text class="rn" x="200" y="42">Energy &amp; longevity</text>
         <text class="rg" x="200" y="55">Energy, strength, recovery, and healthy aging</text>
       </svg>
-      <p class="seq rise">Your care can include all three. <b>Weight care is the clearest place to start</b>, while hormones and longevity stay in view.</p>
+      <p class="seq rise"><b>Your care can include all three.</b> Hormone and longevity support stay open as your needs evolve.</p>
 
       <h3 class="sec rise">The order from here</h3>
       <div id="rows" class="rise">
@@ -448,24 +448,23 @@
         </div>
         <div class="row rl3">
           <div class="row-hd"><span class="ord">3</span>
-            <span class="row-t"><p class="row-when">Build on your foundation</p><p class="row-n">Longevity &amp; peptides</p>
+            <span class="row-t"><p class="row-when">Open when you’re ready</p><p class="row-n">Longevity &amp; peptides</p>
             <p class="row-s">Support for energy, strength, and recovery</p></span></div>
         </div>
       </div>
 
-      <div class="open-note rise"><b>This is a starting point, not a limit.</b> You can explore another area first. All three remain open to you.</div>
+      <div class="open-note rise"><b>This is a starting point, not a limit.</b> If another area feels more important, you can explore it first.</div>
 
       <div class="disc rise" id="disc">
         <button class="disc-hd">How we got here <span class="msr">expand_more</span></button>
         <div class="disc-body"><div class="disc-inner">
-          <p style="margin:0 0 10px">You told us your weight has been hard to shift, even with consistent effort. Your height and weight add one useful signal, and your sleep changes add more context. Together, they point to weight care as the clearest place to start, with hormone care still in view.</p>
-          <p style="margin:0">Your energy and strength feel steady, so longevity support can stay open for later.</p>
+          <p style="margin:0">This is one way to organize the areas you explored. Weight care comes first here, while hormone care and longevity support remain open to you.</p>
         </div></div>
       </div>
 
       <div class="next rise">
         <b>What happens next</b>
-        <ol><li>Answer a few health and safety questions.</li><li>A licensed clinician reviews your full picture.</li><li>See the weight care options that may fit your needs.</li></ol>
+        <ol><li>Answer a few health and safety questions.</li><li>A licensed clinician reviews your full picture.</li><li>Review the weight care options available to you.</li></ol>
       </div>
     </div>
 
@@ -496,28 +495,38 @@
   /* One statement, built blank by blank, in the scripted order. The
      participant picks whatever words fit — nothing branches; reacts and
      the Result are fixed. */
+  var PREFER='I prefer not to answer';
   var BLANKS=[
     {id:'going', kind:'single', pre:'Lately, ', post:'.', lbl:'what’s been going on',
-     words:['my weight hasn’t changed in two years, no matter what I try',
-            'my energy feels low',
-            'I’m having trouble thinking clearly'],
+     words:['I’ve been trying to lose weight, but it hasn’t changed',
+            'I’ve noticed hormone or midlife changes',
+            'my energy, strength, or recovery feels different',
+            'I’ve been thinking more about my overall health',
+            'I’m not sure how to describe how I’ve been feeling',
+            'I have something else on my mind'],
      react:R.opener},
     {id:'height', kind:'height', pre:' I’m ', post:'', lbl:'height',
      hint:'An estimate is fine.', react:null},
     {id:'weight', kind:'weight', pre:' and about ', post:'.', lbl:'weight',
      hint:'An estimate is fine.', react:R.weight},
     {id:'age', kind:'age', pre:' I’m ', post:'.', lbl:'age', react:R.age},
-    {id:'changed', kind:'single', pre:' I’ve also noticed ', post:'.', lbl:'what has changed',
-     words:['my sleep has changed, I wake up around 3 a.m. most nights',
-            'my cycle has changed',
+    {id:'noticed', kind:'single', pre:' Also, I’ve noticed ', post:'.', lbl:'what I’ve noticed',
+     words:['changes in my cycle',
+            'difficulty sleeping',
+            'waking up during the night',
             'night sweats or hot flashes',
-            'no real changes'],
+            'changes in my mood or focus',
+            'changes in my sexual health',
+            'nothing in particular',
+            PREFER],
      react:R.hormone},
     {id:'support', kind:'single', pre:' Beyond that, ', post:'.', lbl:'support',
-     words:['my energy and strength feel steady',
-            'I’d like more support with my energy',
-            'I’d like more support with strength and recovery',
-            'I’d like more support with my joints, tendons, or skin'],
+     words:['I’d like more support with my energy',
+            'I’d like more support with strength or recovery',
+            'I’d like support for my joints or tendons',
+            'I’d like support for my skin',
+            'I’d like support with healthy aging',
+            'I don’t need support with anything else right now'],
      react:R.longevity}
   ];
 
@@ -536,6 +545,9 @@
        start — empty blanks and all. The cursor walks it in order. */
     var h='';
     BLANKS.forEach(function(b,i){
+      /* "I prefer not to answer" removes that sentence from the statement
+         (kept visible only while the blank itself is active) */
+      if(b.id==='noticed' && filled[b.id]===PREFER && i!==cursor) return;
       h+='<span class="fixed">'+b.pre+'</span>'
         +blankHTML(b, i===cursor)
         +'<span class="fixed">'+b.post+'</span>';

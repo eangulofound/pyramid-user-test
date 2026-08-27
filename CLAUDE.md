@@ -13,13 +13,15 @@ performs best with real users.
 Three **fully scripted, linear** prototypes for a moderated user test in which
 **one participant walks through all three options in sequence**:
 
-- One fixed character (44 · 5'6" · 188 lb · weight concern + waking at 3 a.m. ·
-  energy steady), five questions in a straight line, **no branches**, and one
-  fixed Result: **Weight care**.
-- The participant still interacts for real — typing/speaking in Option 1,
-  tapping chips in Option 2, filling blanks in Option 3 — but nothing they
-  choose changes the flow, the reactions, or the Result. In Option 1 any
-  non-empty answer is accepted as-is (no parsing).
+- Participants answer **as themselves** (no fixed character, no scripted
+  responses). The topic sequence is a straight line — overall health → height
+  & weight → age → hormone-related changes → longevity areas — with **no
+  branches**, neutral fixed reactions, and one predetermined Result:
+  **Weight care**.
+- The participant interacts for real — typing/speaking in Option 1, tapping
+  chips in Option 2, filling blanks in Option 3 — but nothing they choose
+  changes the flow, the reactions, or the Result. In Option 1 any non-empty
+  answer is accepted as-is (no parsing).
 - Reactions and the Result copy are word-for-word identical across the three
   prototypes (guaranteed by `Prototypes/shared/engine.js`).
 - **Mobile-first**, with a `max-width` so it doesn't stretch on desktop.
