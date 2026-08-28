@@ -72,6 +72,9 @@ window.PyramidEngine = (function(){
   }
 
   function boot(){
+    /* the static <title> is brand-neutral so link scrapers never see the
+       name; the branded standalone version restores it at runtime */
+    if(!window.__flow) document.title='Found · A place to start';
     var dev=document.getElementById('dev');
     var disc=document.getElementById('disc');
     if(disc) disc.querySelector('.disc-hd').onclick=function(){ disc.classList.toggle('open'); };
