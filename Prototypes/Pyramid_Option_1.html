@@ -453,7 +453,8 @@
   <div class="grain"></div>
 </div>
 
-<script src="shared/engine.js?v=2025-08-26g"></script>
+<script src="shared/flow.js?v=2025-08-27j"></script>
+<script src="shared/engine.js?v=2025-08-27j"></script>
 <script src="shared/intro.js?v=2025-08-26g"></script>
 <script>
 (function(){
@@ -476,13 +477,15 @@
     {q:'How have you been feeling lately?',
      ph:'Start wherever feels natural…', react:R.opener},
     {q:'Could you share your height and current weight?',
-     ph:'Start wherever feels natural…', react:R.weight},
+     ph:'For example, 5\u20326\u2033 and 180 lb', react:R.weight},
     {q:'And how old are you?',
-     ph:'Start wherever feels natural…', react:R.age},
+     ph:'For example, 44', react:R.age},
+    {q:'What sex were you assigned at birth?',
+     ph:'Male, female, or intersex', react:R.sex},
     {q:'Have you noticed any changes in your cycle, sleep, mood, or other midlife symptoms like hot flashes or night sweats?',
-     ph:'Start wherever feels natural…', react:R.hormone},
+     ph:'Share anything you\u2019ve noticed…', react:R.hormone},
     {q:'Is there anything else you’d like support with, such as energy, strength, recovery, joint or tendon health, skin, or healthy aging?',
-     ph:'Start wherever feels natural…', react:R.longevity}
+     ph:'Share anything else you\u2019d like support with…', react:R.longevity}
   ];
 
   var ti=0, pendingReact=null, current=null;

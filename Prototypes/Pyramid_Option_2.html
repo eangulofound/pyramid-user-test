@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@300;500;600;700&family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,300,0,0&display=block" rel="stylesheet">
-<link rel="stylesheet" href="shared/base.css?v=2025-08-27c">
+<link rel="stylesheet" href="shared/base.css?v=2025-08-27j">
 <style>
 /* ================= OPTION 3 · The Note-Taker ================= */
 .ntk{position:relative;z-index:3;display:flex;flex-direction:column;height:100%;
@@ -56,16 +56,16 @@
 .opt.go{background:var(--sage-500);color:#fff;text-align:center;box-shadow:none}
 .opt.go:hover{background:var(--sage-400)}
 .ntk-numrow{display:flex;gap:10px;margin-bottom:2px}
-.ntk-numrow label{flex:1 1 0;display:flex;flex-direction:column;gap:6px;
+.ntk-numrow label{flex:1 1 0;min-width:0;display:flex;flex-direction:column;gap:6px;
   font-family:var(--sans);font-size:10.5px;font-weight:700;letter-spacing:.7px;
   text-transform:uppercase;color:var(--sage-400)}
-.ntk-numrow input{font-family:var(--sans);font-size:16px;font-weight:600;letter-spacing:.1px;
+.ntk-numrow input{width:100%;min-width:0;font-family:var(--sans);font-size:16px;font-weight:600;letter-spacing:.1px;
   color:var(--sage-500);border:0;border-radius:var(--r-xs);padding:12px 13px;
   background:rgba(255,255,255,.9);box-shadow:inset 0 0 0 1px var(--gray-50)}
 .ntk-numrow input:focus{outline:none;box-shadow:inset 0 0 0 1.5px var(--sage-300)}
 
 /* select variant of the number row + inline nudge (no silent defaults) */
-.ntk-numrow select{font-family:var(--sans);font-size:16px;font-weight:600;letter-spacing:.1px;
+.ntk-numrow select{width:100%;min-width:0;font-family:var(--sans);font-size:16px;font-weight:600;letter-spacing:.1px;
   color:var(--sage-500);border:0;border-radius:var(--r-xs);padding:12px 13px;
   background:rgba(255,255,255,.9);box-shadow:inset 0 0 0 1px var(--gray-50);
   -webkit-appearance:none;appearance:none}
@@ -619,8 +619,9 @@
   <div class="grain"></div>
 </div>
 
-<script src="shared/engine.js?v=2025-08-27c"></script>
-<script src="shared/intro.js?v=2025-08-27c"></script>
+<script src="shared/flow.js?v=2025-08-27j"></script>
+<script src="shared/engine.js?v=2025-08-27j"></script>
+<script src="shared/intro.js?v=2025-08-27j"></script>
 <script>
 (function(){
   var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -648,6 +649,9 @@
      q:'And what’s your current weight?', helper:'An estimate is fine.'},
     {id:'age', kind:'age', react:R.age,
      q:'And how old are you?'},
+    {id:'sex', kind:'single', react:R.sex,
+     q:'What sex were you assigned at birth?',
+     chips:['Male','Female','Intersex']},
     {id:'hormone', kind:'single', react:R.hormone,
      q:'Have you noticed any changes in your cycle, sleep, or other midlife symptoms lately?',
      chips:['Changes in my cycle',
@@ -764,20 +768,18 @@
   function buildHeight(step){
     var wrap=document.createElement('div'); wrap.className='ntk-numrow';
     wrap.innerHTML=
-      '<label>Feet<select id="ntkFt"><option value="" selected disabled>—</option>'
-      +[3,4,5,6,7].map(function(f){return '<option value="'+f+'">'+f+'&prime;</option>';}).join('')
-      +'</select></label>'
-      +'<label>Inches<select id="ntkIn"><option value="" selected disabled>—</option>'
-      +Array.apply(null,{length:12}).map(function(_,i){return '<option value="'+i+'">'+i+'&Prime;</option>';}).join('')
-      +'</select></label>';
+      '<label>Feet<input type="text" id="ntkFt" inputmode="numeric" autocomplete="off" placeholder="e.g. 5"></label>'
+      +'<label>Inches<input type="text" id="ntkIn" inputmode="numeric" autocomplete="off" placeholder="e.g. 6"></label>';
     opts.appendChild(wrap);
     var hint=addHint('');
     var go=document.createElement('button'); go.className='opt go'; go.textContent='Continue';
     opts.appendChild(go); chipIn(go, 220);
+    later(function(){ document.getElementById('ntkFt').focus(); }, 450);
     go.onclick=function(){
       if(locked) return;
-      var ft=document.getElementById('ntkFt').value, inch=document.getElementById('ntkIn').value;
-      if(ft===''||inch===''){ hint.textContent='Both parts — feet and inches.'; hint.classList.add('on'); return; }
+      var ft=document.getElementById('ntkFt').value.trim(), inch=document.getElementById('ntkIn').value.trim();
+      var okFt=/^[3-7]$/.test(ft), okIn=/^(0|[1-9]|1[01])$/.test(inch);
+      if(!okFt||!okIn){ hint.textContent='Feet and inches, as numbers — an estimate is fine.'; hint.classList.add('on'); return; }
       commit(step);
     };
   }

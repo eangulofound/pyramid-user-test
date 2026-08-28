@@ -62,10 +62,10 @@
 .wchip.go{background:var(--sage-500);color:#fff;text-align:center}
 .wchip.go:hover{box-shadow:none;background:var(--sage-400)}
 .mlb-numrow{display:flex;gap:10px}
-.mlb-numrow label{flex:1 1 0;display:flex;flex-direction:column;gap:6px;
+.mlb-numrow label{flex:1 1 0;min-width:0;display:flex;flex-direction:column;gap:6px;
   font-family:var(--sans);font-size:10.5px;font-weight:700;letter-spacing:.7px;
   text-transform:uppercase;color:var(--sage-400)}
-.mlb-numrow select,.mlb-numrow input{font-family:var(--sans);font-size:16px;font-weight:600;
+.mlb-numrow select,.mlb-numrow input{width:100%;min-width:0;font-family:var(--sans);font-size:16px;font-weight:600;
   letter-spacing:.1px;color:var(--sage-500);border:0;border-radius:var(--r-xs);padding:12px 13px;
   background:rgba(255,255,255,.92);box-shadow:inset 0 0 0 1px var(--gray-50);
   -webkit-appearance:none;appearance:none}
@@ -477,7 +477,8 @@
   <div class="grain"></div>
 </div>
 
-<script src="shared/engine.js?v=2025-08-26g"></script>
+<script src="shared/flow.js?v=2025-08-27j"></script>
+<script src="shared/engine.js?v=2025-08-27j"></script>
 <script src="shared/intro.js?v=2025-08-26g"></script>
 <script>
 (function(){
@@ -510,6 +511,9 @@
     {id:'weight', kind:'weight', pre:' and about ', post:'.', lbl:'weight',
      hint:'An estimate is fine.', react:R.weight},
     {id:'age', kind:'age', pre:' I’m ', post:'.', lbl:'age', react:R.age},
+    {id:'sex', kind:'single', pre:' I was assigned ', post:' at birth.', lbl:'sex assigned at birth',
+     words:['male','female','intersex'],
+     react:R.sex},
     {id:'noticed', kind:'single', pre:' Also, I’ve noticed ', post:'.', lbl:'what I’ve noticed',
      words:['changes in my cycle',
             'difficulty sleeping',
@@ -611,19 +615,17 @@
   function trayHeight(b){
     var row=document.createElement('div'); row.className='mlb-numrow';
     row.innerHTML=
-      '<label>Feet<select id="mlbFt"><option value="" selected disabled>—</option>'
-      +[3,4,5,6,7].map(function(f){return '<option value="'+f+'">'+f+'&prime;</option>';}).join('')
-      +'</select></label>'
-      +'<label>Inches<select id="mlbIn"><option value="" selected disabled>—</option>'
-      +Array.apply(null,{length:12}).map(function(_,i){return '<option value="'+i+'">'+i+'&Prime;</option>';}).join('')
-      +'</select></label>';
+      '<label>Feet<input type="text" id="mlbFt" inputmode="numeric" autocomplete="off" placeholder="e.g. 5"></label>'
+      +'<label>Inches<input type="text" id="mlbIn" inputmode="numeric" autocomplete="off" placeholder="e.g. 6"></label>';
     tray.appendChild(row);
     var hint=addHint(b.hint);
     addChip('that’s me', function(){
-      var ft=document.getElementById('mlbFt').value, inch=document.getElementById('mlbIn').value;
-      if(ft===''||inch===''){ hint.textContent='Both parts — feet and inches.'; return; }
+      var ft=document.getElementById('mlbFt').value.trim(), inch=document.getElementById('mlbIn').value.trim();
+      var okFt=/^[3-7]$/.test(ft), okIn=/^(0|[1-9]|1[01])$/.test(inch);
+      if(!okFt||!okIn){ hint.textContent='Feet and inches, as numbers.'; return; }
       choose(b, ft+'′'+inch+'″');
     }, 0, 'go');
+    later(function(){ document.getElementById('mlbFt').focus(); }, 400);
   }
 
   function trayWeight(b){

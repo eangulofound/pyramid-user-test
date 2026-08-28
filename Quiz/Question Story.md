@@ -15,7 +15,8 @@ Copy below is final — use as written.
 - Participants use their own health experiences; there are no scripted user
   responses.
 - The shared story moves from overall health concerns to height and weight,
-  age, hormone-related changes, and longevity-related areas.
+  age, sex assigned at birth, hormone-related changes, and longevity-related
+  areas.
 - If an earlier response already covers a later topic, skip or prefill that
   question instead of asking for the same information again. *(Design
   guideline — the prototypes keep the fixed sequence, since honoring this
@@ -36,6 +37,7 @@ work with any participant response.
 | Height | *(no reaction — flows straight into weight)* |
 | Weight | Got it. |
 | Age | Thank you for letting us get to know you better. |
+| Sex assigned at birth | Thank you. |
 | Hormone-related changes | Thanks for sharing. |
 | Longevity-related areas | We have what we need to show you a starting point. |
 
@@ -54,20 +56,29 @@ The participant types or speaks in their own words.
 
 **Turn 2 · Height and weight**
 - Question: *Could you share your height and current weight?*
+- Typing placeholder: *For example, 5'6" and 180 lb*
 - Reaction: *Got it.*
 
 **Turn 3 · Age**
 - Question: *And how old are you?*
+- Typing placeholder: *For example, 44*
 - Reaction: *Thank you for letting us get to know you better.*
 
-**Turn 4 · Hormone-related changes**
+**Turn 4 · Sex assigned at birth**
+- Question: *What sex were you assigned at birth?*
+- Typing placeholder: *Male, female, or intersex*
+- Reaction: *Thank you.*
+
+**Turn 5 · Hormone-related changes**
 - Question: *Have you noticed any changes in your cycle, sleep, mood, or other
   midlife symptoms like hot flashes or night sweats?*
+- Typing placeholder: *Share anything you've noticed…*
 - Reaction: *Thanks for sharing.*
 
-**Turn 5 · Longevity-related areas**
+**Turn 6 · Longevity-related areas**
 - Question: *Is there anything else you'd like support with, such as energy,
   strength, recovery, joint or tendon health, skin, or healthy aging?*
+- Typing placeholder: *Share anything else you'd like support with…*
 - Reaction: *We have what we need to show you a starting point.*
 
 **Voice controls:** Type · Speak · Done · Type instead
@@ -106,7 +117,12 @@ The participant selects the responses that fit their own experience.
 - Age field · CTA: **Continue**
 - Reaction: *Thank you for letting us get to know you better.*
 
-**Q5 · Hormone-related changes** *(single-select — the tap is the answer)*
+**Q5 · Sex assigned at birth** *(single-select — the tap is the answer)*
+- Question: *What sex were you assigned at birth?*
+- *Male* · *Female* · *Intersex*
+- Reaction: *Thank you.*
+
+**Q6 · Hormone-related changes** *(single-select — the tap is the answer)*
 - Question: *Have you noticed any changes in your cycle, sleep, or other
   midlife symptoms lately?*
 - *Changes in my cycle*
@@ -118,7 +134,7 @@ The participant selects the responses that fit their own experience.
 - *I prefer not to answer*
 - Reaction: *Thanks for sharing.*
 
-**Q6 · Longevity-related areas** *(single-select — the tap is the answer)*
+**Q7 · Longevity-related areas** *(single-select — the tap is the answer)*
 - Question: *Are there any other areas you'd like support with?*
 - *Energy*
 - *Strength*
@@ -140,8 +156,8 @@ Reactions play between blanks, tray hidden.
 **Statement template:**
 
 > Lately, **[what's been going on]**. I'm **[height]** and about **[weight]**.
-> I'm **[age]**. Also, I've noticed **[what I've noticed]**. Beyond that,
-> **[support]**.
+> I'm **[age]**. I was assigned **[sex assigned at birth]** at birth. Also,
+> I've noticed **[what I've noticed]**. Beyond that, **[support]**.
 
 **Blank 1 · What's been going on**
 - *I've been trying to lose weight, but it hasn't changed*
@@ -161,7 +177,11 @@ Reactions play between blanks, tray hidden.
 - Age picker
 - Reaction: *Thank you for letting us get to know you better.*
 
-**Blank 5 · What I've noticed**
+**Blank 5 · Sex assigned at birth**
+- *male* · *female* · *intersex*
+- Reaction: *Thank you.*
+
+**Blank 6 · What I've noticed**
 - *changes in my cycle*
 - *difficulty sleeping*
 - *waking up during the night*
@@ -174,7 +194,7 @@ Reactions play between blanks, tray hidden.
   omitted from the final statement.
 - Reaction: *Thanks for sharing.*
 
-**Blank 6 · Support**
+**Blank 7 · Support**
 - *I'd like more support with my energy*
 - *I'd like more support with strength or recovery*
 - *I'd like support for my joints or tendons*
@@ -209,6 +229,7 @@ Reactions play between blanks, tray hidden.
   reaction.
 - Skip or prefill later questions when the participant already provided that
   information.
+- Use “sex assigned at birth,” not “gender assigned at birth.”
 - Keep hormone-related topics focused on cycle, sleep, and other midlife
   symptoms.
 - Keep longevity-related topics focused on energy, strength, recovery, joints

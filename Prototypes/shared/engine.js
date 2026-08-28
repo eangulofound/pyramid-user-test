@@ -20,12 +20,13 @@ window.PyramidEngine = (function(){
     opener:   'Thanks for sharing.',
     weight:   'Got it.',
     age:      'Thank you for letting us get to know you better.',
+    sex:      'Thank you.',
     hormone:  'Thanks for sharing.',
     longevity:'We have what we need to show you a starting point.'
   };
   /* Beat order — the one straight line every option walks.
      Height carries no reaction of its own; it flows into weight. */
-  var BEATS = ['opener','height','weight','age','hormone','longevity'];
+  var BEATS = ['opener','height','weight','age','sex','hormone','longevity'];
 
   /* ---------------- screens, processing, result ---------------- */
 
@@ -77,9 +78,18 @@ window.PyramidEngine = (function(){
     window.__showScreen=showScreen;
     window.__toCapture=function(){ dev.className='device'; showScreen('scrCapture'); window.__startCapture(); };
     window.__toResult=function(){ dev.className='device'; showScreen('scrResult'); startResult(); };
-    function toIntro(){ dev.className='device'; window.__startCapture(); window.__startIntro(); showScreen('scrIntro'); }
-    document.getElementById('reset').onclick=toIntro;
-    toIntro();
+    /* in a test flow, only the FIRST prototype shows the intro — the
+       others start straight at the capture (and Replay returns there) */
+    var skipIntro = window.__flow && window.__flow.skipIntro;
+    function toStart(){
+      if(skipIntro){
+        dev.className='device'; showScreen('scrCapture'); window.__startCapture();
+      } else {
+        dev.className='device'; window.__startCapture(); window.__startIntro(); showScreen('scrIntro');
+      }
+    }
+    document.getElementById('reset').onclick=toStart;
+    toStart();
   }
 
   return {REACTS:REACTS, BEATS:BEATS, toProcessing:toProcessing, boot:boot};
