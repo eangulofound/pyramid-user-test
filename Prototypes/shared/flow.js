@@ -10,11 +10,29 @@
   'use strict';
 
   var params = new URLSearchParams(location.search);
+
+  /* In any test mode the brand stays out of sight: every wordmark
+     reads "company" and the tab title follows. */
+  function debrand(){
+    document.querySelectorAll('.wordmark').forEach(function(w){ w.textContent='company'; });
+    document.title = 'Company · A place to start';
+  }
+
+  /* ?nointro=1 — an independent test prototype: identical to the
+     original, but it starts straight at the capture (no intro, no
+     test chrome). Replay also returns to the capture. */
+  if(params.get('nointro')){
+    window.__flow = { skipIntro:true };
+    debrand();
+    return;
+  }
+
   var order = (params.get('order')||'').replace(/[^123]/g,'');
   var pos = parseInt(params.get('pos')||'1',10);
   var valid = order.length===3 && /^[123]{3}$/.test(order)
     && new Set(order).size===3 && pos>=1 && pos<=3;
   if(!valid){ window.__flow=null; return; }
+  debrand();
 
   var FILES = {
     '1':'Pyramid_Option_1.html',

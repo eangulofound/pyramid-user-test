@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>The Pyramid · Test groups</title>
+<title>The Pyramid · User test</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,600&display=swap" rel="stylesheet">
@@ -15,13 +15,12 @@ body{margin:0;background:var(--bg);font-family:'Figtree',system-ui,sans-serif;co
 main{width:100%;max-width:460px}
 h1{font-family:'Fraunces',Georgia,serif;font-weight:600;font-size:28px;margin:0 0 6px}
 p.lead{font-size:14.5px;line-height:1.55;color:var(--sub);margin:0 0 24px}
-a.card{display:flex;align-items:center;justify-content:space-between;gap:12px;
-  background:var(--card);border-radius:16px;padding:15px 18px;margin-bottom:11px;
+a.card{display:block;background:var(--card);border-radius:16px;padding:15px 18px;margin-bottom:11px;
   text-decoration:none;color:var(--ink);box-shadow:inset 0 0 0 1px var(--line);
   transition:transform .15s ease,box-shadow .15s ease}
 a.card:hover{transform:translateY(-2px);box-shadow:inset 0 0 0 1.5px var(--sage)}
-a.card b{font-size:16px}
-a.card span.order{font-size:13px;color:var(--sub);letter-spacing:.4px}
+a.card b{display:block;font-size:16px;margin-bottom:3px}
+a.card span{font-size:13px;color:var(--sub)}
 footer{margin-top:20px;font-size:12px;line-height:1.5;color:var(--sub);opacity:.75}
 a.back{display:inline-block;margin-bottom:18px;font-size:13px;font-weight:600;color:var(--sub);text-decoration:none}
 a.back:hover{color:var(--ink)}
@@ -30,17 +29,14 @@ a.back:hover{color:var(--ink)}
 <body>
 <main>
   <a class="back" href="../index.html">‹ All prototypes</a>
-  <h1>User test groups</h1>
-  <p class="lead">Each group walks through all three prototypes in a different order. Share one link per test session — the flow handles the rest (intro shows only on the first prototype).</p>
+  <h1>User test prototypes</h1>
+  <p class="lead">The same three prototypes, without the introduction — each one starts straight at the questions. Share one link per test.</p>
 
-  <a class="card" href="Pyramid_Option_1.html?order=123&pos=1"><b>Group A</b><span class="order">1 → 2 → 3</span></a>
-  <a class="card" href="Pyramid_Option_2.html?order=231&pos=1"><b>Group B</b><span class="order">2 → 3 → 1</span></a>
-  <a class="card" href="Pyramid_Option_3.html?order=312&pos=1"><b>Group C</b><span class="order">3 → 1 → 2</span></a>
-  <a class="card" href="Pyramid_Option_3.html?order=321&pos=1"><b>Group D</b><span class="order">3 → 2 → 1</span></a>
-  <a class="card" href="Pyramid_Option_2.html?order=213&pos=1"><b>Group E</b><span class="order">2 → 1 → 3</span></a>
+  <a class="card" href="Pyramid_Option_1.html?nointro=1"><b>Option 1 · Conversation</b><span>Type or speak, in your own words</span></a>
+  <a class="card" href="Pyramid_Option_2.html?nointro=1"><b>Option 2 · Quiz</b><span>Tap an answer per question</span></a>
+  <a class="card" href="Pyramid_Option_3.html?nointro=1"><b>Option 3 · Madlib</b><span>One statement about you — fill in the blanks</span></a>
 
-  <footer>1 · Conversation &nbsp;·&nbsp; 2 · Quiz &nbsp;·&nbsp; 3 · Madlib<br>
-  Participants move between prototypes with the bar at the top of the screen.</footer>
+  <footer>Identical to the originals — only the introduction is removed.</footer>
 </main>
 </body>
 </html>
