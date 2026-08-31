@@ -18,6 +18,19 @@
 .tin::placeholder{color:var(--sage-200)}
 .tsend{margin-top:10px}
 .t-x{position:absolute;left:var(--sp-md);top:52px}
+/* test mode: simulated listening — bars instead of a transcript */
+.eq{display:flex;gap:5px;align-items:center;justify-content:center;height:26px;margin-bottom:8px}
+.eq i{display:block;width:4.5px;border-radius:3px;background:var(--sage-500);
+  animation:eqb 0.9s ease-in-out infinite}
+.eq i:nth-child(1){height:10px;animation-delay:0s}
+.eq i:nth-child(2){height:18px;animation-delay:-.55s}
+.eq i:nth-child(3){height:24px;animation-delay:-.2s}
+.eq i:nth-child(4){height:16px;animation-delay:-.7s}
+.eq i:nth-child(5){height:11px;animation-delay:-.35s}
+@keyframes eqb{0%,100%{transform:scaleY(.45)}50%{transform:scaleY(1)}}
+.eq-cap{font-size:13px;font-weight:600;letter-spacing:.2px;color:var(--sage-400);text-align:center;margin:0}
+/* the transcript area's top-fade mask would eat the bars — lift it here */
+.live.sim{-webkit-mask-image:none;mask-image:none;opacity:1;overflow:visible}
 
 /* the fallback chips — only ever seen if two tries didn't land */
 .chips{display:flex;flex-direction:column;gap:10px}
@@ -453,8 +466,8 @@
   <div class="grain"></div>
 </div>
 
-<script src="shared/flow.js?v=2025-08-27m"></script>
-<script src="shared/engine.js?v=2025-08-27m"></script>
+<script src="shared/flow.js?v=2025-08-27o"></script>
+<script src="shared/engine.js?v=2025-08-27o"></script>
 <script src="shared/intro.js?v=2025-08-26g"></script>
 <script>
 (function(){
@@ -508,10 +521,20 @@
 
   /* ---------------- real speech recognition ---------------- */
   var SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  /* Test mode simulates listening for EVERYONE — same stimulus in every
+     browser and webview: animated bars, no transcript, done always moves
+     on. (dscout records the session audio on its side.) */
+  var SIM = !!window.__flow;
   var rec=null, recFinal='';
   function startVoice(){
     startAmp();
     recFinal='';
+    if(SIM){
+      live.classList.add('sim');
+      live.innerHTML='<span class="eq"><i></i><i></i><i></i><i></i><i></i></span>'
+        +'<span class="eq-cap">Listening\u2026</span>';
+      return;
+    }
     if(!SR) return;
     rec=new SR();
     rec.lang='en-US'; rec.continuous=true; rec.interimResults=true;
@@ -638,10 +661,10 @@
     slot.innerHTML=''; live.textContent='';
     startVoice();
     document.getElementById('skDone').onclick=function(){
-      var text=(recFinal||live.textContent||'').trim();
+      var text = SIM ? '(spoken)' : (recFinal||live.textContent||'').trim();
       clearT();
       mid.classList.add('off');
-      dev.classList.remove('speaking'); live.textContent='';
+      dev.classList.remove('speaking'); live.innerHTML=''; live.classList.remove('sim');
       later(function(){ mid.classList.remove('off'); handleText(text); }, 300);
     };
   }
@@ -654,8 +677,9 @@
     };
   });
 
-  /* no speech engine in this browser → the mic way simply isn't offered */
-  if(!SR){
+  /* no speech engine in this browser → the mic way simply isn't offered
+     (except in test mode, where listening is simulated and always works) */
+  if(!SR && !SIM){
     var mic=ways.querySelector('.way[data-mode="speak"]');
     if(mic) mic.style.display='none';
   }
