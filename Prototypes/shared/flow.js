@@ -16,6 +16,10 @@
   function debrand(){
     document.querySelectorAll('.wordmark').forEach(function(w){ w.textContent='company'; });
     document.title = 'Company · A place to start';
+    /* the Result's CTA buttons are product, not test — remove them */
+    var st=document.createElement('style');
+    st.textContent='.footbar{display:none!important}';
+    document.head.appendChild(st);
   }
 
   /* ?nointro=1 — an independent test prototype: identical to the
