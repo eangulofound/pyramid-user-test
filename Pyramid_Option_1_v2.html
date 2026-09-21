@@ -51,20 +51,12 @@
 .cq{margin:0;font-family:var(--serif);font-weight:400;font-size:34px;line-height:1.14;letter-spacing:-.5px;color:var(--sage-500);text-wrap:pretty;
   transition:font-size .35s ease,color .35s ease}
 .device.answering .cq,.device.speaking .cq{margin-top:28px;font-size:22px;line-height:1.2;letter-spacing:-.3px;color:var(--sage-400)}
-.cwhy{align-self:flex-start;display:flex;align-items:center;gap:6px;margin-top:16px;border:0;background:transparent;padding:0;
-  font-family:var(--sans);font-size:13px;font-weight:600;color:var(--sage-300);cursor:pointer}
-.cwhy .msr{font-size:16px}
-.cwhyt{margin:10px 0 0;max-width:34ch;font-size:13.5px;line-height:1.5;color:var(--sage-400);display:none}
-.cwhyt.open{display:block}
-.device.answering .ceye,.device.answering .cwhy,.device.answering .cwhyt,.device.answering .cexs,
-.device.speaking .ceye,.device.speaking .cwhy,.device.speaking .cwhyt,.device.speaking .cexs{display:none}
-
-.cexs{display:flex;flex-direction:column;align-items:flex-start;gap:8px;margin-top:34px}
-.cexs .exl{margin:0 0 2px;font-size:10.5px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--sage-300)}
-.exc{border:0;cursor:pointer;font-family:var(--sans);font-size:14.5px;font-weight:600;line-height:1.3;text-align:left;max-width:100%;
-  color:var(--sage-500);background:#fff;border-radius:999px;padding:11px 16px;
-  box-shadow:0 1px 2px rgba(25,50,49,.06),inset 0 0 0 1px #E4ECE8;transition:box-shadow .2s,transform .2s}
-.exc:hover{box-shadow:0 1px 2px rgba(25,50,49,.06),inset 0 0 0 1.5px var(--sage-300);transform:translateY(-1px)}
+/* guidance: what she can talk about, and why it helps — one line under
+   the question in every mode (smaller and quieter once she's answering) */
+.cguide{margin:18px 0 0;max-width:36ch;font-size:15.5px;line-height:1.5;color:var(--sage-400);text-wrap:pretty;
+  transition:font-size .35s ease,color .35s ease,margin .35s ease}
+.device.answering .cguide,.device.speaking .cguide{margin-top:10px;font-size:13.5px;line-height:1.45;color:var(--sage-300)}
+.device.answering .ceye,.device.speaking .ceye{display:none}
 
 .cslot{display:none;flex:1 1 auto;min-height:0;padding-top:30px}
 .device.answering .cslot,.device.speaking .cslot{display:flex;flex-direction:column}
@@ -90,7 +82,6 @@
   font-family:var(--sans);font-size:18px;font-weight:600;line-height:1.35;letter-spacing:.1px;color:var(--sage-500)}
 .bin::placeholder{color:var(--sage-200)}
 textarea.bin{min-height:50px}
-.exc.picked{background:var(--sage-500);color:#fff;box-shadow:none}
 
 /* speaking */
 .vcenter{flex:1 1 auto;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;text-align:center}
@@ -540,9 +531,7 @@ textarea.bin{min-height:50px}
       <div class="cbody" id="cbody">
         <p class="ceye" id="ceye">1 of 6</p>
         <h2 class="cq" id="q"></h2>
-        <button class="cwhy" id="whybtn"><span class="msr">auto_awesome</span>Why we ask</button>
-        <p class="cwhyt" id="whytext"></p>
-        <div class="cexs" id="exs"></div>
+        <p class="cguide" id="guide"></p>
         <div class="cslot" id="slot"></div>
       </div>
       <div class="cfoot">
@@ -642,8 +631,7 @@ textarea.bin{min-height:50px}
   var R = PyramidEngine.REACTS;
   var dev=document.getElementById('dev'),
       body=document.getElementById('cbody'), q=document.getElementById('q'),
-      ceye=document.getElementById('ceye'), whybtn=document.getElementById('whybtn'),
-      whytext=document.getElementById('whytext'), exs=document.getElementById('exs'),
+      ceye=document.getElementById('ceye'), guide=document.getElementById('guide'),
       slot=document.getElementById('slot'), ways=document.getElementById('ways'),
       prim=document.getElementById('prim'), sec=document.getElementById('sec'),
       seci=document.getElementById('seci'), secl=document.getElementById('secl'),
@@ -655,34 +643,28 @@ textarea.bin{min-height:50px}
      (shared, in engine.js) and what follows are fixed. */
   var TURNS=[
     {q:'How have you been feeling lately?',
-     ph:'Start wherever feels natural…', react:R.opener,
-     why:'Your own words give everything after this its context.',
-     field:{label:'Your answer', multi:true},
-     ex:['My weight hasn’t changed in months','I’ve been sleeping badly','My energy feels low']},
+     g:'Tell us about your energy, your sleep, or how you feel about your weight. Whatever is on your mind gives us a place to start.',
+     ph:'Write here…', react:R.opener,
+     field:{label:'Your answer', multi:true}},
     {q:'Could you share your height and current weight?',
-     ph:'For example, 5′6″ and 180 lb', react:R.weight, numeric:true,
-     why:'Height and weight are one useful signal — never the whole story.',
-     ex:['5′6″ and about 180 lb','5′3″, 150 lb']},
+     g:'Your best estimate is enough. It helps us understand where your body is today.',
+     react:R.weight, numeric:true},
     {q:'And how old are you?',
-     ph:'For example, 44', react:R.age,
-     why:'Some changes cluster around certain ages; this helps us know what to ask about next.',
-     field:{label:'Age', unit:'years', num:true},
-     ex:['I’m 44','38']},
+     g:'Your age in years helps us know which changes are worth asking you about.',
+     ph:'Write here…', react:R.age,
+     field:{label:'Age', unit:'years', num:true}},
     {q:'What sex were you assigned at birth?',
-     ph:'Male, female, or intersex', react:R.sex,
-     why:'Some kinds of care depend on it. It stays between us.',
-     field:{label:'Sex assigned at birth'},
-     ex:['Female','Male','Intersex']},
+     g:'Female, male, or intersex. Some kinds of care depend on it, and it stays between us.',
+     ph:'Write here…', react:R.sex,
+     field:{label:'Sex assigned at birth'}},
     {q:'Have you noticed any changes in your cycle, sleep, mood, or other midlife symptoms like hot flashes or night sweats?',
-     ph:'Share anything you’ve noticed…', react:R.hormone,
-     why:'Changes like these can have more than one cause — knowing helps us keep the right things in view.',
-     field:{label:'What you’ve noticed', multi:true},
-     ex:['My sleep has changed','Hot flashes now and then','Nothing I’ve noticed']},
+     g:'Think about the past few months: a shifted cycle, lighter sleep, moods that swing more, hot flashes. If nothing stands out, that tells us something too.',
+     ph:'Write here…', react:R.hormone,
+     field:{label:'What you’ve noticed', multi:true}},
     {q:'Is there anything else you’d like support with, such as energy, strength, recovery, joint or tendon health, skin, or healthy aging?',
-     ph:'Share anything else you’d like support with…', react:R.longevity,
-     why:'So we know what else to keep open for you.',
-     field:{label:'Support', multi:true},
-     ex:['More energy','My joints','Nothing else right now']}
+     g:'Steadier energy, feeling stronger, recovering faster, easier joints. Whatever you name here stays in view for later.',
+     ph:'Write here…', react:R.longevity,
+     field:{label:'Support', multi:true}}
   ];
 
   var ti=0, pendingReact=null, current=null, mode='idle';
@@ -726,21 +708,6 @@ textarea.bin{min-height:50px}
     if(m==='speak') dev.classList.add('speaking');
     ways.classList.toggle('gone', m!=='idle');
   }
-  function renderExamples(){
-    exs.innerHTML='';
-    if(!current.ex) return;
-    var l=document.createElement('p'); l.className='exl'; l.textContent='For example'; exs.appendChild(l);
-    current.ex.forEach(function(t){
-      var b=document.createElement('button'); b.className='exc'; b.textContent=t;
-      b.onclick=function(){
-        if(mode!=='idle') return;
-        b.classList.add('picked');           /* the tap is her answer */
-        mode='picked';
-        later(function(){ commit(); }, 260);
-      };
-      exs.appendChild(b);
-    });
-  }
 
   /* ---------------- the beats ---------------- */
   function present(){
@@ -768,8 +735,7 @@ textarea.bin{min-height:50px}
     setProg(ti);
     ceye.textContent=(ti+1)+' of '+TURNS.length;
     q.textContent=current.q;
-    whytext.textContent=current.why||''; whytext.classList.remove('open');
-    renderExamples();
+    guide.textContent=current.g||'';
     later(function(){ body.classList.add('in'); }, 60);
   }
 
@@ -850,7 +816,6 @@ textarea.bin{min-height:50px}
   prim.onclick=send;
   sec.onclick=function(){ if(mode==='speak') goType(); else goSpeak(); };
   cx.onclick=function(){ clearT(); showQuestion(); };
-  whybtn.onclick=function(){ whytext.classList.toggle('open'); };
   Array.prototype.forEach.call(ways.querySelectorAll('.way'),function(b){
     b.onclick=function(){ if(b.getAttribute('data-mode')==='speak') goSpeak(); else goType(); };
   });
